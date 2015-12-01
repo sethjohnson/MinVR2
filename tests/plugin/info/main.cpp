@@ -138,30 +138,51 @@ int main(int argc, char **argv) {
     
     for (int f = 0; f < inputDeviceDrivers.size(); f++)
     {
+        VRMatrix4 identity;
+        
         VRDataIndex di;
         di.addData("Fastrack_Type", "InputDeviceVRPNTracker");
         di.addData("Fastrak_InputDeviceVRPNTrackerName", "Fastrak0@localhost");
         std::vector<std::string> names;
         names.push_back("Head_Move");
-        names.push_back("Hand_Move");
-        names.push_back("Brush_Move");
         names.push_back("Fastrak4_Move");
+        names.push_back("Brush_Move");
+        names.push_back("Hand_Move");
         di.addData("Fastrak_EventsToGenerate", names);
         di.addData("Fastrak_TrackerUnitsToRoomUnitsScale", 3.281);
-        VRMatrix4 tmp;
-        di.addData("Head_Move_PropToTracker", tmp);
-        di.addData("Hand_Move_PropToTracker", tmp);
-        di.addData("Brush_Move_PropToTracker", tmp);
-        di.addData("Fastrak4_Move_PropToTracker", tmp);
+
+        di.addData("Fastrak_ConvertLHtoRH", 1);
         
-        di.addData("Head_Move_FinalOffset", tmp);
-        di.addData("Hand_Move_FinalOffset", tmp);
-        di.addData("Brush_Move_FinalOffset", tmp);
-        di.addData("Fastrak4_Move_FinalOffset", tmp);
+        VRMatrix4 dev2room(0, 1, 0,-1.5,
+                           0, 0, 1, 3.0,
+                           1, 0, 0, 0,
+                           0, 0, 0, 1);
+        di.addData("Fastrak_DeviceToRoom", dev2room);
+
         
-        di.addData("Fastrak_DeviceToRoom", tmp);
+        VRMatrix4 proptotracker(0, 0, 1, 0,
+                                1, 0, 0, 0,
+                                0, 1, 0, 0,
+                                0, 0, 0, 1);
+        di.addData("Brush_Move_PropToTracker", proptotracker);
+        di.addData("Hand_Move_PropToTracker", proptotracker);
+        di.addData("Fastrak4_Move_PropToTracker", proptotracker);
+
+        VRMatrix4 headproptotracker(0, 0, 1, 0,
+                                    1, 0, 0, 0,
+                                    0, 1, 0, 0,
+                                    0, 0, 0, 1);
+        di.addData("Head_Move_PropToTracker", headproptotracker);
         
-        di.addData("Fastrak_ConvertLHtoRH", 0);
+
+        
+        di.addData("Head_Move_FinalOffset", identity);
+        di.addData("Hand_Move_FinalOffset", identity);
+        di.addData("Brush_Move_FinalOffset", identity);
+        di.addData("Fastrak4_Move_FinalOffset", identity);
+        
+
+        
         di.addData("Fastrak_IgnoreZeroes", 1);
         di.addData("Fastrak_WaitForNewReportInPoll", 0);
 
@@ -178,7 +199,7 @@ int main(int argc, char **argv) {
         }
     }
 
-     VRNetServer server("3490", 1);
+     VRNetServer server("3490", 2);
 
   while(true)
   {
