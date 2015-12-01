@@ -46,6 +46,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "event/VREvent.h"
 #include "event/VRInputDevice.h"
 #include "data/XMLUtils.h"
+#include "math/VRMath.h"
+
+#include <net/VRNetServer.h>
 
 #include <sstream>
 #include <fstream>
@@ -54,7 +57,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Windows.h>
 #else
 #include <dirent.h>
+#include <unistd.h>
 #endif
+
 
 using namespace MinVR;
 using namespace std;
@@ -107,7 +112,7 @@ int main(int argc, char **argv) {
 
   std::vector<VRInputDevice*> devices;
 
-  if(file.is_open()) {
+  /*if(file.is_open()) {
     std::stringstream buffer;
     buffer << file.rdbuf();
     xml_string = buffer.rdbuf()->str();
@@ -125,36 +130,71 @@ int main(int argc, char **argv) {
     		std::string name = props["name"];
     		//cout << dataIndexXML << endl;
 
-    		for (int f = 0; f < inputDeviceDrivers.size(); f++)
-    		{
-    			VRDataIndex di;
-    			di.addDataFromXML(dataIndexXML);
-    			VRInputDevice* device = inputDeviceDrivers[f]->create(type, name, di);
-    			if (device)
-    			{
-    				devices.push_back(device);
-    			}
-    			else
-    			{
-    				std::cout << "Cannot find." << std::endl;
-    			}
-    		}
+
 
     	}
     }
-  }
+  }*/
+    
+    for (int f = 0; f < inputDeviceDrivers.size(); f++)
+    {
+        VRDataIndex di;
+        di.addData("Fastrack_Type", "InputDeviceVRPNTracker");
+        di.addData("Fastrak_InputDeviceVRPNTrackerName", "Fastrak0@localhost");
+        std::vector<std::string> names;
+        names.push_back("Head_Move");
+        names.push_back("Hand_Move");
+        names.push_back("Brush_Move");
+        names.push_back("Fastrak4_Move");
+        di.addData("Fastrak_EventsToGenerate", names);
+        di.addData("Fastrak_TrackerUnitsToRoomUnitsScale", 3.281);
+        VRMatrix4 tmp;
+        di.addData("Head_Move_PropToTracker", tmp);
+        di.addData("Hand_Move_PropToTracker", tmp);
+        di.addData("Brush_Move_PropToTracker", tmp);
+        di.addData("Fastrak4_Move_PropToTracker", tmp);
+        
+        di.addData("Head_Move_FinalOffset", tmp);
+        di.addData("Hand_Move_FinalOffset", tmp);
+        di.addData("Brush_Move_FinalOffset", tmp);
+        di.addData("Fastrak4_Move_FinalOffset", tmp);
+        
+        di.addData("Fastrak_DeviceToRoom", tmp);
+        
+        di.addData("Fastrak_ConvertLHtoRH", 0);
+        di.addData("Fastrak_IgnoreZeroes", 1);
+        di.addData("Fastrak_WaitForNewReportInPoll", 0);
+
+        
+        
+        VRInputDevice* device = inputDeviceDrivers[f]->create("InputDeviceVRPNTracker", "Fastrak", di);
+        if (device)
+        {
+            devices.push_back(device);
+        }
+        else
+        {
+            std::cout << "Cannot find." << std::endl;
+        }
+    }
+
+     VRNetServer server("3490", 1);
 
   while(true)
   {
+      std::vector<VREvent> events;
 	  for (int f = 0; f < devices.size(); f++)
 	  {
-		  std::vector<VREvent> events;
 		  devices[f]->appendNewInputEventsSinceLastCall(events);
 		  //delete devices[f];
-		  for (std::vector<VREvent>::iterator it=events.begin(); it<events.end(); ++it) {
+		  /*for (std::vector<VREvent>::iterator it=events.begin(); it<events.end(); ++it) {
 		        std::cout << it->toXML() << std::endl;
-		  }
+		  }*/
 	  }
+      
+      server.synchronizeInputEventsAcrossAllNodes(events);
+      //sleep(2);
+      server.synchronizeSwapBuffersAcrossAllNodes();
   }
 
   for (int f = 0; f < inputDeviceDrivers.size(); f++)

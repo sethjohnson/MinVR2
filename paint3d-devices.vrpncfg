@@ -1,0 +1,50 @@
+################################################################################
+# NRL TNG3.  (Totally Neat Gadget) A device made by mindtel, available from
+# pulsar.org.  Powered off the serial port control lines, the TNG3 has 8 digital
+# and 8 analog inputs.  Analog resolution is 8 bits. Baud rate fixed internally
+# at 19200.  
+#       char    name_of_this_device[]
+#       char    name_of_serial_device[]
+#       int     number_of_buttons_to_read (i.e. 8 ==> 0,1,2,3,4,5,6,7)
+#       int     number_of_analogs_to_read
+
+#vrpn_Tng3      tng3name    /dev/ttyd2  4 0 
+#vrpn_Tng3      tng3name    com1        8 8
+#vrpn_Tng3      tng3name    com1        1 1
+
+#vrpn_Tng3	Tng0	COM4	1	1
+
+
+
+#vrpn_Tracker_NULL	Tracker0	2	2.0
+
+
+# Polhemus Tracker
+
+# Note: *1 means sleep for 1 second.  This is sometimes required,
+# otherwise the commands get ignored by the polhemus because the come
+# in too fast!  
+# H*,0,0,-1 sets the tracking hemisphere, this sets it to the -Z hemisphere
+# relative to the coordinate system printed on the transmitter, this is
+# the correct hemisphere to use if this is mounted on a table.  Download
+# the Fastrak manual from the Polhemus support site for more info.
+
+vrpn_Tracker_Fastrak   Fastrak0@localhost /dev/tty.usbserial 115200 \
+f2\
+*1\
+d\
+*1\
+H1,0,0,-1\
+*1\
+H2,0,0,-1\
+*1\
+H3,0,0,-1\
+*1\
+H4,0,0,-1
+
+
+# This sets up a video sync, which can reduce interference from a CRT.
+# Used this in the past, but don't need it now.
+#*1\
+#y2\
+#*3

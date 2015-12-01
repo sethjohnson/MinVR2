@@ -14,6 +14,6 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 add_definitions(-DPLUGINPATH="${CMAKE_INSTALL_PREFIX}/plugins")
 
 add_executable (plugin_info ${plugin_info_source_files})
-target_link_libraries (plugin_info VREvent VRData VRPlugin ${LIBS_ALL})
+target_link_libraries (plugin_info VREvent VRData VRMath VRPlugin VRNet ${LIBS_ALL})
 
 
