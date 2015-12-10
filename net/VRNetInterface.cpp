@@ -1,7 +1,7 @@
 #include <net/VRNetInterface.h>
 
 #include <event/VRByteStream.h>
-#include <data/XMLUtils.h>
+#include <config/XMLUtils.h>
 
 #include <stdio.h>
 #include <stdlib.h>

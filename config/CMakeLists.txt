@@ -1,25 +1,22 @@
-cmake_minimum_required(VERSION 2.8)
-project("MinVR2/config")
+# Create a library from the source files in this directory.
 
-add_executable(exercz exercz.cpp
-  VRDatum.h VRDatum.cpp
-  VRDatumFactory.h VRDatumFactory.cpp
-  VRDataCollection.h VRDataCollection.cpp
-  VRDataIndex.h VRDataIndex.cpp
-  Cxml/attribute.cpp
-  Cxml/Cxml.cpp
-  Cxml/element.cpp
-  Cxml/utils.cpp
-  Cxml/XML.cpp)
+project (VRData)
 
-add_executable(sample sample.cpp
-  VRDatum.h VRDatum.cpp
-  VRDatumFactory.h VRDatumFactory.cpp
-  VRDataCollection.h VRDataCollection.cpp
-  VRDataIndex.h VRDataIndex.cpp
-  Cxml/attribute.cpp
-  Cxml/Cxml.cpp
-  Cxml/element.cpp
-  Cxml/utils.cpp
-  Cxml/XML.cpp)
+set (${PROJECT_NAME}_source_files 
+	VRCoreTypes.h
+	VRDataIndex.cpp
+	VRDataIndex.h
+	VRDatum.cpp
+	VRDatum.h
+	VRDatumFactory.cpp
+	VRDatumFactory.h
+	XMLUtils.cpp
+	XMLUtils.h
+	Cxml/attribute.cpp
+    Cxml/Cxml.cpp
+    Cxml/element.cpp
+    Cxml/utils.cpp
+    Cxml/XML.cpp
+)
 
+add_library (${PROJECT_NAME} ${${PROJECT_NAME}_source_files})

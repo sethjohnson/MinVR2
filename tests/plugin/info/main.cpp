@@ -45,7 +45,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <vector>
 #include "event/VREvent.h"
 #include "event/VRInputDevice.h"
-#include "data/XMLUtils.h"
+#include "config/XMLUtils.h"
 
 #include <sstream>
 #include <fstream>

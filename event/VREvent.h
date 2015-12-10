@@ -4,7 +4,7 @@
 
 #include <cstring>
 #include <string>
-#include <data/VRDataIndex.h>
+#include <config/VRDataIndex.h>
 
 
 /** VREvent

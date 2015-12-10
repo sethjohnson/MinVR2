@@ -1,7 +1,7 @@
 
 #include <iostream>
 
-#include <data/VRDataIndex.h>
+#include <config/VRDataIndex.h>
 #include <event/VREvent.h>
 #include <math/VRMath.h>
 

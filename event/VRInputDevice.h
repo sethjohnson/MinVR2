@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "VREvent.h"
-#include "data/VRDataIndex.h"
+#include "config/VRDataIndex.h"
 #include "plugin/PluginInterface.h"
 
 /** InputDevice:

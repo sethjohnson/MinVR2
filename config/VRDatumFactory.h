@@ -1,6 +1,5 @@
-// -*-c++-*-
-#ifndef MINVR_DATUM_FACTORY_H
-#define MINVR_DATUM_FACTORY_H
+#ifndef VRDATUMFACTORY_H
+#define VRDATUMFACTORY_H
 
 #include <map>
 #include <iostream>

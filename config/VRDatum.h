@@ -1,6 +1,5 @@
-// -*-c++-*-
-#ifndef MINVR_DATUM_H
-#define MINVR_DATUM_H
+#ifndef VRDATUM_H
+#define VRDATUM_H
 
 #include <map>
 #include <list>
@@ -16,32 +15,14 @@
 #include <string>
 #include <sstream>
 
+#include "VRCoreTypes.h"
+
+
 // This is used to separate values in a serialized vector.
 // use static_case<char>MINVRSEPARATOR where a char is needed.
 #define MINVRSEPARATOR "^"
 
-/// This is the list of data types we can handle.  This is step 1
-/// in the specialization instructions below.
-typedef enum
-{
-  MVRNONE       = 0,
-  MVRINT        = 1,
-  MVRDOUBLE      = 2,
-  MVRSTRING     = 3,
-  MVRARRAYINT     = 4,
-  MVRARRAYDOUBLE   = 5,
-  MVRARRAYSTRING  = 6,
-  MVRCONTAINER  = 7
-} MVRTYPE_ID;
 
-#define MVRNTYPES 7
-
-typedef int MVRInt;
-typedef double MVRDouble;
-typedef std::string MVRString;
-// An MVRContainer is actually a list of strings.
-typedef std::list<std::string> MVRContainer;
-typedef std::vector<double> MVRArrayDouble;
 
 // This class is a helper to avoid having to access values with
 // constructs like ptr.intVal()->getValue().  By using this helper
@@ -64,23 +45,31 @@ typedef std::vector<double> MVRArrayDouble;
 // of these values, that in turn depends on VRDatumPtr.  So we
 // define it as a template here, and fill out the values inside the
 // definition of VRDatumPtr.
+
 template <typename T>
-class VRDatumHelper {
-
+class VRDatumConverter {
+  
   T const* datum;
-
+  
 public:
-  VRDatumHelper(T const* inDatum) : datum(inDatum) {};
-
+  
+  VRDatumConverter(T const* inDatum) : datum(inDatum) {};
+  
   // Adding a data type?  Add a corresponding redefinition of the
   // appropriate type conversion operator here.  Step 2 in the
   // add-a-data-type instructions.
-  operator int() const { return datum->getValueInt(); }
-  operator double() const { return datum->getValueDouble(); }
-  operator std::string() const { return datum->getValueString(); }
-  operator MVRContainer() const { return datum->getValueContainer(); }
-  operator MVRArrayDouble() const { return datum->getValueArrayDouble(); }
+  operator VRInt() const { return datum->getValueInt(); }
+  operator VRDouble() const { return datum->getValueDouble(); }
+  operator VRString() const { return datum->getValueString(); }
+  operator VRIntArray() const { return datum->getValueIntArray(); }
+  operator VRDoubleArray() const { return datum->getValueDoubleArray(); }
+  operator VRStringArray() const { return datum->getValueStringArray(); }
+  operator VRContainer() const { return datum->getValueContainer(); }
 };
+
+
+
+
 
 // This class is meant to hold a data object of some arbitrary type
 // (ok, arbitrary within a small range of types), and to serialize and
@@ -165,17 +154,17 @@ public:
 // So it's on you to keep track, not the compiler.
 class VRDatum {
  protected:
-  MVRTYPE_ID type;
+  VRCORETYPE_ID type;
 
   // This is to be a description of the data type, e.g. "int" or
   // "string" or something like that.
-  std::string description;
+  std::string typeString;
 
   //friend std::ostream & operator<<(std::ostream &os, const VRDatum& p);
 
  public:
   // The constructor for the native storage form.
-  VRDatum(const MVRTYPE_ID inType) : type(inType) {};
+  VRDatum(const VRCORETYPE_ID inType) : type(inType) {};
 
   // The constructor for the serialized data form.  This extracts the
   // necessary data from the string, and creates the type, value, and
@@ -191,45 +180,56 @@ class VRDatum {
   // is here as a public member as a convenience for other classes
   // that will need this mapping (e.g. VRDatumFactory and
   // VRDataCollection).
-  typedef struct { std::string first; MVRTYPE_ID second; } MVRTypePair;
-  static const MVRTypePair MVRTypeMap[MVRNTYPES];
-  std::string initializeDescription(MVRTYPE_ID t);
+  typedef struct { std::string first; VRCORETYPE_ID second; } VRTypePair;
+  static const VRTypePair VRTypeMap[VRCORETYPE_NTYPES];
+  std::string initializeTypeString(VRCORETYPE_ID t);
 
-  // This produces the serialized version of the datum.  When packaged
-  // with the description and a name, this will be ready for
-  // transmission across some connection to another process or another
-  // machine.
-  virtual std::string serialize() = 0;
+  // This produces the serialized version of the value of the datum.
+  virtual std::string getValueAsString() = 0;
 
-  // The description of the datum is a part of the network-ready
-  // serialized data.  It's in the 'type=""' part of the XML.
-  std::string getDescription() const { return description; };
-  MVRTYPE_ID getType() { return type; };
+  // This produces the serialized version of the type of the datum.
+  std::string   getTypeAsString() const { return typeString; };
 
-  // The generic getValue() method returns an object of the helper
-  // class above, which is then coerced into the type the user
-  // actually wants.
-  virtual VRDatumHelper<VRDatum> getValue() = 0;
+  VRCORETYPE_ID getType() { return type; };
 
-  // Less generic getValue methods.  One of these is to be overridden
-  // in each specialization of this class.  The others are here to
-  // prevent bad behavior, and throw an error if the programmer
-  // attempts to coerce a data type incorrectly.
-  virtual int getValueInt() const {
-    throw std::runtime_error("This datum is not an int.");
+  // The generic getValue() method returns an object of the VRDatumConverter
+  // class, which is then coerced into the type the user actually wants.
+  virtual VRDatumConverter<VRDatum> getValue() = 0;
+  
+  // One of these is to be overridden in each specialization of this class.  The
+  // others are here to prevent bad behavior, and throw an error if the
+  // programmer attempts to coerce a data type incorrectly.
+  virtual VRInt getValueInt() const {
+    throw std::runtime_error("This datum is not a VRInt.");
   }
-  virtual double getValueDouble() const {
-    throw std::runtime_error("This datum is not a double.");
+  virtual VRDouble getValueDouble() const {
+    throw std::runtime_error("This datum is not a VRDouble.");
   }
-  virtual std::string getValueString() const {
-    throw std::runtime_error("This datum is not a std::string.");
+  virtual VRString getValueString() const {
+    throw std::runtime_error("This datum is not a VRString.");
   }
-  virtual MVRArrayDouble getValueArrayDouble() const {
-    throw std::runtime_error("This datum is not a std::string.");
+  virtual VRIntArray getValueIntArray() const {
+    throw std::runtime_error("This datum is not a VRIntArray.");
   }
-  virtual MVRContainer getValueContainer() const {
-    throw std::runtime_error("This datum is not a container.");
+  virtual VRDoubleArray getValueDoubleArray() const {
+    throw std::runtime_error("This datum is not a VRDoubleArray.");
   }
+  virtual VRStringArray getValueStringArray() const {
+    throw std::runtime_error("This datum is not a VRStringArray.");
+  }
+  virtual VRContainer getValueContainer() const {
+    throw std::runtime_error("This datum is not a VRContainer.");
+  }
+  
+  /*
+  operator VRInt() const { return getValueInt(); }
+  operator VRDouble() const { return getValueDouble(); }
+  operator VRString() const { return getValueString(); }
+  operator VRIntArray() const { return getValueIntArray(); }
+  operator VRDoubleArray() const { return getValueDoubleArray(); }
+  operator VRStringArray() const { return getValueStringArray(); }
+  operator VRContainer() const { return getValueContainer(); }
+  */
 };
 
 /////////// Specializations to handle specific data types.  This is
@@ -241,36 +241,36 @@ class VRDatum {
 class VRDatumInt : public VRDatum {
 private:
   // The actual data is stored here.
-  int value;
+  VRInt value;
 
 public:
-  VRDatumInt(const int inVal);
+  VRDatumInt(const VRInt inVal);
 
-  std::string serialize();
+  std::string getValueAsString();
 
-  int getValueInt() const { return value; };
-  bool setValue(const int inVal);
-
-  VRDatumHelper<VRDatum> getValue() {
-    return VRDatumHelper<VRDatum>(this);
+  VRInt getValueInt() const { return value; };
+  bool setValue(const VRInt inVal);
+  
+  VRDatumConverter<VRDatum> getValue() {
+    return VRDatumConverter<VRDatum>(this);
   }
 };
 
 // The specialization for a double.
 class VRDatumDouble : public VRDatum {
 private:
-  double value;
+  VRDouble value;
 
 public:
-  VRDatumDouble(const double inVal);
+  VRDatumDouble(const VRDouble inVal);
 
-  std::string serialize();
+  std::string getValueAsString();
 
-  double getValueDouble() const { return value; };
-  bool setValue(const double inVal);
+  VRDouble getValueDouble() const { return value; };
+  bool setValue(const VRDouble inVal);
 
-  VRDatumHelper<VRDatum> getValue() {
-    return VRDatumHelper<VRDatum>(this);
+  VRDatumConverter<VRDatum> getValue() {
+    return VRDatumConverter<VRDatum>(this);
   }
 };
 
@@ -278,57 +278,97 @@ public:
 class VRDatumString : public VRDatum {
 private:
   // The actual data is stored here.
-  std::string value;
+  VRString value;
 
 public:
-  VRDatumString(const std::string inVal);
+  VRDatumString(const VRString inVal);
 
-  std::string serialize();
+  std::string getValueAsString();
 
-  std::string getValueString() const { return value; };
-  bool setValue(const std::string inVal);
+  VRString getValueString() const { return value; };
+  bool setValue(const VRString inVal);
 
-  VRDatumHelper<VRDatum> getValue() {
-    return VRDatumHelper<VRDatum>(this);
+  VRDatumConverter<VRDatum> getValue() {
+    return VRDatumConverter<VRDatum>(this);
+  }
+};
+
+// Specialization for a vector of ints
+class VRDatumIntArray : public VRDatum {
+private:
+  // The actual data is stored here.
+  VRIntArray value;
+
+public:
+  VRDatumIntArray(const VRIntArray inVal);
+
+  std::string getValueAsString();
+
+  VRIntArray getValueIntArray() const { return value; };
+  bool setValue(const VRIntArray inVal);
+
+  VRDatumConverter<VRDatum> getValue() {
+    return VRDatumConverter<VRDatum>(this);
   }
 };
 
 // Specialization for a vector of doubles
-class VRDatumArrayDouble : public VRDatum {
+class VRDatumDoubleArray : public VRDatum {
 private:
   // The actual data is stored here.
-  MVRArrayDouble value;
+  VRDoubleArray value;
 
 public:
-  VRDatumArrayDouble(const std::vector<double> inVal);
+  VRDatumDoubleArray(const VRDoubleArray inVal);
 
-  std::string serialize();
+  std::string getValueAsString();
 
-  MVRArrayDouble getValueArrayDouble() const { return value; };
-  bool setValue(const std::vector<double> inVal);
+  VRDoubleArray getValueDoubleArray() const { return value; };
+  bool setValue(const VRDoubleArray inVal);
 
-  VRDatumHelper<VRDatum> getValue() {
-    return VRDatumHelper<VRDatum>(this);
+  VRDatumConverter<VRDatum> getValue() {
+    return VRDatumConverter<VRDatum>(this);
   }
 };
+
+// Specialization for a vector of strings
+class VRDatumStringArray : public VRDatum {
+private:
+  // The actual data is stored here.
+  VRStringArray value;
+
+public:
+  VRDatumStringArray(const VRStringArray inVal);
+
+  std::string getValueAsString();
+
+  VRStringArray getValueStringArray() const { return value; };
+  bool setValue(const VRStringArray inVal);
+
+  VRDatumConverter<VRDatum> getValue() {
+    return VRDatumConverter<VRDatum>(this);
+  }
+};
+
 
 // Specialization for a container
 class VRDatumContainer : public VRDatum {
 private:
   // The actual data is stored here, a collection of names.
-  MVRContainer value;
+  VRContainer value;
 
 public:
-  VRDatumContainer(const MVRContainer inVal);
+  VRDatumContainer(const VRContainer inVal);
 
-  std::string serialize();
+  std::string getValueAsString();
 
-  MVRContainer getValueContainer() const { return value; };
-  bool addToValue(const MVRContainer inVal);
+  VRContainer getValueContainer() const { return value; };
+  // Tom: Why is this one different?
+  bool addToValue(const VRContainer inVal);
   //bool removeValue(const std::string rmVal);
 
-  VRDatumHelper<VRDatum> getValue() {
-    return VRDatumHelper<VRDatum>(this);
+  VRDatumConverter<VRDatum> getValue() {
+    return VRDatumConverter<VRDatum>(this);
   }
 };
 
@@ -341,14 +381,12 @@ private:
 public:
   VRDatumPtrRC(int start) : count(start) {};
 
-  void addRef()
-  {
+  void addRef() {
     // Increment the reference count
     count++;
   }
 
-  int release()
-  {
+  int release() {
     // Decrement the reference count and
     // return the reference count.
     return --count;
@@ -379,7 +417,7 @@ public:
 //
 class VRDatumPtr {
 private:
-  VRDatum*  pData;         // Pointer
+  VRDatum*      pData;     // Pointer
   VRDatumPtrRC* reference; // Reference count
 
   //friend std::ostream & operator<<(std::ostream &os, const VRDatumPtr& p);
@@ -390,51 +428,44 @@ public:
     reference = new VRDatumPtrRC(1);
   }
 
-  VRDatumPtr(const VRDatumPtr& sp) : pData(sp.pData), reference(sp.reference)
-  {
+  VRDatumPtr(const VRDatumPtr& sp) : pData(sp.pData), reference(sp.reference) {
     // Copy constructor: Copy the data and reference pointer and
     // increment the reference count.
     reference->addRef();
   }
 
-  ~VRDatumPtr()
-  {
+  ~VRDatumPtr() {
     // Destructor: Decrement the reference count.  If reference becomes
     // zero, delete the data
-    if(reference->release() == 0)
-      {
+    if(reference->release() == 0) {
         delete pData;
-      }
+    }
   }
 
-  VRDatum& operator* ()
-  {
+  VRDatum& operator* () {
     return *pData;
   }
 
-  VRDatum* operator-> ()
-  {
+  VRDatum* operator-> () {
     return pData;
   }
 
-  VRDatumPtr& operator = (const VRDatumPtr& sp)
-  {
-    // Assignment operator
-    if (this != &sp) // Avoid self assignment
-      {
-        // Decrement the old reference count.  If references become
-        // zero, delete the data.
-        if(reference->release() == 0)
-          {
-            delete pData;
-          }
-
-        // Copy the data and reference pointer and increment the
-        // reference count
-        pData = sp.pData;
-        reference = sp.reference;
-        reference->addRef();
+  // Assignment operator  
+  VRDatumPtr& operator = (const VRDatumPtr& sp) {
+    // Avoid self assignment
+    if (this != &sp) {
+      // Decrement the old reference count.  If references become
+      // zero, delete the data.
+      if(reference->release() == 0) {
+        delete pData;
       }
+
+      // Copy the data and reference pointer and increment the
+      // reference count
+      pData = sp.pData;
+      reference = sp.reference;
+      reference->addRef();
+    }
     return *this;
   }
 
@@ -446,48 +477,66 @@ public:
   // have type checks here, and throw an error if it doesn't match.
   // This is also easier to use (my opinion) than trying to remember
   // how to do the casts.
-  VRDatumInt* intVal()
-  {
-    if (pData->getType() == MVRINT) {
+  VRDatumInt* intVal() {
+    if (pData->getType() == VRCORETYPE_INT) {
       return static_cast<VRDatumInt*>(pData);
-    } else {
-      throw std::runtime_error("This datum is not an int.");
+    } 
+    else {
+      throw std::runtime_error("This datum is not a VRInt.");
     }
   }
 
-  VRDatumDouble* doubleVal()
-  {
-    if (pData->getType() == MVRDOUBLE) {
+  VRDatumDouble* doubleVal() {
+    if (pData->getType() == VRCORETYPE_DOUBLE) {
       return static_cast<VRDatumDouble*>(pData);
-    } else {
-      throw std::runtime_error("This datum is not a double.");
+    } 
+    else {
+      throw std::runtime_error("This datum is not a VRDouble.");
     }
   }
 
-  VRDatumString* stringVal()
-  {
-    if (pData->getType() == MVRSTRING) {
+  VRDatumString* stringVal() {
+    if (pData->getType() == VRCORETYPE_STRING) {
       return static_cast<VRDatumString*>(pData);
-    } else {
-      throw std::runtime_error("This datum is not a string.");
+    } 
+    else {
+      throw std::runtime_error("This datum is not a VRString.");
     }
   }
 
-  VRDatumArrayDouble* arrayDoubleVal()
-  {
-    if (pData->getType() == MVRARRAYDOUBLE) {
-      return static_cast<VRDatumArrayDouble*>(pData);
-    } else {
-      throw std::runtime_error("This datum is not an array of doubles.");
+  VRDatumIntArray* intArrayVal() {
+    if (pData->getType() == VRCORETYPE_INTARRAY) {
+      return static_cast<VRDatumIntArray*>(pData);
+    } 
+    else {
+      throw std::runtime_error("This datum is not a VRIntArray.");
     }
   }
 
-  VRDatumContainer* containerVal()
-  {
-    if (pData->getType() == MVRCONTAINER) {
+  VRDatumDoubleArray* doubleArrayVal() {
+    if (pData->getType() == VRCORETYPE_DOUBLEARRAY) {
+      return static_cast<VRDatumDoubleArray*>(pData);
+    } 
+    else {
+      throw std::runtime_error("This datum is not a VRDoubleArray.");
+    }
+  }
+
+  VRDatumStringArray* stringArrayVal() {
+    if (pData->getType() == VRCORETYPE_STRINGARRAY) {
+      return static_cast<VRDatumStringArray*>(pData);
+    } 
+    else {
+      throw std::runtime_error("This datum is not a VRStringArray.");
+    }
+  }
+
+  VRDatumContainer* containerVal() {
+    if (pData->getType() == VRCORETYPE_CONTAINER) {
       return static_cast<VRDatumContainer*>(pData);
-    } else {
-      throw std::runtime_error("This datum is not a container.");
+    } 
+    else {
+      throw std::runtime_error("This datum is not a VRContainer.");
     }
   }
 
@@ -498,8 +547,12 @@ public:
 VRDatumPtr CreateVRDatumInt(void *pData);
 VRDatumPtr CreateVRDatumDouble(void *pData);
 VRDatumPtr CreateVRDatumString(void *pData);
-VRDatumPtr CreateVRDatumArrayDouble(void *pData);
+VRDatumPtr CreateVRDatumIntArray(void *pData);
+VRDatumPtr CreateVRDatumDoubleArray(void *pData);
+VRDatumPtr CreateVRDatumStringArray(void *pData);
 VRDatumPtr CreateVRDatumContainer(void *pData);
 
+
+typedef VRDatumConverter<VRDatum> VRAnyCoreType;
 
 #endif

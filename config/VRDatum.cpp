@@ -5,112 +5,147 @@
 // 'type="XX"' part.  So you can change them here, and these changes
 // will be reflected throughout the code, but not in any config files
 // that use them.  This is part of step 1 of adding a new type.
-const VRDatum::MVRTypePair VRDatum::MVRTypeMap[MVRNTYPES] = {
-  {"none", MVRNONE},
-  {"int", MVRINT},
-  {"double", MVRDOUBLE},
-  {"string", MVRSTRING},
-  {"arraydouble", MVRARRAYDOUBLE},
-  {"container", MVRCONTAINER}
+const VRDatum::VRTypePair VRDatum::VRTypeMap[VRCORETYPE_NTYPES] = {
+  {"none", VRCORETYPE_NONE},
+  {"int", VRCORETYPE_INT},
+  {"double", VRCORETYPE_DOUBLE},
+  {"string", VRCORETYPE_STRING},
+  {"intarray", VRCORETYPE_INTARRAY},
+  {"doublearray", VRCORETYPE_DOUBLEARRAY},
+  {"stringarray", VRCORETYPE_STRINGARRAY},
+  {"container", VRCORETYPE_CONTAINER}
 };
 
 // This is just a convenience for initializing the description field
 // in each object.  Note that it has no error checking, so get the
 // MVRNTYPES correct, please.
-std::string VRDatum::initializeDescription(MVRTYPE_ID t) {
-  for (int i = 0; i < MVRNTYPES; i++) {
-    if (MVRTypeMap[i].second == t) {
-      return MVRTypeMap[i].first;
+std::string VRDatum::initializeTypeString(VRCORETYPE_ID t) {
+  for (int i = 0; i < VRCORETYPE_NTYPES; i++) {
+    if (VRTypeMap[i].second == t) {
+      return VRTypeMap[i].first;
     }
   }
-  return MVRTypeMap[0].first; // Should never reach here.
+  return VRTypeMap[0].first; // Should never reach here.
 }
 
 
-VRDatumInt::VRDatumInt(const int inVal) :
-  VRDatum(MVRINT), value(inVal) {
-  description = initializeDescription(type);
+VRDatumInt::VRDatumInt(const VRInt inVal) :
+  VRDatum(VRCORETYPE_INT), value(inVal) {
+  typeString = initializeTypeString(type);
 };
 
 /// Step 4 in the adding a type instructions.
-bool VRDatumInt::setValue(const int inVal) {
+bool VRDatumInt::setValue(const VRInt inVal) {
   value = inVal;
   return true;
 }
 
-std::string VRDatumInt::serialize() {
+std::string VRDatumInt::getValueAsString() {
   char buffer[20];
   sprintf(buffer, "%d", value);
   return std::string(buffer);
 }
 
 VRDatumPtr CreateVRDatumInt(void *pData) {
-  VRDatumInt *obj = new VRDatumInt(*static_cast<int *>(pData));
+  VRDatumInt *obj = new VRDatumInt(*static_cast<VRInt *>(pData));
   return VRDatumPtr(obj);
 }
 
 ////////////////////////////////////////////
 
-VRDatumDouble::VRDatumDouble(const double inVal) :
-  VRDatum(MVRDOUBLE), value(inVal) {
-  description = initializeDescription(type);
+VRDatumDouble::VRDatumDouble(const VRDouble inVal) :
+  VRDatum(VRCORETYPE_DOUBLE), value(inVal) {
+    typeString = initializeTypeString(type);
 };
 
-bool VRDatumDouble::setValue(const double inVal) {
+bool VRDatumDouble::setValue(const VRDouble inVal) {
   value = inVal;
   return true;
 }
 
-std::string VRDatumDouble::serialize() {
+std::string VRDatumDouble::getValueAsString() {
   char buffer[20];
+  // Tom: I don't think this prints with enough decimal places to accuratey represent a double.
+  // Is there an alternative to %f that makes sure to print out with full precision?
   sprintf(buffer, "%f", value);
   return std::string(buffer);
 }
 
 VRDatumPtr CreateVRDatumDouble(void *pData) {
-  VRDatumDouble *obj = new VRDatumDouble(*static_cast<double *>(pData));
+  VRDatumDouble *obj = new VRDatumDouble(*static_cast<VRDouble *>(pData));
   return VRDatumPtr(obj);
 }
 
 ////////////////////////////////////////////
 
-VRDatumString::VRDatumString(const std::string inVal) :
-  VRDatum(MVRSTRING), value(inVal) {
-  description = initializeDescription(type);
+VRDatumString::VRDatumString(const VRString inVal) :
+  VRDatum(VRCORETYPE_STRING), value(inVal) {
+    typeString = initializeTypeString(type);
 };
 
-bool VRDatumString::setValue(const std::string inVal) {
+bool VRDatumString::setValue(const VRString inVal) {
   value = inVal;
   return true;
 }
 
-std::string VRDatumString::serialize() {
+std::string VRDatumString::getValueAsString() {
   return value;
 }
 
 VRDatumPtr CreateVRDatumString(void *pData) {
-  VRDatumString *obj = new VRDatumString(*static_cast<std::string *>(pData));
+  VRDatumString *obj = new VRDatumString(*static_cast<VRString *>(pData));
   return VRDatumPtr(obj);
 }
 
 ////////////////////////////////////////////
 
-VRDatumArrayDouble::VRDatumArrayDouble(const std::vector<double> inVal) :
-  VRDatum(MVRARRAYDOUBLE), value(inVal) {
-  description = initializeDescription(type);
+VRDatumIntArray::VRDatumIntArray(const VRIntArray inVal) :
+  VRDatum(VRCORETYPE_INTARRAY), value(inVal) {
+    typeString = initializeTypeString(type);
 };
 
-bool VRDatumArrayDouble::setValue(const std::vector<double> inVal) {
+bool VRDatumIntArray::setValue(const VRIntArray inVal) {
   value = inVal;
   return true;
 }
 
-std::string VRDatumArrayDouble::serialize() {
+std::string VRDatumIntArray::getValueAsString() {
+
+  std::string out;
+  char buffer[1024];
+
+  for (VRIntArray::iterator it = value.begin(); it != value.end(); ++it) {
+    sprintf(buffer, "%d@", *it); // '@' is a separator
+    out += std::string(buffer);
+  }
+
+  return out;
+}
+
+VRDatumPtr CreateVRDatumIntArray(void *pData) {
+  VRDatumIntArray *obj =
+    new VRDatumIntArray(*static_cast<VRIntArray *>(pData));
+  return VRDatumPtr(obj);
+}
+
+////////////////////////////////////////////
+
+VRDatumDoubleArray::VRDatumDoubleArray(const VRDoubleArray inVal) :
+  VRDatum(VRCORETYPE_DOUBLEARRAY), value(inVal) {
+    typeString = initializeTypeString(type);
+};
+
+bool VRDatumDoubleArray::setValue(const VRDoubleArray inVal) {
+  value = inVal;
+  return true;
+}
+
+std::string VRDatumDoubleArray::getValueAsString() {
 
   std::string out;
   char buffer[20];
 
-  for (MVRArrayDouble::iterator it = value.begin(); it != value.end(); ++it) {
+  for (VRDoubleArray::iterator it = value.begin(); it != value.end(); ++it) {
     sprintf(buffer, "%f@", *it); // '@' is a separator
     out += std::string(buffer);
   }
@@ -118,33 +153,61 @@ std::string VRDatumArrayDouble::serialize() {
   return out;
 }
 
-VRDatumPtr CreateVRDatumArrayDouble(void *pData) {
-  VRDatumArrayDouble *obj =
-    new VRDatumArrayDouble(*static_cast<MVRArrayDouble *>(pData));
+VRDatumPtr CreateVRDatumDoubleArray(void *pData) {
+  VRDatumDoubleArray *obj =
+    new VRDatumDoubleArray(*static_cast<VRDoubleArray *>(pData));
   return VRDatumPtr(obj);
 }
 
 ////////////////////////////////////////////
 
-VRDatumContainer::VRDatumContainer(const MVRContainer inVal) :
-  VRDatum(MVRCONTAINER), value(inVal) {
-  description = initializeDescription(type);
+VRDatumStringArray::VRDatumStringArray(const VRStringArray inVal) :
+  VRDatum(VRCORETYPE_STRINGARRAY), value(inVal) {
+    typeString = initializeTypeString(type);
+};
+
+bool VRDatumStringArray::setValue(const VRStringArray inVal) {
+  value = inVal;
+  return true;
+}
+
+std::string VRDatumStringArray::getValueAsString() {
+  std::string out;
+
+  for (VRStringArray::iterator it = value.begin(); it != value.end(); ++it) {
+    out += *it + "@";
+  }
+
+  return out;
+}
+
+VRDatumPtr CreateVRDatumStringArray(void *pData) {
+  VRDatumStringArray *obj =
+    new VRDatumStringArray(*static_cast<VRStringArray *>(pData));
+  return VRDatumPtr(obj);
+}
+
+////////////////////////////////////////////
+
+VRDatumContainer::VRDatumContainer(const VRContainer inVal) :
+  VRDatum(VRCORETYPE_CONTAINER), value(inVal) {
+    typeString = initializeTypeString(type);
 };
 
 // For optimization and code maintainability reasons, the
 // responsibility for assembling the serialization of a container
 // falls to the index class, so this function is sort of a nop, filled
 // out just to keep the compiler happy.
-std::string VRDatumContainer::serialize() {
-  throw std::runtime_error(std::string("shouldn't call the serialize() method of a container object."));
-  return getDescription();
+std::string VRDatumContainer::getValueAsString() {
+  throw std::runtime_error(std::string("shouldn't call the getValueAsString() method of a container object."));
+  return getTypeAsString();
 }
 
-bool VRDatumContainer::addToValue(const MVRContainer inVal) {
+bool VRDatumContainer::addToValue(const VRContainer inVal) {
   std::list<std::string> inCopy = inVal;
 
   // Remove all duplicates from the input list.
-  for (MVRContainer::const_iterator it = value.begin();
+  for (VRContainer::const_iterator it = value.begin();
        it != value.end(); ++it) {
 
     inCopy.remove(*it);
@@ -164,7 +227,7 @@ bool VRDatumContainer::addToValue(const MVRContainer inVal) {
 // }
 
 VRDatumPtr CreateVRDatumContainer(void *pData) {
-  VRDatumContainer *obj = new VRDatumContainer(*static_cast<MVRContainer *>(pData));
+  VRDatumContainer *obj = new VRDatumContainer(*static_cast<VRContainer *>(pData));
   return VRDatumPtr(obj);
 }
 

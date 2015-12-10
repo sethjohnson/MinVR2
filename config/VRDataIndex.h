@@ -1,170 +1,277 @@
-// -*-c++-*-
-#ifndef MINVR_DATAINDEX_H
-#define MINVR_DATAINDEX_H
-#include "VRDataCollection.h"
+#ifndef VRDATAINDEX_H
+#define VRDATAINDEX_H
 
-// This object maintains an index, a collection of names and pointers
-// to VRDatum objects, which can be used to simulate a dynamically
-// typed computing environment in C++, a strongly-typed system.  In
-// this system, values have types, not variables.  All variables, of
-// whatever type, are equivalent.  There is a container type, which
-// can include an arbitrary collection of any other variables.
-//
-// It supports the concept of a 'namespace' and
-// scoping of its value names, so names within a container type can
-// override names higher in the tree hierarchy.
-//
-// Data values can be easily serialized for transport over a network,
-// and deserialized, for receiving them, and interning the new values
-// into memory.  The system supports an XML format for transmission
-// and storage.
-//
-//
-// The XML parser used here is based on the "Simple C++ XML Parser"
-// from the CodeProject article by "BratilaRazvan", 2010.
-// see: http://www.codeproject.com/Articles/111243/Simple-Cplusplus-XML-Parser
-//
-// Tom Sgouros 8/29/2015
-//
-//
-// More about using the system.
-//
-// Containers define a namespace as well as hold a bunch of objects
-// inside them.  The two are very closely related, but are
-// conceptually distinct.  From a user's point of view, a namespace is
-// a string that starts and ends with a '/' and may or may not have
-// some text in the middle.  Here are some possible namespaces:
-//
-//       /perry/
-//       /freida/mary/
-//       /     <- the root namespace that all VRDataIndex objects have.
-//       /homer/henry/martha/
-//
-// A container object is simply an object that "contains" other
-// values.  Those objects can be primitive VRDatum objects, or they
-// can also be containers themselves.  The container object contains a
-// list of the (absolute) names of the objects it contains.  Here are
-// some possible names of containers:
-//
-//       /peter   which might contain  /peter/harold
-//                                     /peter/norma
-//                                and  /peter/flora
-//
-// Note that the container lists the absolute name.  When the
-// container is serialized, the serialized version contains only the
-// relative names.
-//
-//
-//
-// The precise collection of types currently implemented is
-// somewhat random, but the VRDatum.h file contains instructions for
-// extending the system to any C++ type, including the STL types,
-// whatever, go wild.  This may not be important to actually using the
-// system, read on for those instructions.
-//
-//
-// To use:
-//
-// Create an index object, and add values to the store in one of three ways.
-//
-//  1. You can add data with the specialized addValue() functions.
-//     These take a name and a value and park them in the index.  The
-//     addValue() with a single argument adds a container and you can
-//     subsequently add items to it.
-//
-//  2. You can feed some serialized data to the addSerializedValue()
-//     functions.  This is just string data, that looks something like
-//     this:
-//
-//     <flora type="int">42</flora>
-//
-//     <bob type="container">
-//        <flora type="int">42</flora>
-//        <pi type="double">3.1415926</pi>
-//     </bob>
-//
-//     The type attributes are usually superfluous, since the code can
-//     usually infer the type from the value string.  However, future
-//     implemented data types might make the inference step less
-//     reliable, so bear that in mind.
-//
-//  3. Feed a file containing XML into processXMLFile().
-//
-//  Once an index has entries, they can be retrieved at your pleasure
-//  with getValue() and serialize().  The getValue() method returns
-//  a pointer an object that can be used directly in your program.  I
-//  hate remembering how to spell the static_cast<>() options, so
-//  these are provided as a convenience via a helper class methods to
-//  the pointer objects.  So (int)p->getValue() gets you an integer
-//  and (double)p->getValue() gets you a double. (So long as the
-//  relevant objects actually contain an integer and double, otherwise
-//  you get an error.)
-//
-//  To use, do this:
-//
-//    VRDataIndex *index = new VRDataIndex;
-//    int a = 4;
-//    index->addValue("/george", a);
-//
-//  This incorporates an integer value of 4 into the index with the
-//  name "george" that appears at the root (global) level.
-//
-//  When you want to refer to the value you put in, do this:
-//
-//    int p = index->getValue("/george");
-//
-//  or
-//
-//    int p = index->getValue("george", "/");
-//
-//  Where the second argument is the "namespace", which is arranged
-//  vaguely like a directory structure, with slashes (/) separating
-//  the names.  You can also do this:
-//
-//    std::string s = index->serialize("/george")
-//
-//    VRDataIndex *newIndex = new VRDataIndex;
-//    newIndex->addSerializedValue(s);
-//    int b = newIndex->getValue("/george");
-//
-//  The b variable now comtains the same value as a, with the same
-//  name.
-//
-//
-//  This file should come with an exercz.cpp that does an ok job of
-//  illustrating some of the usage.  You can also use that program to
-//  learn about the namespace and name scoping concepts.  It's sort of
-//  like an interpreter for some primitive language environment whose
-//  only functions are assigning variables and reading them.
-//
-//  The system encompasses the VRDataIndex class, whose job it is
-//  to track a set of names and corresponding VRDatumPtr objects,
-//  smart pointers to VRDatum objects, that hold a type and value.
-//  There is also a VRDatumFactory object, whose only use is
-//  creating the specializations of the VRDatum object for each of
-//  the supported data types.  It's all meant to be as portable as
-//  possible and not rely on any external libraries.  It uses an XML
-//  reader, see those files for the original credit.
-//
-class VRDataIndex : VRDataCollection {
-private:
+#include <map>
+#include <list>
+#include <iostream>
+#include <stdexcept>
+#include <vector>
+#include <cstring>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <algorithm>
+#include <cstdlib>
+#include <string>
+#include <sstream>
 
-  typedef std::map<std::string, VRDatumPtr> VRDataMap;
-  VRDataMap mindex;
+#include "VRDatum.h"
+#include "VRDatumFactory.h"
 
-  // If this is 1, new values will overwrite old ones.  For -1, new
-  // values will just bounce off.  And zero will cause an exception if
-  // an overwrite is attempted.  Except containers, who are always
-  // happy to receive new values and add to their existing list.  The
-  // default class constructor allows overwrites.
-  int overwrite;
+// forward declaration for Cxml
+class element;
 
-  // Just a utility to return the tail end of the fully qualified name.
-  // i.e. trimName("cora/flora", "/bob/nora") is "flora".  This does not
-  // look in the index at all, just manipulates strings.
-  std::string getTrimName(const std::string valName,
-                          const std::string nameSpace);
-  std::string getTrimName(const std::string valName);
+
+/**
+  Design Notes (Dan 11/5/15):
+
+  Let's clarify and be as consistent as possible with our terminology:
+
+  VRCoreTypes:  VRInt, VRDouble, VRString, VRIntArray, VRDoubleArray, VRStringArrary, VRContainer?
+    - These are just defined by typedefs, we don't want extra overhead here.
+    - Might want to add VRBytes in the future
+    - Other than that, we think this is a pretty complete list of basic types that could be combined
+      together to represent almost any kind of data.
+    - Design question:  Does VRContainer really belong in this list, or is it just an artifact of 
+      the way that VRDataIndex is implemented?
+
+  VRCORETYPE_ID: an enum with an unique ID for each of the VRCoreTypes
+
+  VRDatum:  An object that stores a (VRCORETYPE_ID, VRCoreType) pair.
+    - VRDatum is an abstract class and there is a concrete implementation for each of the VRCoreTypes.
+    - (I think it's the case that) 99% of the time, programmers using the MinVR API don't need to know 
+      that VRDatums are used under the hood because they will always access data through a VRDataIndex.
+
+  VRDataIndex:  This is the flexible and extensible "data struct" that we have longed for for many years :)
+    - Internally, data are stored in (name, VRDatumPtr) pairs.
+    - Externally, programmers will think of this more as (name, value), where value can be stored in any of
+      the VRCoreTypes, and the type is usually inferred automatically by the context.  Often, programmers 
+      will know what VRCoreType to expect based upon the name.  For example the value stored under the name
+      "NumWindows" should be a VRInt.  But, it is also possible to query the type for a specific name.
+    - Likewise, programmers will often know what names to expect in a VRDataIndex.  For example, we may know
+      that the DataIndex for a Mouse_Move will always include an entry named "Position".  But, it is also
+      possible to query the names of all of the entries in the index.
+    - The entire DataIndex can be serialized, or just specific entries can be serialized.  The current
+      method of serialization is via a std::string in XML format.  We might also want to support serializing
+      to a binary format in the future.  The current serialization methods are intentially named toXML()
+      and fromXML() rather than serialize(), deserialize() to plan for this flexibility.
+
+
+This class is meant to hold a data object of some arbitrary type (ok, arbitrary
+within a small range of types), and to serialize and deserialize it into a
+query-able form suitable for transmission. It holds a type and a value.  The
+idea is that all VR data types can be addressed as a VRDatum object (well,
+technically as the reference for a VRDatumPtr pointer object), for convenient
+loading of heterogeneous types in a homogeneous way, such as in a map or list.
+This class only holds a value; the names must be recorded elsewhere.
+
+The data for each object is stored both in its native form, and as a serialized
+data string.  It can be constructed from either form, so the serialized string
+can be sent across the network and reconstructed to another datum object on the
+other side.
+
+To extend the collection of data types that can be modeled as a VRDatum, follow
+these steps:
+
+1. Add an entry in the MVRTYPE_ID enum above, if necessary, and
+   the initialization of the MVRTypeMap in VRDatum.cpp.
+
+2.  Add a conversion to the VRDatumHelper class.  You'll
+    probably want to make your type a typedef if you haven't
+    already.  Put it up there with MVRContainer.
+
+3. Create a specialization of the VRDatum class, and call it
+   something like VRDatumInt or VRDatumDouble.  You will
+   have to provide it with a private value member and public
+   getValue*() and getValue() method members.  (The latter are
+   all the same, so that's no big deal.)  Add an entry to the list of
+   virtual members for these functions, too.
+
+4.  You will also need a setValue() function.  These objects are
+    meant to be immutable, but when a new name-value pair has the
+    same name as another pair it seems a shame to create an
+    entirely new object to hold the new value when an
+    already-existing one is right there.  So when it is
+    appropriate for a new name to supplant the old, we can
+    provide some small degree of optimization by just changing
+    the value of the object.  So these objects are only sort of
+    immutable in the sense that we're supposed to pretend they
+    are, and so long as no one lets on, the secret will be safe.
+    Ok?  The syntax for using setValue() is annoying, so users
+    shouldn't really be using it anyway.
+
+5. Add a method to the VRDatumPtr that will return the new
+   data type.  See intVal() and doubleVal() for models.
+
+6. Add a "create" function for the factory to use.  Something
+   like these:
+
+     VRDatumPtr CreateVRDatumInt(void *pData);
+     VRDatumPtr CreateVRDatumDouble(void *pData);
+
+7. Then add this number and the create function to the list of
+   data types registered in the constructor for the
+   VRDataIndex class.
+
+8. Add an addValue() method to the VRDataIndex class that
+   accepts one of the new data types, creates a VRDatum object
+   for it, and adds a pointer to it in the data index.
+
+9. Write a deserialize*() method for VRDataCollection and find
+   a place for it in the processValue() method of that object.
+
+10. You should also consider adding something to
+   VRDataIndex::inferType to identify the new data type.  This
+   is pretty free-form, but follow the models in there.  This is
+   also not necessary, but if you don't do it, your data types
+   will always require a 'type="XX"' attribute when specified,
+   and may not give obvious errors if you don't do that.
+*/
+class VRDataIndex {
+public:
+
+  VRDataIndex();
+
+  static VRDataIndex fromXML(const std::string &xmlString);
+
+  
+  virtual ~VRDataIndex() {}
+
+  
+  /// ***** ADDING DATA TO THE INDEX *****
+
+  /// Use the following to add data into the DataIndex.  This will create
+  /// a new (name, (type, value)) entry in the index.
+  std::string addData(const std::string &name, VRInt value);
+  std::string addData(const std::string &name, VRDouble value);
+  std::string addData(const std::string &name, VRString value);
+  std::string addData(const std::string &name, VRIntArray value);
+  std::string addData(const std::string &name, VRDoubleArray value);
+  std::string addData(const std::string &name, VRStringArray value);
+  std::string addData(const std::string &name, VRContainer value);
+
+  // Tom: Should this be called something like addNamespace?
+  std::string addData(const std::string &name);
+
+
+  void addData(const std::string &name, VRIntConvertable &object) {
+    addData(name, object.toVRInt());
+  }
+
+  void addData(const std::string &name, VRDoubleConvertable &object) {
+    addData(name, object.toVRDouble());
+  }
+
+  void addData(const std::string &name, VRStringConvertable &object) {
+    addData(name, object.toVRString());
+  }
+
+  void addData(const std::string &name, VRIntArrayConvertable &object) {
+    addData(name, object.toVRIntArray());
+  }
+  
+  void addData(const std::string &name, VRDoubleArrayConvertable &object) {
+    addData(name, object.toVRDoubleArray());
+  }
+  
+  void addData(const std::string &name, VRStringArrayConvertable &object) {
+    addData(name, object.toVRStringArray());
+  }
+
+  
+  
+  // ***** ACCESSING DATA STORED IN THE INDEX *****
+  
+  
+  /// **** Access to the names
+
+  /// Returns a list of all the names in the map.
+  std::list<std::string> getNames();
+  /// Returns a list of all the names in the map within the specified namespace.
+  std::list<std::string> getNames(const std::string &nameSpace);
+  std::list<std::string> getNames(const std::string &nameSpace, bool includeChildren, bool fullPath);
+
+
+  /// **** Access to the value stored under the specified name
+
+  /// The return type VRAnyCoreType is a wrapper that can hold any of the
+  /// VRCoreTypes.  VRAnyCoreType can be cast to any of the VRCoreTypes. So,
+  /// common usage examples for this function are:
+  ///   VRInt i = dataIndex->getValue("MyInteger");
+  ///   VRDouble d = dataIndex->getValue("MyDouble");
+  /// The same syntax can be used with custom classes that are not VRCoreTypes if
+  /// they implement a constructor that takes a VRAnyCoreType as an argument.
+  /// All of the classes in VRMath do this.  So, we can write:
+  ///   VRVector3 v = dataIndex->getValue("MyHeading");
+  VRAnyCoreType getValue(const std::string fullName) {
+    return getDatumPtr(getTrimName(fullName), getNameSpace(fullName))->getValue();
+  }
+  VRAnyCoreType getValue(const std::string name, const std::string nameSpace) {
+    return getDatumPtr(name, nameSpace)->getValue();
+  }
+
+  /// Returns a pointer to the value with a given name (and namespace).  This
+  /// is the method to use if you need to modify a value stored in the index.
+  VRDatumPtr getDatumPtr(const std::string name);
+  VRDatumPtr getDatumPtr(const std::string name, const std::string nameSpace);
+  
+
+  /// **** Access to the type stored under the specified name
+
+  /// Returns the type associated with the name
+  VRCORETYPE_ID getType(const std::string &fullName);
+  std::string   getTypeAsString(const std::string &fullName);
+  std::string   getTypeAsString(const std::string &name, const std::string &nameSpace);
+
+
+  
+  /// ***** TO/FROM XML *****
+  
+  // Takes a serialized bit of data and incorporates it into the data index.
+  bool addDataFromXML(const std::string serializedData);
+  bool addDataFromXML(const std::string serializedData, const std::string nameSpace);
+  /// Process the contents of a given XML file into the index.
+  bool addDataFromXMLFile(std::string fileName, std::string nameSpace);
+
+  /// This serializes the entire DataIndex using XML.  The string will begin with
+  /// <VRDataIndex> and end with </VRDataIndex>.
+  std::string toXML();
+  
+  /// This is the name, type, value, expressed as an XML fragment for just the specified name
+  std::string dataToXML(const std::string fullName);
+  std::string dataToXML(const std::string name, const std::string nameSpace);
+  std::string dataToXML(const std::string name, VRDatumPtr pdata);
+  
+  
+  /// ***** UTILITY FUNCTIONS *****
+  
+  /// A utility to make sure a namespace is spelled right and fix it if it is
+  /// missing a leading /, potentially useful to users, so made public.
+  std::string validateNameSpace(const std::string nameSpace);
+
+  /// Mostly just for debug purposes.
+  void printStructure();
+
+  void setOverwrite(const int inVal) { overwrite = inVal; }
+    
+    void setDefaultNamespace(const std::string& val)
+    {
+        defaultNamespace = val;
+    }
+    
+    void resetDefaultNamespace()
+    {
+        defaultNamespace = "/";
+    }
+
+
+private: // ****** IMPLEMENTATION DETAILS BELOW THIS POINT ******
+    
+    // Just a utility to return the tail end of the fully qualified name.
+    // i.e. trimName("cora/flora", "/bob/nora") is "flora".  This does not
+    // look in the index at all, just manipulates strings.
+    std::string getTrimName(const std::string valName, const std::string nameSpace);
+    std::string getTrimName(const std::string valName);
 
   // Another utility, meant to pull a name apart on the slashes.
   std::vector<std::string> explodeName(const std::string fullName);
@@ -172,11 +279,10 @@ private:
   // Returns the namespace, derived from a long, fully-qualified, name.
   std::string getNameSpace(const std::string fullName);
 
-public:
-  VRDataIndex() : overwrite(1) {};
-
-  void setOverwrite(const int inVal) { overwrite = inVal; }
-
+  
+  typedef std::map<std::string, VRDatumPtr> VRDataMap;
+  VRDataMap mindex;
+  
   // Finds an entry in the data index, given a name and
   // namespace. Note that the name might be in a senior namespace to
   // the one specified.  That is, if you have a value called flora,
@@ -199,188 +305,38 @@ public:
   // Returns the fully qualified name of the value.
   std::string getName(const std::string valName,
                       const std::string nameSpace);
+  
+  VRInt         deserializeInt(const char* valueString);
+  VRDouble      deserializeDouble(const char* valueString);
+  VRString      deserializeString(const char* valueString);
+  VRIntArray    deserializeIntArray(const char* valueString);
+  VRDoubleArray deserializeDoubleArray(const char* valueString);
+  VRStringArray deserializeStringArray(const char* valueString);
+  
+  
+  bool processValue(const char* name, VRCORETYPE_ID type, const char* valueString);
+  VRCORETYPE_ID inferType(const std::string valueString);
+  bool walkXML(element* node, std::string nameSpace);
+  
 
-  // Returns a pointer to the value with a given name (and namespace)
-  VRDatumPtr getDatum(const std::string valName);
-  VRDatumPtr getDatum(const std::string valName,
-                      const std::string nameSpace);
+  // If this is 1, new values will overwrite old ones.  For -1, new
+  // values will just bounce off.  And zero will cause an exception if
+  // an overwrite is attempted.  Except containers, who are always
+  // happy to receive new values and add to their existing list.  The
+  // default class constructor allows overwrites.
+  int overwrite;
+  
+  VRDatumFactory factory;
 
-  // The getValue function relies on the helper function defined with
-  // VRDatum.  Read about it there, but it is just a cute trick to
-  // allow programmers to access values directly from the index.  So
-  // access your values like this:
-  //
-  //   int p = index->getDatum(name, nameSpace)->getValue()
-  //
-  // or like this:
-  //
-  //   int p = index->getValue(name, nameSpace)
-  //
-  // It's your choice; the two are identical in overhead.  If you're
-  // really worried about overhead, you can do this instead:
-  //
-  //   int p = index->getValue(name, nameSpace)->getValueInt()
-  //
-  // This version does a kind of type checking, but also brings you
-  // the specialized VRDatum object which you might want for some
-  // other nefarious reason.
-  //
-  //   int p = index->getValue(name, nameSpace).intVal()->getValueInt()
-  //
-  VRDatumHelper<VRDatum> getValue(const std::string valName) {
-    return getDatum(valName)->getValue();
-  }
-  VRDatumHelper<VRDatum> getValue(const std::string valName,
-                                  const std::string nameSpace) {
-    return getDatum(valName, nameSpace)->getValue();
-  }
-
-  // The description of an index entry describes only the name and
-  // type, not the value.
-  std::string getDescription(const std::string valName);
-  std::string getDescription(const std::string valName,
-                             const std::string nameSpace);
-
-  // This is the name, type, value, expressed as an XML fragment.
-  using VRDataCollection::serialize;
-  std::string serialize(const std::string valName);
-  std::string serialize(const std::string valName,
-                        const std::string nameSpace);
-
-  // Takes a serialized bit of data and incorporates it into the data
-  // index.
-  bool addSerializedValue(const std::string serializedData);
-  bool addSerializedValue(const std::string serializedData,
-                          const std::string nameSpace);
-
-  // Process the contents of a given XML file into the index.
-  bool processXMLFile(std::string fileName, std::string nameSpace);
-
-  // Returns a list of all the names in the map.  Note this really is
-  // a list of strings, not a MVRContainer.  (No difference, really,
-  // but we want to keep them semantically separate.)
-  std::list<std::string> getDataNames();
-  std::list<std::string> getDataNames(const std::string containerName);
-
-  // These are specialized set methods.  They seem a little unhip, but
-  // it's because I find this easier than remembering how to spell the
-  // pointers and casts.
-
-  /// Step 6 of the data type addition instructions in VRDatum.h is
-  /// to add a specialized method here.
-  std::string addValue(const std::string valName, int value);
-  std::string addValue(const std::string valName, double value);
-  std::string addValue(const std::string valName, std::string value);
-  std::string addValue(const std::string valName, MVRArrayDouble value);
-
-  // There is a semantic difference between addValue() for a primitive
-  // value and addValue() for a container.  One creates an object of
-  // the name and value given.  The second (for containers) adds the
-  // contents of the given container value to the container of the
-  // given name.
-  std::string addValue(const std::string valName, MVRContainer value);
-  // Adds an empty container.
-  std::string addValue(const std::string valName);
-
-  // A utility to make sure a namespace is spelled right, potentially
-  // useful to users, so made public.
-  std::string validateNameSpace(const std::string nameSpace);
-
-  // Mostly just for debug purposes.
-  void printStructure();
-
+  // This is just a convenience to map strings to object type numbers.
+  std::map<std::string, VRCORETYPE_ID> vrTypeMap;
+    
+  std::string defaultNamespace;
+  
 };
 
 
-// Where are we going with this: We have an index that contains
-// pointers to more-or-less arbitrary data types, yay.  On the to-do
-// list:
-//
-//   - Write the serialize method, at the VRDatum level, where
-//     it only encodes the value, and at the VRDataIndex level,
-//     where you add the type description (also from VRDatum),
-//     the name (from the index) and the value. [DONE]
-//
-//   - VRDatum constructors that work from the serialized form
-//        int george 6
-//         ^    ^    ^
-//         |    |    |
-//         |    |    handled in VRDatum
-//         |    handled in VRDataIndex
-//         handled in VRDataIndex (choice of Datum specialization) [DONE]
-//
-//   - Add the interpreters to VRDataIndex to read the whole
-//     serialized form and invoke the appropriate VRDatum
-//     constructor. [DONE]
-//
-//   - Add a string data type to check on the add instructions. [DONE]
-//
-//   - Add the struct data type, a collection of primitive data types,
-//     or other structs.  The data inside the VRDatum for this
-//     container type is just going to be a vector of map iterators,
-//     pointing at map entries in the main index. (I think) [DONE]
-//
-//   - Make testindex into an examination tool.  'p variable' for
-//     print its value and serialization, 'p' for print everything,
-//     etc. [DONE]
-//
-//   - 'c name' for adopting a namespace, 'a string' for add a
-//     variable to store, etc. [DONE]
-//
-//   - Need to support name conflicts by either overwriting the new
-//     value or throwing an exception or some other way of defending
-//     the old value.  User should be able to choose. [DONE]
-//
-//   - Support nested names in the index, with "default directory"
-//     functionality.
-//
-//        - Need a getName(valName, nameSpace) [DONE]
-//        - Leave getValue, getDescription, and serialize as they were,
-//          needing a fully-qualified name as input. [DONE]
-//        - They can all have second forms that have a nameSpace, but
-//          call the original under the covers. [DONE]
-//
-//     Needs to handle blank namespaces, and ignore the namespace for names
-//     that begin with a slash. [DONE]
-//
-//   - Should be ready to work with the XML parser for entire files at
-//     this point. [DONE]
-//
-//   - Add the vector types, and whatever else.  Boolean?
-//        vector<double> [DONE]
-//        matrix<double> [TBD]
-//
-//   - Make the parser infer data types where possible, rather than relying
-//     on the type attribute. [DONE]
-//
-//   - Add container typedef to VRDatum [DONE]
-//
-//   - Add helper class to VRDatum, implement getValue() [DONE]
-//
-//    - Do something about VRDatum setValue() methods? Maybe
-//      comparable to the virtual getValue() methods? [NO, Users should not use]
-//
-//   - change VRDataIndex::getValue() to getDatum() [DONE]
-//
-//   - Can we add a helper class to data index? [DONE]
-//
-//   - Need a human-readable and a machine-readable (i.e. quicker)
-//     format for serialization. [TBD]
-//
-//   - The mvrTypeMap is clunky and is not attached to the VRDatum
-//     description field.  The mapping between type ID and description
-//     should appear only once, somewhere. [DONE]
-//
-//   - Improve (and test) adding values to containers. [DONE]
-//
-//   Need to simplify the process of adding data types.
-//
-//   - Make CreateVRDatum functions into templates?
-//
-//   - Make VRDatumPtr::intVal(), etc, into templates.
-//
-//   - After those are done, the VRDataIndex::addValue() methods can
-//     probably be template-ized, too.
-//
-//   -
+
+
 #endif
+ 

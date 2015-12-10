@@ -12,7 +12,7 @@
 
 #include <iostream>
 
-#include <data/VRDatum.h>
+#include <config/VRDatum.h>
 
 
 /** @class VRPoint3 

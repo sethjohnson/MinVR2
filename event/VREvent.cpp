@@ -1,5 +1,5 @@
 #include "VREvent.h"
-#include <data/XMLUtils.h>
+#include <config/XMLUtils.h>
 
 VREvent::VREvent(const std::string &eventName, const VRDataIndex &dataIndex) : _name(eventName), _dataIndex(dataIndex) {
 }

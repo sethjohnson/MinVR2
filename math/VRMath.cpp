@@ -1,5 +1,5 @@
 #include "VRMath.h"
-#include <data/VRDatum.h>
+#include <config/VRDatum.h>
 
 
 #include <math.h>
