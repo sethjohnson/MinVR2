@@ -16,7 +16,8 @@
 
 <VRDisplayDevices>
 	<Desktop>
-		<displayType type="string">glfw_display</displayType>
+		<displayType type="string">window</displayType>
+		<windowType type="string">GLFW</windowType>
 		<xOffset type="double">0</xOffset>
 	    <yOffset type="double">0</yOffset>
 	    <width type="double">800</width>

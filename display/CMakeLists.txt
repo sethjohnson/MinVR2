@@ -7,10 +7,12 @@ set (${PROJECT_NAME}_source_files
 	base/VRDisplayNode.cpp
 	base/VRBasicRenderer.cpp
 	base/VRFunctionRenderCallback.cpp
-	base/VRCompositeDisplayFactory.cpp
+	base/factories/VRCompositeDisplayFactory.cpp
+	base/factories/VRTypedDisplayFactory.cpp
 	console/VRConsoleDisplay.cpp
 	graphics/VRGraphicsWindowChild.cpp
 	graphics/VRGraphicsWindowNode.cpp
+	graphics/VRGraphicsWindowFactory.cpp
 	graphics/stereo/VRStereoNode.cpp
 	graphics/stereo/VRSideBySideNode.cpp
 	graphics/structure/VRViewportNode.cpp

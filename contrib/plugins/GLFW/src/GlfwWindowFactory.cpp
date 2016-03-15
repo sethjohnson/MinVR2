@@ -22,10 +22,12 @@ GlfwWindowFactory::GlfwWindowFactory(GlfwInputDevice* iDevice) : inputDevice(iDe
 GlfwWindowFactory::~GlfwWindowFactory() {
 }
 
-VRDisplay* GlfwWindowFactory::create(VRDataIndex& config, const std::string nameSpace) {
+VRDisplay* GlfwWindowFactory::createWindow(VRDataIndex& config, const std::string nameSpace, std::string type) {
 
-	//if (type == "glfw_display")
-	//{
+	if (type != "GLFW")
+	{
+		return NULL;
+	}
 
 	std::cout << nameSpace << std::endl;
 
