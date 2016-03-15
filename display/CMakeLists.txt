@@ -7,6 +7,7 @@ set (${PROJECT_NAME}_source_files
 	base/VRDisplayNode.cpp
 	base/VRBasicRenderer.cpp
 	base/VRFunctionRenderCallback.cpp
+	base/VRCompositeDisplayFactory.cpp
 	console/VRConsoleDisplay.cpp
 	graphics/VRGraphicsWindowChild.cpp
 	graphics/VRGraphicsWindowNode.cpp

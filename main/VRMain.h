@@ -6,6 +6,7 @@
 #include "main/VRPluginInterface.h"
 #include "plugin/PluginManager.h"
 #include "display/synchronization/VRSynchronizedDisplay.h"
+#include "display/base/VRCompositeDisplayFactory.h"
 
 /** Application programmers should use this singleton class as the
     interface to the MinVR library.
@@ -15,7 +16,7 @@
     display devices was put aside and needs to be re-implemented.
 
 */
-class VRMain : public MinVR::VRPluginInterface {
+class VRMain : public MinVR::VRPluginInterface, public MinVR::VRSystem {
 public:
 
   VRMain();
@@ -96,6 +97,15 @@ public:
 		return _display;
 	}
 
+  MinVR::VRDisplayFactory& getDisplayFactory() {
+	  return _displayFactory;
+  }
+
+  MinVR::VRSystem* getVRSystem()
+  {
+	  return this;
+  }
+
 private:
 	void initialize();
 
@@ -120,7 +130,7 @@ private:
 
   // Plugin items
   MinVR::PluginManager _pluginManager;
-  std::vector<MinVR::VRDisplayFactory*> _displayFactories;
+  MinVR::VRCompositeDisplayFactory _displayFactory;
   std::vector<VRInputDeviceFactory*> _inputDeviceFactories;
   std::vector<MinVR::VRTimer*> _timers;
   std::vector<VRInputDevice*> _inputDevices;

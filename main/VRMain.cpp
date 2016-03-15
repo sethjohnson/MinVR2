@@ -154,11 +154,8 @@ void VRMain::initialize()
   }
 
   // Create display
-  for (int f = 0; f < _displayFactories.size(); f++)
-  {
-	  MinVR::VRDisplay* display = _displayFactories[f]->create(*_index, "/MVR/VRDisplayDevices/Desktop");
-	  _display = dynamic_cast<MinVR::VRSynchronizedDisplay*>(display);
-  }
+  MinVR::VRDisplay* display = _displayFactory.create(*_index, "/MVR/VRDisplayDevices/Desktop");
+  _display = dynamic_cast<MinVR::VRSynchronizedDisplay*>(display);
 
   if (_display == NULL)
   {
@@ -307,7 +304,7 @@ VRMain::renderEverywhere(MinVR::VRRenderer& renderer) {
 // Adds the display factories for all plugins who use this interface
 void VRMain::addVRDisplayFactory(MinVR::VRDisplayFactory* factory)
 {
-	_displayFactories.push_back(factory);
+	_displayFactory.addFactory(factory);
 }
 
 // Adds the input device factories for all plugins who use this interface
