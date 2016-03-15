@@ -71,7 +71,7 @@ bool VRViewport::read(VRDataIndex& index, std::string name, std::string nameSpac
 	m_yOffset = index.getValue("yOffset", newNamespace);
 	m_width = index.getValue("width", newNamespace);
 	m_height = index.getValue("height", newNamespace);
-	m_usePercent = (int)index.getValue("usePercent", newNamespace);
+	m_usePercent = index.exists("usePercent", nameSpace) ? (int)index.getValue("usePercent", newNamespace) : 0;
 
 	return true;
 }

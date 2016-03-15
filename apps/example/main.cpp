@@ -89,11 +89,9 @@ bool perFrame()
 	// Render the scene on all displays (passing render function into display)
 	VRFunctionRenderCallback callback(render);
 	MinVR::VRBasicRenderer renderer(callback);
-	//display->render(renderer);
 	MVR->renderEverywhere(renderer);
-	//display->finishRendering();
 
-	return true;//display->isOpen() && isRunning;
+	return isRunning;
 }
 
 //-------------------Call back functions-----------------------------------

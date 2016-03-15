@@ -37,15 +37,6 @@ public:
 		m_viewport = viewport;
 	}
 
-	const VRTile& getTile() const {
-		return m_tile;
-	}
-
-	void setTile(const VRTile& tile) {
-		m_tile = tile;
-		m_hasTile = true;
-	}
-
 protected:
 	VRGraphicsWindowNode(const VRViewport& viewport);
 	virtual void updateState(VRRenderState& state);
@@ -60,8 +51,6 @@ protected:
 private:
 	VRViewportCalculator m_viewportCalculator;
 	VRViewport m_viewport;
-	VRTile m_tile;
-	bool m_hasTile;
 };
 
 } /* namespace MinVR */

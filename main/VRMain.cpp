@@ -156,7 +156,7 @@ void VRMain::initialize()
   // Create display
   for (int f = 0; f < _displayFactories.size(); f++)
   {
-	  MinVR::VRDisplay* display = _displayFactories[f]->create(*_index, "/");
+	  MinVR::VRDisplay* display = _displayFactories[f]->create(*_index, "/MVR/VRDisplayDevices/Desktop");
 	  _display = dynamic_cast<MinVR::VRSynchronizedDisplay*>(display);
   }
 

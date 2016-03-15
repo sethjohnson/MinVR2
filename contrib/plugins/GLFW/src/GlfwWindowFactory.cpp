@@ -26,7 +26,13 @@ VRDisplay* GlfwWindowFactory::create(VRDataIndex& config, const std::string name
 
 	//if (type == "glfw_display")
 	//{
-		GlfwWindow* window = new GlfwWindow(VRViewport(0,0,800,400));
+
+	std::cout << nameSpace << std::endl;
+
+	VRViewport viewport;
+	viewport.read(config, nameSpace, "");
+
+		GlfwWindow* window = new GlfwWindow(viewport);
 
 	    inputDevice->registerGlfwWindow(window);
 
@@ -38,7 +44,6 @@ VRDisplay* GlfwWindowFactory::create(VRDataIndex& config, const std::string name
 		tile.setNearClip(0.01);
 		tile.setFarClip(100.0);
 
-		window->setTile(tile);
 		window->addChild(new VRSideBySideNode());
 
 		return window;

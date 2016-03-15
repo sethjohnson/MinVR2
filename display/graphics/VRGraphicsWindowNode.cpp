@@ -10,7 +10,7 @@
 
 namespace MinVR {
 
-VRGraphicsWindowNode::VRGraphicsWindowNode(const VRViewport& viewport) : m_viewport(viewport), m_viewportCalculator(true), m_hasTile(false) {
+VRGraphicsWindowNode::VRGraphicsWindowNode(const VRViewport& viewport) : m_viewport(viewport), m_viewportCalculator(true) {
 
 }
 
@@ -56,11 +56,6 @@ void VRGraphicsWindowNode::updateState(VRRenderState& state) {
 	vp.setXOffset(0);
 	vp.setYOffset(0);
 	state.writeValue("viewport", vp);
-
-	if (m_hasTile)
-	{
-		state.writeValue("tile", m_tile);
-	}
 }
 
 } /* namespace MinVR */
