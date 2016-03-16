@@ -7,6 +7,7 @@
 #include "net/VRNetServer.h"
 #include "display/console/VRConsoleDisplay.h"
 #include "display/graphics/stereo/VRStereoFactory.h"
+#include "display/graphics/structure/VRViewportFactory.h"
 
 void emptyEventCallbackMVR(const std::string &eventName, VRDataIndex *dataIndex) {}
 void emptyRenderCallbackMVR(VRDataIndex* index) {}
@@ -17,7 +18,8 @@ VRMain::VRMain() : initialized(false),_vrNet(NULL), _display(NULL)
 	  registerEventCallback(&emptyEventCallbackMVR);
 	  registerRenderCallback(&emptyRenderCallbackMVR);
 	  registerSwapCallback(&emptyRenderSwapMVR);
-	  _displayFactory.addFactory(new MinVR::VRStereoFactory());
+	  _displayFactory.addFactory(new MinVR::VRViewportFactory(this));
+	  _displayFactory.addFactory(new MinVR::VRStereoFactory(this));
 }
 
 
@@ -158,6 +160,8 @@ void VRMain::initialize()
   // Create display
   MinVR::VRDisplay* display = _displayFactory.create(*_index, "/MVR/VRDisplayDevices/Desktop");
   _display = dynamic_cast<MinVR::VRSynchronizedDisplay*>(display);
+
+  //exit(0);
 
   if (_display == NULL)
   {

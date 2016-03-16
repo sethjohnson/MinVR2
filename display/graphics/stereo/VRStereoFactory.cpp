@@ -11,7 +11,7 @@
 
 namespace MinVR {
 
-VRStereoFactory::VRStereoFactory() {
+VRStereoFactory::VRStereoFactory(VRSystem* vrSystem) : m_vrSystem(vrSystem) {
 	// TODO Auto-generated constructor stub
 
 }
@@ -27,7 +27,10 @@ VRDisplay* VRStereoFactory::create(VRDataIndex& config,
 
 	if(std::equal(ending.rbegin(), ending.rend(), nameSpace.rbegin()))
 	{
-		return new VRSideBySideNode();
+		std::cout << "True " << nameSpace << std::endl;
+		VRSideBySideNode* sideBySideNode = new VRSideBySideNode();
+		VRDisplayNode::createChildren<VRSideBySideNode, VRGraphicsWindowChild>(sideBySideNode, m_vrSystem->getDisplayFactory(), config, nameSpace);
+		return sideBySideNode;
 	}
 
 	return NULL;

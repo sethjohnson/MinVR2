@@ -29,7 +29,7 @@
 				    <yOffset type="double">0</yOffset>
 	    			<width type="double">0.5</width>
     				<height type="double">0.5</height>
-    				<userPercent type="int">1</height>
+    				<usePercent type="int">1</usePercent>
     			</viewport>
     			<tile>
 					<topLeft type="doublearray">-0.5@0.5@0.0</topLeft>

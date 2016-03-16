@@ -19,6 +19,7 @@ VRViewportNode::~VRViewportNode() {
 void VRViewportNode::render(VRRenderer& renderer) {
 	renderer.pushState();
 	m_viewportCalculator.calculate(renderer.getState(), m_viewport);
+
 	renderAtLeaf(renderer);
 	renderer.popState();
 }

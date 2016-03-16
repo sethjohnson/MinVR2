@@ -6,18 +6,18 @@
  * 		Dan Orban (dtorban)
  */
 
-#ifndef VRSTEREOFACTORY_H_
-#define VRSTEREOFACTORY_H_
+#ifndef VRVIEWPORTFACTORY_H_
+#define VRVIEWPORTFACTORY_H_
 
 #include "display/VRDisplayFactory.h"
 #include "main/VRSystem.h"
 
 namespace MinVR {
 
-class VRStereoFactory : public VRDisplayFactory {
+class VRViewportFactory : public VRDisplayFactory {
 public:
-	VRStereoFactory(VRSystem* vrSystem);
-	virtual ~VRStereoFactory();
+	VRViewportFactory(VRSystem* vrSystem);
+	virtual ~VRViewportFactory();
 
 	VRDisplay* create(VRDataIndex& config, const std::string nameSpace);
 
@@ -27,4 +27,4 @@ private:
 
 } /* namespace MinVR */
 
-#endif /* VRSTEREOFACTORY_H_ */
+#endif /* VRVIEWPORTFACTORY_H_ */

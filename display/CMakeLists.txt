@@ -18,6 +18,7 @@ set (${PROJECT_NAME}_source_files
 	graphics/stereo/VRSideBySideNode.cpp
 	graphics/structure/VRViewportNode.cpp
 	graphics/structure/VRViewport.cpp
+	graphics/structure/VRViewportFactory.cpp
 	graphics/structure/VRViewportCalculator.cpp
 	graphics/structure/VRTile.cpp
 	graphics/structure/VRTileNode.cpp

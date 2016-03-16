@@ -48,6 +48,7 @@ VRViewport VRViewport::generateChild(const VRViewport& viewport) {
 		newViewport.m_width = viewport.m_width;
 		newViewport.m_height = viewport.m_height;
 	}
+
 	return newViewport;
 }
 
@@ -60,7 +61,6 @@ void VRViewport::write(VRDataIndex& index, std::string name) const {
 }
 
 bool VRViewport::read(VRDataIndex& index, std::string name, std::string nameSpace) {
-	//std::cout << name << " " << nameSpace << std::endl;
 	if (!index.exists(name, nameSpace)) {
 		return false;
 	}
@@ -71,7 +71,7 @@ bool VRViewport::read(VRDataIndex& index, std::string name, std::string nameSpac
 	m_yOffset = index.getValue("yOffset", newNamespace);
 	m_width = index.getValue("width", newNamespace);
 	m_height = index.getValue("height", newNamespace);
-	m_usePercent = index.exists("usePercent", nameSpace) ? (int)index.getValue("usePercent", newNamespace) : 0;
+	m_usePercent = index.exists("usePercent", newNamespace) ? (int)index.getValue("usePercent", newNamespace) : 0;
 
 	return true;
 }

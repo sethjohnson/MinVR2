@@ -21,9 +21,9 @@ VRTypedDisplayFactory::~VRTypedDisplayFactory() {
 
 VRDisplay* VRTypedDisplayFactory::create(VRDataIndex& config,
 		const std::string nameSpace) {
-	if (config.exists("displayType", nameSpace))
+	if (config.exists(nameSpace + "/displayType", ""))
 	{
-		return create(config, nameSpace, config.getValue("displayType", nameSpace));
+		return create(config, nameSpace, config.getValue(nameSpace + "/displayType", ""));
 	}
 
 	return NULL;
