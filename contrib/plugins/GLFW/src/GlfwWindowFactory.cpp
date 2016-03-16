@@ -16,13 +16,13 @@
 
 namespace MinVR {
 
-GlfwWindowFactory::GlfwWindowFactory(GlfwInputDevice* iDevice) : inputDevice(iDevice) {
+GlfwWindowFactory::GlfwWindowFactory(GlfwInputDevice* iDevice, VRSystem* vrSystem) : VRGraphicsWindowFactory(vrSystem), inputDevice(iDevice) {
 }
 
 GlfwWindowFactory::~GlfwWindowFactory() {
 }
 
-VRDisplay* GlfwWindowFactory::createWindow(VRDataIndex& config, const std::string nameSpace, std::string type) {
+VRGraphicsWindowNode* GlfwWindowFactory::createWindow(VRDataIndex& config, const std::string nameSpace, std::string type) {
 
 	if (type != "GLFW")
 	{
@@ -34,24 +34,21 @@ VRDisplay* GlfwWindowFactory::createWindow(VRDataIndex& config, const std::strin
 	VRViewport viewport;
 	viewport.read(config, nameSpace, "");
 
-		GlfwWindow* window = new GlfwWindow(viewport);
+	GlfwWindow* window = new GlfwWindow(viewport);
 
-	    inputDevice->registerGlfwWindow(window);
+	inputDevice->registerGlfwWindow(window);
 
-		VRTile tile;
-		tile.setTopLeft(VRPoint3(-0.5,  0.5, 0.0));
-		tile.setTopRight(VRPoint3( 0.5,  0.5, 0.0));
-		tile.setBottomLeft(VRPoint3(-0.5, -0.5, 0.0));
-		tile.setBottomRight(VRPoint3( 0.5, -0.5, 0.0));
-		tile.setNearClip(0.01);
-		tile.setFarClip(100.0);
+	VRTile tile;
+	tile.setTopLeft(VRPoint3(-0.5,  0.5, 0.0));
+	tile.setTopRight(VRPoint3( 0.5,  0.5, 0.0));
+	tile.setBottomLeft(VRPoint3(-0.5, -0.5, 0.0));
+	tile.setBottomRight(VRPoint3( 0.5, -0.5, 0.0));
+	tile.setNearClip(0.01);
+	tile.setFarClip(100.0);
 
-		window->addChild(new VRSideBySideNode());
+	//window->addChild(new VRSideBySideNode());
 
-		return window;
-	//}
-
-	return NULL;
+	return window;
 }
 
 } /* namespace MinVR */

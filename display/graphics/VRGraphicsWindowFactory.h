@@ -10,17 +10,22 @@
 #define VRGRAPHICSWINDOWFACTORY_H_
 
 #include "display/base/factories/VRTypedDisplayFactory.h"
+#include "main/VRSystem.h"
+#include "VRGraphicsWindowNode.h"
 
 namespace MinVR {
 
 class VRGraphicsWindowFactory : public VRTypedDisplayFactory {
 public:
-	VRGraphicsWindowFactory();
 	virtual ~VRGraphicsWindowFactory();
 
 protected:
+	VRGraphicsWindowFactory(VRSystem* vrSystem);
 	VRDisplay* create(VRDataIndex& config, const std::string nameSpace, std::string type);
-	virtual VRDisplay* createWindow(VRDataIndex& config, const std::string nameSpace, std::string type) = 0;
+	virtual VRGraphicsWindowNode* createWindow(VRDataIndex& config, const std::string nameSpace, std::string type) = 0;
+
+private:
+	VRSystem* m_vrSystem;
 };
 
 } /* namespace MinVR */

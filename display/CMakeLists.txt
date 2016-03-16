@@ -13,6 +13,7 @@ set (${PROJECT_NAME}_source_files
 	graphics/VRGraphicsWindowChild.cpp
 	graphics/VRGraphicsWindowNode.cpp
 	graphics/VRGraphicsWindowFactory.cpp
+	graphics/stereo/VRStereoFactory.cpp
 	graphics/stereo/VRStereoNode.cpp
 	graphics/stereo/VRSideBySideNode.cpp
 	graphics/structure/VRViewportNode.cpp

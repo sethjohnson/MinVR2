@@ -10,7 +10,7 @@
 
 namespace MinVR {
 
-VRGraphicsWindowFactory::VRGraphicsWindowFactory() {
+VRGraphicsWindowFactory::VRGraphicsWindowFactory(VRSystem* vrSystem) : m_vrSystem(vrSystem) {
 	// TODO Auto-generated constructor stub
 
 }
@@ -23,7 +23,28 @@ VRDisplay* VRGraphicsWindowFactory::create(VRDataIndex& config,
 		const std::string nameSpace, std::string type) {
 	if (config.exists("windowType", nameSpace))
 	{
-		return createWindow(config, nameSpace, config.getValue("windowType", nameSpace));
+		VRGraphicsWindowNode* display = createWindow(config, nameSpace, config.getValue("windowType", nameSpace));
+		if (display)
+		{
+			VRContainer item = config.getValue(nameSpace);
+
+			std::cout << nameSpace << std::endl;
+			for (VRContainer::iterator f = item.begin(); f != item.end(); f++)
+			{
+				if (config.getType(*f) == VRCORETYPE_CONTAINER)
+				{
+					std::cout << *f << std::endl;
+					VRDisplay* subDisplay = m_vrSystem->getDisplayFactory().create(config, *f);
+					VRGraphicsWindowChild* child = dynamic_cast<VRGraphicsWindowChild*>(subDisplay);
+					if (child)
+					{
+						display->addChild(child);
+					}
+				}
+			}
+		}
+
+		return display;
 	}
 
 	return NULL;

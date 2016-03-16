@@ -35,27 +35,12 @@ public:
 	    }
 
 		inputDevice = new GlfwInputDevice();
-		displayFactory = new GlfwWindowFactory(inputDevice);
-		inputDeviceFactory = new GlfwInputDeviceFactory(inputDevice);
-		timer = new GlfwTimer();
 	}
 	PLUGIN_API virtual ~GlfwPlugin() {
 
-		if (displayFactory != NULL)
-		{
-			delete displayFactory;
-		}
-		if (inputDeviceFactory != NULL)
-		{
-			delete inputDeviceFactory;
-		}
 		if (inputDevice != NULL)
 		{
 			delete inputDevice;
-		}
-		if (timer != NULL)
-		{
-			delete timer;
 		}
 
         glfwTerminate();
@@ -70,6 +55,9 @@ public:
 		if (vrInterface != NULL)
 		{
 			std::cout << "Adding GLFW window factory" << std::endl;
+			displayFactory = new GlfwWindowFactory(inputDevice, vrInterface->getVRSystem());
+			inputDeviceFactory = new GlfwInputDeviceFactory(inputDevice);
+			timer = new GlfwTimer();
 			vrInterface->addVRDisplayFactory(displayFactory);
 			vrInterface->addVRInputDeviceFactory(inputDeviceFactory);
 			vrInterface->addVRTimer(timer);

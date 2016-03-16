@@ -6,6 +6,7 @@
 #include "net/VRNetClient.h"
 #include "net/VRNetServer.h"
 #include "display/console/VRConsoleDisplay.h"
+#include "display/graphics/stereo/VRStereoFactory.h"
 
 void emptyEventCallbackMVR(const std::string &eventName, VRDataIndex *dataIndex) {}
 void emptyRenderCallbackMVR(VRDataIndex* index) {}
@@ -16,6 +17,7 @@ VRMain::VRMain() : initialized(false),_vrNet(NULL), _display(NULL)
 	  registerEventCallback(&emptyEventCallbackMVR);
 	  registerRenderCallback(&emptyRenderCallbackMVR);
 	  registerSwapCallback(&emptyRenderSwapMVR);
+	  _displayFactory.addFactory(new MinVR::VRStereoFactory());
 }
 
 
