@@ -24,25 +24,7 @@ VRDisplay* VRGraphicsWindowFactory::create(VRDataIndex& config,
 	if (config.exists("windowType", nameSpace))
 	{
 		VRGraphicsWindowNode* display = createWindow(config, nameSpace, config.getValue("windowType", nameSpace));
-		if (display)
-		{
-			VRContainer item = config.getValue(nameSpace);
-
-			std::cout << nameSpace << std::endl;
-			for (VRContainer::iterator f = item.begin(); f != item.end(); f++)
-			{
-				if (config.getType(*f) == VRCORETYPE_CONTAINER)
-				{
-					std::cout << *f << std::endl;
-					VRDisplay* subDisplay = m_vrSystem->getDisplayFactory().create(config, *f);
-					VRGraphicsWindowChild* child = dynamic_cast<VRGraphicsWindowChild*>(subDisplay);
-					if (child)
-					{
-						display->addChild(child);
-					}
-				}
-			}
-		}
+		VRDisplayNode::createChildren<VRGraphicsWindowNode, VRGraphicsWindowChild>(display, m_vrSystem->getDisplayFactory(), config, nameSpace);
 
 		return display;
 	}

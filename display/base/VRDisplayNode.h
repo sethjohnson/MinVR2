@@ -10,6 +10,7 @@
 #define VRDISPLAYNODE_H_
 
 #include "display/VRDisplay.h"
+#include "display/VRDisplayFactory.h"
 #include <vector>
 
 namespace MinVR {
@@ -22,6 +23,34 @@ public:
 	virtual void render(VRRenderer& renderer);
 
 	virtual const std::vector<VRDisplay*>& getChildren() const;
+
+	template<typename DisplayNodeType, typename ChildNodeType>
+	static void createChildren(DisplayNodeType* display, VRDisplayFactory& factory, VRDataIndex& config, const std::string nameSpace)
+	{
+		if (display)
+		{
+			VRContainer item = config.getValue(nameSpace);
+
+			std::cout << nameSpace << std::endl;
+			for (VRContainer::iterator f = item.begin(); f != item.end(); f++)
+			{
+				if (config.getType(*f) == VRCORETYPE_CONTAINER)
+				{
+					std::cout << *f << std::endl;
+					VRDisplay* subDisplay = factory.create(config, *f);
+					ChildNodeType* child = dynamic_cast<ChildNodeType*>(subDisplay);
+					if (child)
+					{
+						display->addChild(child);
+					}
+					else if (subDisplay)
+					{
+						delete subDisplay;
+					}
+				}
+			}
+		}
+	}
 
 protected:
 	void addChild(VRDisplay* child);
