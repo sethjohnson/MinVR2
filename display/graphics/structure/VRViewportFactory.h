@@ -16,13 +16,14 @@ namespace MinVR {
 
 class VRViewportFactory : public VRDisplayFactory {
 public:
-	VRViewportFactory(VRSystem* vrSystem);
+	VRViewportFactory(VRSystem* vrSystem, VRDisplayFactory* innerFactory);
 	virtual ~VRViewportFactory();
 
 	VRDisplay* create(VRDataIndex& config, const std::string nameSpace);
 
 private:
 	VRSystem* m_vrSystem;
+	VRDisplayFactory* m_innerFactory;
 };
 
 } /* namespace MinVR */

@@ -12,18 +12,18 @@
 
 namespace MinVR {
 
-VRViewportFactory::VRViewportFactory(VRSystem* vrSystem) : m_vrSystem(vrSystem) {
+VRViewportFactory::VRViewportFactory(VRSystem* vrSystem, VRDisplayFactory* innerFactory) : m_vrSystem(vrSystem), m_innerFactory(innerFactory) {
 }
 
 VRViewportFactory::~VRViewportFactory() {
+	delete m_innerFactory;
 }
 
 VRDisplay* VRViewportFactory::create(VRDataIndex& config,
 		const std::string nameSpace) {
 
-	VRDisplay* display = NULL;
-
-	//return display;
+	VRDisplay* mainDisplay = m_innerFactory->create(config, nameSpace);
+	VRGraphicsWindowChildNode* display = NULL;
 
 	VRViewport viewport;
 	VRViewportNode* viewportNode = NULL;
@@ -49,16 +49,22 @@ VRDisplay* VRViewportFactory::create(VRDataIndex& config,
 		}
 	}
 
-	if (tileNode)
+	if (display)
 	{
-		VRDisplayNode::createChildren<VRTileNode, VRGraphicsWindowChild>(tileNode, m_vrSystem->getDisplayFactory(), config, nameSpace);
-	}
-	else if (viewportNode)
-	{
-		VRDisplayNode::createChildren<VRViewportNode, VRGraphicsWindowChild>(viewportNode, m_vrSystem->getDisplayFactory(), config, nameSpace);
+		VRGraphicsWindowChild* child = dynamic_cast<VRGraphicsWindowChild*>(mainDisplay);
+		if (child)
+		{
+			display->addChild(child);
+		}
+		else
+		{
+			VRDisplayNode::createChildren<VRGraphicsWindowChildNode, VRGraphicsWindowChild>(tileNode, m_vrSystem->getDisplayFactory(), config, nameSpace);
+		}
+
+		return display;
 	}
 
-	return display;
+	return mainDisplay;
 }
 
 } /* namespace MinVR */

@@ -19,6 +19,14 @@ public:
 	virtual ~VRGraphicsWindowChild();
 };
 
+class VRGraphicsWindowChildNode : public VRGraphicsWindowChild {
+public:
+	VRGraphicsWindowChildNode();
+	virtual ~VRGraphicsWindowChildNode();
+
+	virtual void addChild(VRGraphicsWindowChild* child);
+};
+
 } /* namespace MinVR */
 
 #endif /* VRGRAPHICSWINDOWCHILD_H_ */

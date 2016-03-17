@@ -25,8 +25,4 @@ void VRTileNode::render(VRRenderer& renderer) {
 	renderer.popState();
 }
 
-void VRTileNode::addChild(VRGraphicsWindowChild* child) {
-	VRDisplayNode::addChild(child);
-}
-
 } /* namespace MinVR */

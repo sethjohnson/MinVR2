@@ -15,14 +15,12 @@
 
 namespace MinVR {
 
-class VRViewportNode : public VRGraphicsWindowChild {
+class VRViewportNode : public VRGraphicsWindowChildNode {
 public:
 	VRViewportNode(const VRViewport& viewport);
 	virtual ~VRViewportNode();
 
 	void render(VRRenderer& renderer);
-
-	virtual void addChild(VRGraphicsWindowChild* child);
 
 private:
 	VRViewportCalculator m_viewportCalculator;

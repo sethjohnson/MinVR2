@@ -22,6 +22,8 @@ public:
 	virtual ~VRPluginInterface() {}
 
 	virtual void addVRDisplayFactory(MinVR::VRDisplayFactory* factory) = 0;
+	virtual MinVR::VRDisplayFactory* getBaseDisplayFactory() = 0;
+	virtual void setBaseDisplayFactory(MinVR::VRDisplayFactory* displayFactory) = 0;
 	virtual void addVRInputDeviceFactory(VRInputDeviceFactory* factory) = 0;
 	virtual void addVRTimer(VRTimer* timer) = 0;
 	virtual VRSystem* getVRSystem() = 0;

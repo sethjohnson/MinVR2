@@ -88,6 +88,8 @@ public:
 
   // Adds the display factories for all plugins who use this interface
   void addVRDisplayFactory(MinVR::VRDisplayFactory* factory);
+  MinVR::VRDisplayFactory* getBaseDisplayFactory();
+  void setBaseDisplayFactory(MinVR::VRDisplayFactory* displayFactory);
   	// Adds the input device factories for all plugins who use this interface
   void addVRInputDeviceFactory(VRInputDeviceFactory* factory);
   	// Used for timing (i.e. for animation, etc...)
@@ -98,7 +100,7 @@ public:
 	}
 
   MinVR::VRDisplayFactory& getDisplayFactory() {
-	  return _displayFactory;
+	  return *_displayFactory;
   }
 
   MinVR::VRSystem* getVRSystem()
@@ -130,7 +132,8 @@ private:
 
   // Plugin items
   MinVR::PluginManager _pluginManager;
-  MinVR::VRCompositeDisplayFactory _displayFactory;
+  MinVR::VRCompositeDisplayFactory* _displayFactories;
+  MinVR::VRDisplayFactory* _displayFactory;
   std::vector<VRInputDeviceFactory*> _inputDeviceFactories;
   std::vector<MinVR::VRTimer*> _timers;
   std::vector<VRInputDevice*> _inputDevices;
