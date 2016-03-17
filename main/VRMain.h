@@ -103,6 +103,9 @@ public:
 	  return *_displayFactory;
   }
 
+  void addEventHandler(MinVR::VREventHandler* eventHandler);
+  void removeEventHandler(MinVR::VREventHandler* eventHandler);
+
   MinVR::VRSystem* getVRSystem()
   {
 	  return this;
@@ -137,6 +140,7 @@ private:
   std::vector<VRInputDeviceFactory*> _inputDeviceFactories;
   std::vector<MinVR::VRTimer*> _timers;
   std::vector<VRInputDevice*> _inputDevices;
+  std::vector<MinVR::VREventHandler*> _eventHandlers;
 };
 
 #endif

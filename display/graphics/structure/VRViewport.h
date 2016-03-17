@@ -28,7 +28,7 @@ public:
 		return m_height;
 	}
 
-	void setHeight(int height) {
+	void setHeight(double height) {
 		m_height = height;
 	}
 
@@ -36,7 +36,7 @@ public:
 		return m_width;
 	}
 
-	void setWidth(int width) {
+	void setWidth(double width) {
 		m_width = width;
 	}
 
@@ -44,7 +44,7 @@ public:
 		return m_xOffset;
 	}
 
-	void setXOffset(int xOffset) {
+	void setXOffset(double xOffset) {
 		m_xOffset = xOffset;
 	}
 
@@ -52,7 +52,7 @@ public:
 		return m_yOffset;
 	}
 
-	void setYOffset(int yOffset) {
+	void setYOffset(double yOffset) {
 		m_yOffset = yOffset;
 	}
 

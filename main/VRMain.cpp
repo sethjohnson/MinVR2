@@ -242,7 +242,11 @@ VRMain::synchronizeAndProcessEvents() {
     //  }
 
     // 2.5 Invoke the user's callback on the new event
-    (*_eventCB)(event, _index);
+    //(*_eventCB)(event, _index);
+    for (int f = 0; f < _eventHandlers.size(); f++)
+    {
+    	_eventHandlers[f]->handleEvent(event, _index);
+    }
 
     // Get the next item from the queue.
     events->pop();
@@ -317,11 +321,11 @@ void VRMain::addVRDisplayFactory(MinVR::VRDisplayFactory* factory)
 }
 
 MinVR::VRDisplayFactory* VRMain::getBaseDisplayFactory() {
-
+	return _displayFactory;
 }
 
 void VRMain::setBaseDisplayFactory(MinVR::VRDisplayFactory* displayFactory) {
-
+	_displayFactory = displayFactory;
 }
 
 // Adds the input device factories for all plugins who use this interface
@@ -341,4 +345,17 @@ VRMain::shutdown()
 
 }
 
+void VRMain::addEventHandler(MinVR::VREventHandler* eventHandler) {
+	_eventHandlers.push_back(eventHandler);
+}
 
+void VRMain::removeEventHandler(MinVR::VREventHandler* eventHandler) {
+	for (int f = 0; f < _eventHandlers.size(); f++)
+	{
+		if (_eventHandlers[f] == eventHandler)
+		{
+			_eventHandlers.erase(_eventHandlers.begin()+f);
+			break;
+		}
+	}
+}

@@ -10,6 +10,7 @@
 #define VRSYSTEM_H_
 
 #include "display/VRDisplayFactory.h"
+#include "event/VREventHandler.h"
 
 namespace MinVR {
 
@@ -18,6 +19,8 @@ public:
 	virtual ~VRSystem() {}
 
 	virtual VRDisplayFactory& getDisplayFactory() = 0;
+	virtual void addEventHandler(VREventHandler* eventHandler) = 0;
+	virtual void removeEventHandler(VREventHandler* eventHandler) = 0;
 };
 
 } /* namespace MinVR */

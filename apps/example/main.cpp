@@ -54,7 +54,9 @@ int main(int argc, char **argv) {
 		MVR->initialize(index, "/MVR");
 	}
 
-	MVR->registerEventCallback(&handleEvent);
+	//MVR->registerEventCallback(&handleEvent);
+	VREventHandlerCallback userEventHandler(handleEvent);
+	MVR->addEventHandler(&userEventHandler);
 
 	// Get display device (Composite of all available display devices, but looks like one device)
 	//display = MVR->getDisplay();
