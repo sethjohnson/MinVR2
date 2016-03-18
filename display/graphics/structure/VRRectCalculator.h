@@ -6,22 +6,25 @@
  * 		Dan Orban (dtorban)
  */
 
-#ifndef VRVIEWPORTCALCULATOR_H_
-#define VRVIEWPORTCALCULATOR_H_
+#ifndef VRRECTCALCULATOR_H_
+#define VRRECTCALCULATOR_H_
 
 #include "display/VRRenderer.h"
-#include "VRViewport.h"
+#include "VRRect.h"
 
 namespace MinVR {
 
-class VRViewportCalculator {
+class VRRectCalculator {
 public:
-	VRViewportCalculator(bool modifyTile = false);
-	virtual ~VRViewportCalculator();
+	VRRectCalculator(std::string inName, bool modifyTile = false);
+	VRRectCalculator(std::string inName, std::string outName, bool modifyTile = false);
+	virtual ~VRRectCalculator();
 
-	VRViewport calculate(VRRenderState& state, const VRViewport& viewport);
+	VRRect calculate(VRRenderState& state, const VRRect& rect);
 
 private:
+	std::string m_inName;
+	std::string m_outName;
 	bool m_modifyTile;
 };
 

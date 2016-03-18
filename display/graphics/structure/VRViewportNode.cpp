@@ -10,7 +10,7 @@
 
 namespace MinVR {
 
-VRViewportNode::VRViewportNode(const VRViewport& viewport) : m_viewportCalculator(true), m_viewport(viewport) {
+VRViewportNode::VRViewportNode(const VRRect& rect) : m_rectCalculator("viewport", true), m_rect(rect) {
 }
 
 VRViewportNode::~VRViewportNode() {
@@ -18,7 +18,7 @@ VRViewportNode::~VRViewportNode() {
 
 void VRViewportNode::render(VRRenderer& renderer) {
 	renderer.pushState();
-	m_viewportCalculator.calculate(renderer.getState(), m_viewport);
+	m_rectCalculator.calculate(renderer.getState(), m_rect);
 
 	renderAtLeaf(renderer);
 	renderer.popState();

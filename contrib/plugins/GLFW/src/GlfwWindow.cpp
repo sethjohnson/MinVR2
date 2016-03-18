@@ -11,7 +11,7 @@
 
 namespace MinVR {
 
-GlfwWindow::GlfwWindow(const VRViewport& viewport) : VRGraphicsWindowNode(viewport) {
+GlfwWindow::GlfwWindow(const VRRect& rect) : VRGraphicsWindowNode(rect) {
 	glfwDefaultWindowHints();
 
 	/*if (isQuadbuffered())
@@ -19,14 +19,14 @@ GlfwWindow::GlfwWindow(const VRViewport& viewport) : VRGraphicsWindowNode(viewpo
 		glfwWindowHint(GLFW_STEREO, true);
 	}*/
 
-	window = glfwCreateWindow(viewport.getWidth(), viewport.getHeight(), "MinVR Window", NULL, NULL);
+	window = glfwCreateWindow(rect.getWidth(), rect.getHeight(), "MinVR Window", NULL, NULL);
 	if (!window)
 	{
 		std::cout << "Error creating window." << std::endl;
 	}
 
 	std::cout << "Created window." << std::endl;
-	glfwSetWindowPos(window, viewport.getXOffset(), viewport.getYOffset());
+	glfwSetWindowPos(window, rect.getXOffset(), rect.getYOffset());
 	glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 

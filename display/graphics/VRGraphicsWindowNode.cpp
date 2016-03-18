@@ -10,7 +10,7 @@
 
 namespace MinVR {
 
-VRGraphicsWindowNode::VRGraphicsWindowNode(const VRViewport& viewport) : m_viewport(viewport), m_viewportCalculator(true) {
+VRGraphicsWindowNode::VRGraphicsWindowNode(const VRRect& rect) : m_rect(rect), m_rectCalculator("rect", "viewport", true) {
 
 }
 
@@ -52,10 +52,10 @@ void VRGraphicsWindowNode::addChild(VRGraphicsWindowChild* child) {
 }
 
 void VRGraphicsWindowNode::updateState(VRRenderState& state) {
-	VRViewport vp = m_viewportCalculator.calculate(state, m_viewport);
-	vp.setXOffset(0);
-	vp.setYOffset(0);
-	state.writeValue("viewport", vp);
+	VRRect r = m_rectCalculator.calculate(state, m_rect);
+	r.setXOffset(0);
+	r.setYOffset(0);
+	state.writeValue("viewport", r);
 }
 
 } /* namespace MinVR */

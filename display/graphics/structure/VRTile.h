@@ -11,7 +11,7 @@
 
 #include "config/VRWritable.h"
 #include "math/VRMath.h"
-#include "VRViewport.h"
+#include "VRRect.h"
 
 namespace MinVR {
 
@@ -23,7 +23,7 @@ public:
 	void write(VRDataIndex& index, std::string name) const;
 	bool read(VRDataIndex& index, std::string name, std::string nameSpace);
 
-	VRTile modifyWithViewport(const VRViewport& oldViewport, const VRViewport& newViewport);
+	VRTile modifyWithRect(const VRRect& oldViewport, const VRRect& newViewport);
 
 	const VRPoint3& getBottomLeft() const {
 		return m_bottomLeft;

@@ -31,10 +31,10 @@ VRGraphicsWindowNode* GlfwWindowFactory::createWindow(VRDataIndex& config, const
 
 	std::cout << nameSpace << std::endl;
 
-	VRViewport viewport;
-	viewport.read(config, nameSpace, "");
+	VRRect rect;
+	rect.read(config, nameSpace, "");
 
-	GlfwWindow* window = new GlfwWindow(viewport);
+	GlfwWindow* window = new GlfwWindow(rect);
 
 	inputDevice->registerGlfwWindow(window);
 

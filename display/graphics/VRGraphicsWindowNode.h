@@ -12,8 +12,8 @@
 #include "display/base/VRDisplayNode.h"
 #include "VRGraphicsWindowChild.h"
 #include "display/synchronization/VRSynchronizedDisplay.h"
-#include "display/graphics/structure/VRViewport.h"
-#include "display/graphics/structure/VRViewportCalculator.h"
+#include "display/graphics/structure/VRRect.h"
+#include "display/graphics/structure/VRRectCalculator.h"
 #include "display/graphics/structure/VRTile.h"
 
 namespace MinVR {
@@ -29,16 +29,16 @@ public:
 
 	virtual void addChild(VRGraphicsWindowChild* child);
 
-	const VRViewport& getViewport() const {
-		return m_viewport;
+	const VRRect& getRect() const {
+		return m_rect;
 	}
 
-	void setViewport(const VRViewport& viewport) {
-		m_viewport = viewport;
+	void setRect(const VRRect& rect) {
+		m_rect = rect;
 	}
 
 protected:
-	VRGraphicsWindowNode(const VRViewport& viewport);
+	VRGraphicsWindowNode(const VRRect& rect);
 	virtual void updateState(VRRenderState& state);
 
 	virtual std::string getContextType() = 0;
@@ -49,8 +49,8 @@ protected:
 	virtual void finish() = 0;
 
 private:
-	VRViewportCalculator m_viewportCalculator;
-	VRViewport m_viewport;
+	VRRectCalculator m_rectCalculator;
+	VRRect m_rect;
 };
 
 } /* namespace MinVR */

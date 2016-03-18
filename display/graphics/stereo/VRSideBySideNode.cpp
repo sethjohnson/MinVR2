@@ -10,9 +10,9 @@
 
 namespace MinVR {
 
-VRSideBySideNode::VRSideBySideNode() {
-	m_viewports[0] = VRViewport(0.0, 0.0, 0.5, 1.0, true);
-	m_viewports[1] = VRViewport(0.5, 0.0, 0.5, 1.0, true);
+VRSideBySideNode::VRSideBySideNode() : m_rectCalculator("viewport") {
+	m_viewports[0] = VRRect(0.0, 0.0, 0.5, 1.0, true);
+	m_viewports[1] = VRRect(0.5, 0.0, 0.5, 1.0, true);
 }
 
 VRSideBySideNode::~VRSideBySideNode() {
@@ -24,7 +24,7 @@ int VRSideBySideNode::getNumPasses() {
 
 void VRSideBySideNode::preRenderPass(VRRenderer& renderer, int passNum) {
 	renderer.pushState();
-	m_viewportCalculator.calculate(renderer.getState(), m_viewports[passNum]);
+	m_rectCalculator.calculate(renderer.getState(), m_viewports[passNum]);
 }
 
 void VRSideBySideNode::postRenderPass(VRRenderer& renderer, int passNum) {

@@ -10,21 +10,21 @@
 #define VRVIEWPORTNODE_H_
 
 #include "display/graphics/VRGraphicsWindowChild.h"
-#include "VRViewport.h"
-#include "VRViewportCalculator.h"
+#include "VRRect.h"
+#include "VRRectCalculator.h"
 
 namespace MinVR {
 
 class VRViewportNode : public VRGraphicsWindowChildNode {
 public:
-	VRViewportNode(const VRViewport& viewport);
+	VRViewportNode(const VRRect& rect);
 	virtual ~VRViewportNode();
 
 	void render(VRRenderer& renderer);
 
 private:
-	VRViewportCalculator m_viewportCalculator;
-	VRViewport m_viewport;
+	VRRectCalculator m_rectCalculator;
+	VRRect m_rect;
 };
 
 } /* namespace MinVR */

@@ -17,7 +17,7 @@ namespace MinVR {
 
 class GlfwWindow : public VRGraphicsWindowNode {
 public:
-	PLUGIN_API GlfwWindow(const VRViewport& viewport);
+	PLUGIN_API GlfwWindow(const VRRect& rect);
 	PLUGIN_API virtual ~GlfwWindow();
 
 	PLUGIN_API GLFWwindow* getWindow() const {

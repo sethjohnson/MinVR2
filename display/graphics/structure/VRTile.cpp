@@ -46,16 +46,16 @@ bool VRTile::read(VRDataIndex& index, std::string name, std::string nameSpace) {
 	return true;
 }
 
-VRTile VRTile::modifyWithViewport(const VRViewport& oldViewport,
-		const VRViewport& newViewport) {
+VRTile VRTile::modifyWithRect(const VRRect& oldRect,
+		const VRRect& newRect) {
 	VRVector3 u = (m_topRight - m_topLeft).normalize();
 	VRVector3 v = (m_topLeft - m_bottomLeft).normalize();
 
-	double widthRatio = newViewport.getWidth()/oldViewport.getWidth();
-	double heightRatio = newViewport.getHeight()/oldViewport.getHeight();
+	double widthRatio = newRect.getWidth()/oldRect.getWidth();
+	double heightRatio = newRect.getHeight()/oldRect.getHeight();
 
-	double xOffsetRatio = (newViewport.getXOffset()-oldViewport.getXOffset())/oldViewport.getWidth();
-	double yOffsetRatio = (newViewport.getYOffset()-oldViewport.getYOffset())/oldViewport.getHeight();
+	double xOffsetRatio = (newRect.getXOffset()-oldRect.getXOffset())/oldRect.getWidth();
+	double yOffsetRatio = (newRect.getYOffset()-oldRect.getYOffset())/oldRect.getHeight();
 
 	m_bottomLeft = m_bottomLeft + u*xOffsetRatio + v*yOffsetRatio;
 

@@ -6,11 +6,11 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/graphics/structure/VRViewport.h>
+#include <display/graphics/structure/VRRect.h>
 
 namespace MinVR {
 
-VRViewport::VRViewport() {
+VRRect::VRRect() {
 	m_xOffset = 0.0;
 	m_yOffset = 0.0;
 	m_width = 0.0;
@@ -18,7 +18,7 @@ VRViewport::VRViewport() {
 	m_usePercent = false;
 }
 
-VRViewport::VRViewport(double x, double y, double w, double h,
+VRRect::VRRect(double x, double y, double w, double h,
 		bool usePercent) {
 	m_xOffset = x;
 	m_yOffset = y;
@@ -27,32 +27,32 @@ VRViewport::VRViewport(double x, double y, double w, double h,
 	m_usePercent = usePercent;
 }
 
-VRViewport::~VRViewport() {
+VRRect::~VRRect() {
 	// TODO Auto-generated destructor stub
 }
 
-VRViewport VRViewport::generateChild(const VRViewport& viewport) {
-	VRViewport newViewport(*this);
-	newViewport.m_usePercent = false;
-	if (viewport.m_usePercent)
+VRRect VRRect::generateChild(const VRRect& rect) {
+	VRRect newRect(*this);
+	newRect.m_usePercent = false;
+	if (rect.m_usePercent)
 	{
-		newViewport.m_xOffset += viewport.m_xOffset*m_width;
-		newViewport.m_yOffset += viewport.m_yOffset*m_height;
-		newViewport.m_width *= viewport.m_width;
-		newViewport.m_height *= viewport.m_height;
+		newRect.m_xOffset += rect.m_xOffset*m_width;
+		newRect.m_yOffset += rect.m_yOffset*m_height;
+		newRect.m_width *= rect.m_width;
+		newRect.m_height *= rect.m_height;
 	}
 	else
 	{
-		newViewport.m_xOffset += viewport.m_xOffset;
-		newViewport.m_yOffset += viewport.m_yOffset;
-		newViewport.m_width = viewport.m_width;
-		newViewport.m_height = viewport.m_height;
+		newRect.m_xOffset += rect.m_xOffset;
+		newRect.m_yOffset += rect.m_yOffset;
+		newRect.m_width = rect.m_width;
+		newRect.m_height = rect.m_height;
 	}
 
-	return newViewport;
+	return newRect;
 }
 
-void VRViewport::write(VRDataIndex& index, std::string name) const {
+void VRRect::write(VRDataIndex& index, std::string name) const {
 	index.addData(name + "/xOffset", m_xOffset);
 	index.addData(name + "/yOffset", m_yOffset);
 	index.addData(name + "/width", m_width);
@@ -60,7 +60,7 @@ void VRViewport::write(VRDataIndex& index, std::string name) const {
 	index.addData(name + "/usePercent", m_usePercent);
 }
 
-bool VRViewport::read(VRDataIndex& index, std::string name, std::string nameSpace) {
+bool VRRect::read(VRDataIndex& index, std::string name, std::string nameSpace) {
 	if (!index.exists(name, nameSpace)) {
 		return false;
 	}

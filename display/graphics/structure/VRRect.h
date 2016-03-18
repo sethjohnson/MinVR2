@@ -6,20 +6,20 @@
  * 		Dan Orban (dtorban)
  */
 
-#ifndef VRVIEWPORT_H_
-#define VRVIEWPORT_H_
+#ifndef VRRECT_H_
+#define VRRECT_H_
 
 #include "config/VRWritable.h"
 
 namespace MinVR {
 
-class VRViewport : public VRWritable {
+class VRRect : public VRWritable {
 public:
-	VRViewport();
-	VRViewport(double x, double y, double w, double h, bool usePercent = false);
-	virtual ~VRViewport();
+	VRRect();
+	VRRect(double x, double y, double w, double h, bool usePercent = false);
+	virtual ~VRRect();
 
-	VRViewport generateChild(const VRViewport& viewport);
+	VRRect generateChild(const VRRect& rect);
 
 	void write(VRDataIndex& index, std::string name) const;
 	bool read(VRDataIndex& index, std::string name, std::string nameSpace);

@@ -308,10 +308,10 @@ std::string getGlfwActionName(int action)
 }
 
 void GlfwInputDevice::sizeCallback(GLFWwindow* window, int width, int height) {
-	VRViewport viewport = windowMap[window]->getViewport();
-	viewport.setWidth(width);
-	viewport.setHeight(height);
-	windowMap[window]->setViewport(viewport);
+	VRRect r = windowMap[window]->getRect();
+	r.setWidth(width);
+	r.setHeight(height);
+	windowMap[window]->setRect(r);
 }
 
 } /* namespace MinVR */

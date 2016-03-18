@@ -6,7 +6,7 @@
 #include <math.h>
 #include "main/VRMain.h"
 #include "display/base/VRBasicRenderer.h"
-#include "display/graphics/structure/VRViewport.h"
+#include "display/graphics/structure/VRRect.h"
 
 #if defined(WIN32)
 #include <Windows.h>
@@ -163,7 +163,7 @@ void render(VRRenderState& state) {
 	}
 
 	glEnable(GL_SCISSOR_TEST);
-	VRViewport viewport;
+	VRRect viewport;
 	if (state.readValue("viewport", viewport))
 	{
 		glScissor(viewport.getXOffset(), viewport.getYOffset(), viewport.getWidth(), viewport.getHeight());

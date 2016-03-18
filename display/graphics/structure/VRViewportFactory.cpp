@@ -25,7 +25,7 @@ VRDisplay* VRViewportFactory::create(VRDataIndex& config,
 	VRDisplay* mainDisplay = m_innerFactory->create(config, nameSpace);
 	VRGraphicsWindowChildNode* display = NULL;
 
-	VRViewport viewport;
+	VRRect viewport;
 	VRViewportNode* viewportNode = NULL;
 	if (viewport.read(config, nameSpace + "/viewport", ""))
 	{
