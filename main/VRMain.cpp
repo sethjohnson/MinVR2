@@ -164,7 +164,7 @@ void VRMain::initialize()
   MinVR::VRDisplay* display = _displayFactory->create(*_index, "/MVR/VRDisplayDevices/Desktop");
   _display = dynamic_cast<MinVR::VRSynchronizedDisplay*>(display);
 
-  //exit(0);
+ // exit(0);
 
   if (_display == NULL)
   {

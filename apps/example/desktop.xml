@@ -35,6 +35,13 @@
     	<height type="double">400</height>
     	<SideBySideStereo>
     		<camera type="string">Head</camera>
+    		<!--viewport>
+	    			<xOffset type="double">0</xOffset>
+				    <yOffset type="double">0</yOffset>
+	    			<width type="double">0.5</width>
+    				<height type="double">0.5</height>
+    				<usePercent type="int">1</usePercent>
+    		</viewport>
     		<tile>
 				<topLeft type="doublearray">-0.5@0.5@0.0</topLeft>
 				<topRight type="doublearray">0.5@0.5@0.0</topRight>
@@ -42,7 +49,7 @@
 				<bottomRight type="doublearray">0.5@-0.5@0.0</bottomRight>
 				<nearClip type="double">0.01</nearClip>
 				<farClip type="double">100.0</farClip>
-			</tile>
+			</tile-->
     		<!--LeftWall>
     			<viewport>
 	    			<xOffset type="double">0</xOffset>
@@ -59,7 +66,24 @@
 					<nearClip type="double">0.01</nearClip>
 					<farClip type="double">100.0</farClip>
 				</tile>
-    		</LeftWall-->
+    		</LeftWall>
+    		<RightWall>
+    			<viewport>
+	    			<xOffset type="double">0.5</xOffset>
+				    <yOffset type="double">0.5</yOffset>
+	    			<width type="double">0.5</width>
+    				<height type="double">0.5</height>
+    				<usePercent type="int">1</usePercent>
+    			</viewport>
+    			<tile>
+					<topLeft type="doublearray">-0.5@0.5@0.0</topLeft>
+					<topRight type="doublearray">0.5@0.5@0.0</topRight>
+					<bottomLeft type="doublearray">-0.5@-0.5@0.0</bottomLeft>
+					<bottomRight type="doublearray">0.5@-0.5@0.0</bottomRight>
+					<nearClip type="double">0.01</nearClip>
+					<farClip type="double">100.0</farClip>
+				</tile>
+    		</RightWall-->
 		</SideBySideStereo>
 	</Desktop>
 </VRDisplayDevices>

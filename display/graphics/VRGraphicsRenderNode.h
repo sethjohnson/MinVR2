@@ -6,23 +6,21 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/graphics/structure/VRTileNode.h>
+#ifndef VRGRAPHICSRENDERDNODE_H_
+#define VRGRAPHICSRENDERDNODE_H_
+
+#include "display/graphics/VRGraphicsWindowChild.h"
 
 namespace MinVR {
 
-VRTileNode::VRTileNode(const VRTile& tile) : m_tile(tile) {
-}
+class VRGraphicsRenderNode : public VRGraphicsWindowChild {
+public:
+	VRGraphicsRenderNode();
+	virtual ~VRGraphicsRenderNode();
 
-VRTileNode::~VRTileNode() {
-}
-
-void VRTileNode::render(VRRenderer& renderer) {
-//	renderer.pushState();
-	renderer.getState().writeValue("tile", m_tile);
-
-	VRGraphicsWindowChild::render(renderer);
-
-//	renderer.popState();
-}
+	void render(VRRenderer& renderer);
+};
 
 } /* namespace MinVR */
+
+#endif /* VRGRAPHICSRENDERDISPLAY_H_ */

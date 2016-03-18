@@ -166,6 +166,7 @@ void render(VRRenderState& state) {
 	VRRect viewport;
 	if (state.readValue("viewport", viewport))
 	{
+		std::cout << viewport.getXOffset() << " " << viewport.getYOffset() << " " << viewport.getWidth() << " " << viewport.getHeight() << std::endl;
 		glScissor(viewport.getXOffset(), viewport.getYOffset(), viewport.getWidth(), viewport.getHeight());
 		glViewport(viewport.getXOffset(), viewport.getYOffset(), viewport.getWidth(), viewport.getHeight());
 	}

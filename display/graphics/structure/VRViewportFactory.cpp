@@ -9,6 +9,8 @@
 #include <display/graphics/structure/VRViewportFactory.h>
 #include "VRViewportNode.h"
 #include "VRTileNode.h"
+#include "display/graphics/VRGraphicsRenderNode.h"
+#include "display/scope/VRScopeNode.h"
 
 namespace MinVR {
 
@@ -22,49 +24,56 @@ VRViewportFactory::~VRViewportFactory() {
 VRDisplay* VRViewportFactory::create(VRDataIndex& config,
 		const std::string nameSpace) {
 
-	VRDisplay* mainDisplay = m_innerFactory->create(config, nameSpace);
-	VRGraphicsWindowChildNode* display = NULL;
-
-	VRRect viewport;
-	VRViewportNode* viewportNode = NULL;
-	if (viewport.read(config, nameSpace + "/viewport", ""))
+	VRDisplay* display = m_innerFactory->create(config, nameSpace);
+	bool createdScope = false;
+	if (!display)
 	{
-		viewportNode = new VRViewportNode(viewport);
-		display = viewportNode;
+		std::cout << "Created scope" << std::endl;
+		VRScopeNode<VRGraphicsWindowChild, VRGraphicsWindowChild>* scope = new VRScopeNode<VRGraphicsWindowChild, VRGraphicsWindowChild>();
+		VRDisplayNode::createChildren<VRScopeNode<VRGraphicsWindowChild, VRGraphicsWindowChild>, VRGraphicsWindowChild>(scope, m_vrSystem->getDisplayFactory(), config, nameSpace);
+		display = scope;
+		createdScope = true;
 	}
 
-	VRTile tile;
-	VRTileNode* tileNode = NULL;
-	if (tile.read(config, nameSpace + "/tile", ""))
-	{
-		tileNode = new VRTileNode(tile);
+	VRHasDisplayChildren<VRGraphicsWindowChild>* displayWithChildren = dynamic_cast<VRHasDisplayChildren<VRGraphicsWindowChild>*>(display);
 
-		if (viewportNode)
+	if (displayWithChildren)
+	{
+		VRDisplayNode* displayNode = dynamic_cast<VRDisplayNode*>(display);
+		int startChildren = displayNode->getChildren().size();
+
+		VRTile tile;
+		VRTileNode* tileNode = NULL;
+		if (tile.read(config, nameSpace + "/tile", ""))
 		{
-			viewportNode->addChild(tileNode);
+			std::cout << "Created tile" << std::endl;
+			tileNode = new VRTileNode(tile);
+			displayWithChildren->insertChild(tileNode, 0);
 		}
-		else
+
+		VRRect viewport;
+		VRViewportNode* viewportNode = NULL;
+		if (viewport.read(config, nameSpace + "/viewport", ""))
 		{
-			display = tileNode;
+			std::cout << "Created viewport" << std::endl;
+			viewportNode = new VRViewportNode(viewport);
+			displayWithChildren->insertChild(viewportNode, 0);
+		}
+
+		if (startChildren == 0 && displayNode->getChildren().size() > startChildren)
+		{
+			displayWithChildren->addChild(new VRGraphicsRenderNode());
+			std::cout << "Created renderer" << std::endl;
+		}
+
+		if (displayNode->getChildren().size() == 0 && createdScope) {
+			std::cout << "destroyed scope" << std::endl;
+			delete display;
+			return NULL;
 		}
 	}
 
-	if (display)
-	{
-		VRGraphicsWindowChild* child = dynamic_cast<VRGraphicsWindowChild*>(mainDisplay);
-		if (child)
-		{
-			display->addChild(child);
-		}
-		else
-		{
-			VRDisplayNode::createChildren<VRGraphicsWindowChildNode, VRGraphicsWindowChild>(tileNode, m_vrSystem->getDisplayFactory(), config, nameSpace);
-		}
-
-		return display;
-	}
-
-	return mainDisplay;
+	return display;
 }
 
 } /* namespace MinVR */

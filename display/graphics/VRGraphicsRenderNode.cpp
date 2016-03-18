@@ -6,23 +6,22 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/graphics/structure/VRTileNode.h>
+#include <display/graphics/VRGraphicsRenderNode.h>
 
 namespace MinVR {
 
-VRTileNode::VRTileNode(const VRTile& tile) : m_tile(tile) {
+VRGraphicsRenderNode::VRGraphicsRenderNode() {
+	// TODO Auto-generated constructor stub
+
 }
 
-VRTileNode::~VRTileNode() {
+VRGraphicsRenderNode::~VRGraphicsRenderNode() {
+	// TODO Auto-generated destructor stub
 }
 
-void VRTileNode::render(VRRenderer& renderer) {
-//	renderer.pushState();
-	renderer.getState().writeValue("tile", m_tile);
-
-	VRGraphicsWindowChild::render(renderer);
-
-//	renderer.popState();
+void VRGraphicsRenderNode::render(VRRenderer& renderer) {
+	std::cout << "Render" << std::endl;
+	renderer.render();
 }
 
 } /* namespace MinVR */

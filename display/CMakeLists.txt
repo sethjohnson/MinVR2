@@ -11,6 +11,7 @@ set (${PROJECT_NAME}_source_files
 	base/factories/VRTypedDisplayFactory.cpp
 	console/VRConsoleDisplay.cpp
 	graphics/VRGraphicsWindowChild.cpp
+	graphics/VRGraphicsRenderNode.cpp
 	graphics/VRGraphicsWindowNode.cpp
 	graphics/VRGraphicsWindowFactory.cpp
 	graphics/stereo/VRStereoFactory.cpp

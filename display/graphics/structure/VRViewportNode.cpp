@@ -17,11 +17,11 @@ VRViewportNode::~VRViewportNode() {
 }
 
 void VRViewportNode::render(VRRenderer& renderer) {
-	renderer.pushState();
+	//renderer.pushState();
 	m_rectCalculator.calculate(renderer.getState(), m_rect);
 
-	renderAtLeaf(renderer);
-	renderer.popState();
+	VRGraphicsWindowChild::render(renderer);
+	//renderer.popState();
 }
 
 } /* namespace MinVR */
