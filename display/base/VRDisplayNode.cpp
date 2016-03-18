@@ -17,10 +17,7 @@ VRDisplayNode::VRDisplayNode() {
 }
 
 VRDisplayNode::~VRDisplayNode() {
-	for (vector<VRDisplay*>::iterator it = m_children.begin(); it != m_children.end(); it++)
-	{
-		delete (*it);
-	}
+	clearChildrenInternal(true);
 }
 
 void VRDisplayNode::render(VRRenderer& renderer) {
@@ -52,5 +49,17 @@ void VRDisplayNode::renderAtLeaf(VRRenderer& renderer) {
 		renderer.render();
 	}
 }
+
+void VRDisplayNode::clearChildrenInternal(bool destroyChildren) {
+	if (destroyChildren) {
+		for (vector<VRDisplay*>::iterator it = m_children.begin(); it != m_children.end(); it++)
+		{
+				delete (*it);
+		}
+	}
+
+	m_children.clear();
+}
+
 
 } /* namespace MinVR */

@@ -9,7 +9,6 @@ set (${PROJECT_NAME}_source_files
 	base/VRFunctionRenderCallback.cpp
 	console/VRConsoleDisplay.cpp
 	graphics/VRGraphicsWindowChild.cpp
-	graphics/VRGraphicsRenderNode.cpp
 	graphics/VRGraphicsWindowNode.cpp
 	graphics/stereo/VRStereoNode.cpp
 	graphics/stereo/VRSideBySideNode.cpp

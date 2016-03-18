@@ -28,6 +28,10 @@ protected:
 		m_node->insertChildInternal(child, index);
 	}
 
+	void clearNodeChildren(bool destroyChildren) {
+		m_node->clearChildrenInternal(destroyChildren);
+	}
+
 private:
 	VRDisplayNode* m_node;
 };
@@ -43,6 +47,10 @@ public:
 
 	virtual void insertChild(T* child, int index) {
 		VRHasDisplayChildrenBase::insertNodeChild(child, index);
+	}
+
+	virtual void clearChildren(bool destroyChildren = false) {
+		VRHasDisplayChildrenBase::clearNodeChildren(destroyChildren);
 	}
 
 protected:

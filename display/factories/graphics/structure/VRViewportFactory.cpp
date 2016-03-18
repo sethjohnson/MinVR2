@@ -9,7 +9,6 @@
 #include <display/factories/graphics/structure/VRViewportFactory.h>
 #include "display/graphics/structure/VRViewportNode.h"
 #include "display/graphics/structure/VRTileNode.h"
-#include "display/graphics/VRGraphicsRenderNode.h"
 #include "display/scope/VRScopeNode.h"
 
 namespace MinVR {
@@ -41,15 +40,8 @@ VRDisplay* VRViewportFactory::create(VRDataIndex& config,
 	{
 		VRDisplayNode* displayNode = dynamic_cast<VRDisplayNode*>(display);
 		int startChildren = displayNode->getChildren().size();
-
-		VRTile tile;
-		VRTileNode* tileNode = NULL;
-		if (tile.read(config, nameSpace + "/tile", ""))
-		{
-			std::cout << "Created tile" << std::endl;
-			tileNode = new VRTileNode(tile);
-			displayWithChildren->insertChild(tileNode, 0);
-		}
+		std::vector<VRDisplay*> children = displayNode->getChildren();
+		displayWithChildren->clearChildren();
 
 		VRRect viewport;
 		VRViewportNode* viewportNode = NULL;
@@ -57,13 +49,28 @@ VRDisplay* VRViewportFactory::create(VRDataIndex& config,
 		{
 			std::cout << "Created viewport" << std::endl;
 			viewportNode = new VRViewportNode(viewport);
-			displayWithChildren->insertChild(viewportNode, 0);
+			displayWithChildren->addChild(viewportNode);
+			displayWithChildren = viewportNode;
+			//displayWithChildren->insertChild(viewportNode, 0);
 		}
 
-		if (startChildren == 0 && displayNode->getChildren().size() > startChildren)
+		VRTile tile;
+		VRTileNode* tileNode = NULL;
+		if (tile.read(config, nameSpace + "/tile", ""))
 		{
-			displayWithChildren->addChild(new VRGraphicsRenderNode());
-			std::cout << "Created renderer" << std::endl;
+			std::cout << "Created tile" << std::endl;
+			tileNode = new VRTileNode(tile);
+			displayWithChildren->addChild(tileNode);
+			displayWithChildren = tileNode;
+			//displayWithChildren->insertChild(tileNode, 0);
+		}
+
+		for (int f = 0; f < children.size(); f++)
+		{
+			VRGraphicsWindowChild* child = dynamic_cast<VRGraphicsWindowChild*>(children[f]);
+			if (child) {
+				displayWithChildren->addChild(child);
+			}
 		}
 
 		if (displayNode->getChildren().size() == 0 && createdScope) {

@@ -33,6 +33,7 @@ public:
 protected:
 	void addChildInternal(VRDisplay* child);
 	void insertChildInternal(VRDisplay* child, int index);
+	void clearChildrenInternal(bool destroyChildren = false);
 	void renderAtLeaf(VRRenderer& renderer);
 
 private:

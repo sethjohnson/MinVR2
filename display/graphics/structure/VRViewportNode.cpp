@@ -20,7 +20,7 @@ void VRViewportNode::render(VRRenderer& renderer) {
 	//renderer.pushState();
 	m_rectCalculator.calculate(renderer.getState(), m_rect);
 
-	VRGraphicsWindowChild::render(renderer);
+	VRGraphicsWindowChild::renderAtLeaf(renderer);
 	//renderer.popState();
 }
 
