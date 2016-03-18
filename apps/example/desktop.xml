@@ -14,17 +14,6 @@
     </MinVRDefaultPlugins>
 </VRPlugins>
 
-<Events>
-	<head type="string">test</head>
-</Events>
-
-<VRCameras>
-	<Head>
-		<cameraType type="string">offAxis</cameraType>
-		<cameraFrame type="string">/MVR/Events/head</cameraFrame>	
-	</Head>
-</VRCameras>
-
 <VRDisplayDevices>
 	<Desktop>
 		<displayType type="string">window</displayType>
@@ -34,14 +23,6 @@
 	    <width type="double">800</width>
     	<height type="double">400</height>
     	<SideBySideStereo>
-    		<camera type="string">Head</camera>
-    		<!--viewport>
-	    			<xOffset type="double">0</xOffset>
-				    <yOffset type="double">0</yOffset>
-	    			<width type="double">0.5</width>
-    				<height type="double">0.5</height>
-    				<usePercent type="int">1</usePercent>
-    		</viewport>
     		<tile>
 				<topLeft type="doublearray">-0.5@0.5@0.0</topLeft>
 				<topRight type="doublearray">0.5@0.5@0.0</topRight>
@@ -49,41 +30,7 @@
 				<bottomRight type="doublearray">0.5@-0.5@0.0</bottomRight>
 				<nearClip type="double">0.01</nearClip>
 				<farClip type="double">100.0</farClip>
-			</tile-->
-    		<!--LeftWall>
-    			<viewport>
-	    			<xOffset type="double">0</xOffset>
-				    <yOffset type="double">0</yOffset>
-	    			<width type="double">0.5</width>
-    				<height type="double">0.5</height>
-    				<usePercent type="int">1</usePercent>
-    			</viewport>
-    			<tile>
-					<topLeft type="doublearray">-0.5@0.5@0.0</topLeft>
-					<topRight type="doublearray">0.5@0.5@0.0</topRight>
-					<bottomLeft type="doublearray">-0.5@-0.5@0.0</bottomLeft>
-					<bottomRight type="doublearray">0.5@-0.5@0.0</bottomRight>
-					<nearClip type="double">0.01</nearClip>
-					<farClip type="double">100.0</farClip>
-				</tile>
-    		</LeftWall>
-    		<RightWall>
-    			<viewport>
-	    			<xOffset type="double">0.5</xOffset>
-				    <yOffset type="double">0.5</yOffset>
-	    			<width type="double">0.5</width>
-    				<height type="double">0.5</height>
-    				<usePercent type="int">1</usePercent>
-    			</viewport>
-    			<tile>
-					<topLeft type="doublearray">-0.5@0.5@0.0</topLeft>
-					<topRight type="doublearray">0.5@0.5@0.0</topRight>
-					<bottomLeft type="doublearray">-0.5@-0.5@0.0</bottomLeft>
-					<bottomRight type="doublearray">0.5@-0.5@0.0</bottomRight>
-					<nearClip type="double">0.01</nearClip>
-					<farClip type="double">100.0</farClip>
-				</tile>
-    		</RightWall-->
+			</tile>
 		</SideBySideStereo>
 	</Desktop>
 </VRDisplayDevices>
