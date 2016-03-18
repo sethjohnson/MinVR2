@@ -10,6 +10,7 @@
 #define VRGRAPHICSWINDOWCHILD_H_
 
 #include "display/base/VRDisplayNode.h"
+#include "display/base/VRHasDisplayChildren.h"
 
 namespace MinVR {
 
@@ -19,12 +20,12 @@ public:
 	virtual ~VRGraphicsWindowChild();
 };
 
-class VRGraphicsWindowChildNode : public VRGraphicsWindowChild {
+class VRGraphicsWindowChildNode : public VRGraphicsWindowChild, public VRHasDisplayChildren<VRGraphicsWindowChild> {
 public:
 	VRGraphicsWindowChildNode();
 	virtual ~VRGraphicsWindowChildNode();
 
-	virtual void addChild(VRGraphicsWindowChild* child);
+	//virtual void addChild(VRGraphicsWindowChild* child);
 };
 
 } /* namespace MinVR */

@@ -18,7 +18,7 @@
 
 namespace MinVR {
 
-class VRGraphicsWindowNode : public VRDisplayNode, public VRSynchronizedDisplay {
+class VRGraphicsWindowNode : public VRDisplayNode, public VRSynchronizedDisplay, public VRHasDisplayChildren<VRGraphicsWindowChild> {
 public:
 	virtual ~VRGraphicsWindowNode();
 
@@ -26,8 +26,6 @@ public:
 	virtual void startRender(VRRenderer& renderer);
 	virtual void waitForRenderComplete();
 	virtual void synchronize();
-
-	virtual void addChild(VRGraphicsWindowChild* child);
 
 	const VRRect& getRect() const {
 		return m_rect;

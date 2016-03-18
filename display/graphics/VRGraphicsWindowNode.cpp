@@ -10,7 +10,7 @@
 
 namespace MinVR {
 
-VRGraphicsWindowNode::VRGraphicsWindowNode(const VRRect& rect) : m_rect(rect), m_rectCalculator("rect", "viewport", true) {
+VRGraphicsWindowNode::VRGraphicsWindowNode(const VRRect& rect) : VRHasDisplayChildren<VRGraphicsWindowChild>(this), m_rect(rect), m_rectCalculator("rect", "viewport", true) {
 
 }
 
@@ -45,10 +45,6 @@ void VRGraphicsWindowNode::synchronize() {
 	setCurrentContext();
 	swapBuffers();
 	clearCurrentContext();
-}
-
-void VRGraphicsWindowNode::addChild(VRGraphicsWindowChild* child) {
-	VRDisplayNode::addChild(child);
 }
 
 void VRGraphicsWindowNode::updateState(VRRenderState& state) {

@@ -16,15 +16,15 @@ VRGraphicsWindowChild::VRGraphicsWindowChild() {
 VRGraphicsWindowChild::~VRGraphicsWindowChild() {
 }
 
-VRGraphicsWindowChildNode::VRGraphicsWindowChildNode() {
+VRGraphicsWindowChildNode::VRGraphicsWindowChildNode() : VRHasDisplayChildren<VRGraphicsWindowChild>(this) {
 }
 
 VRGraphicsWindowChildNode::~VRGraphicsWindowChildNode() {
 }
 
-void VRGraphicsWindowChildNode::addChild(VRGraphicsWindowChild* child) {
-	VRDisplayNode::addChild(child);
-}
+//void VRGraphicsWindowChildNode::addChild(VRGraphicsWindowChild* child) {
+//	VRDisplayNode::addChild(child);
+//}
 
 
 } /* namespace MinVR */

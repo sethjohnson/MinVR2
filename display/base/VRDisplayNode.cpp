@@ -34,8 +34,12 @@ const std::vector<VRDisplay*>& VRDisplayNode::getChildren() const {
 	return m_children;
 }
 
-void VRDisplayNode::addChild(VRDisplay* child) {
+void VRDisplayNode::addChildInternal(VRDisplay* child) {
 	m_children.push_back(child);
+}
+
+void VRDisplayNode::insertChildInternal(VRDisplay* child, int index) {
+	m_children.insert(m_children.begin() + index, child);
 }
 
 void VRDisplayNode::renderAtLeaf(VRRenderer& renderer) {

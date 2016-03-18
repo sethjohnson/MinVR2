@@ -16,7 +16,9 @@
 namespace MinVR {
 
 class VRDisplayNode : public VRDisplay {
+friend class VRHasDisplayChildrenBase;
 public:
+
 	VRDisplayNode();
 	virtual ~VRDisplayNode();
 
@@ -53,7 +55,8 @@ public:
 	}
 
 protected:
-	void addChild(VRDisplay* child);
+	void addChildInternal(VRDisplay* child);
+	void insertChildInternal(VRDisplay* child, int index);
 	void renderAtLeaf(VRRenderer& renderer);
 
 private:

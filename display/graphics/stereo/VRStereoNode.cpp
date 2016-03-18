@@ -25,8 +25,4 @@ void VRStereoNode::render(VRRenderer& renderer) {
 	}
 }
 
-void VRStereoNode::addChild(VRGraphicsWindowChild* child) {
-  VRDisplayNode::addChild(child);
-}
-
 } /* namespace MinVR */

@@ -13,13 +13,12 @@
 
 namespace MinVR {
 
-class VRStereoNode : public VRGraphicsWindowChild {
+class VRStereoNode : public VRGraphicsWindowChildNode {
 public:
 	VRStereoNode();
 	virtual ~VRStereoNode();
 
 	virtual void render(VRRenderer& renderer);
-	virtual void addChild(VRGraphicsWindowChild* child);
 
 protected:
 	virtual int getNumPasses() = 0;
