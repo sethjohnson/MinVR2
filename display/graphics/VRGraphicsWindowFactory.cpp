@@ -24,7 +24,6 @@ VRDisplay* VRGraphicsWindowFactory::create(VRDataIndex& config,
 	if (config.exists(nameSpace + "/windowType", ""))
 	{
 		VRGraphicsWindowNode* display = createWindow(config, nameSpace, config.getValue(nameSpace + "/windowType", ""));
-		std::cout << "Test" << std::endl;
 		VRDisplayNode::createChildren<VRGraphicsWindowNode, VRGraphicsWindowChild>(display, m_vrSystem->getDisplayFactory(), config, nameSpace);
 
 		return display;

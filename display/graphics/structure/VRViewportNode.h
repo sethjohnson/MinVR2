@@ -12,11 +12,10 @@
 #include "display/graphics/VRGraphicsWindowChild.h"
 #include "VRViewport.h"
 #include "VRViewportCalculator.h"
-#include "event/VREventHandler.h"
 
 namespace MinVR {
 
-class VRViewportNode : public VRGraphicsWindowChildNode{
+class VRViewportNode : public VRGraphicsWindowChildNode {
 public:
 	VRViewportNode(const VRViewport& viewport);
 	virtual ~VRViewportNode();
