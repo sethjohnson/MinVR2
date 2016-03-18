@@ -10,7 +10,7 @@
 #define GLFWWINDOWFACTORY_H_
 
 #include "plugin/PluginFramework.h"
-#include "display/graphics/VRGraphicsWindowFactory.h"
+#include "display/factories/graphics/VRGraphicsWindowFactory.h"
 #include "GlfwInputDevice.h"
 
 namespace MinVR {

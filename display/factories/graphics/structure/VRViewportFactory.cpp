@@ -6,9 +6,9 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/graphics/structure/VRViewportFactory.h>
-#include "VRViewportNode.h"
-#include "VRTileNode.h"
+#include <display/factories/graphics/structure/VRViewportFactory.h>
+#include "display/graphics/structure/VRViewportNode.h"
+#include "display/graphics/structure/VRTileNode.h"
 #include "display/graphics/VRGraphicsRenderNode.h"
 #include "display/scope/VRScopeNode.h"
 

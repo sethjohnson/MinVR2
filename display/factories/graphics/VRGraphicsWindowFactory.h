@@ -9,9 +9,9 @@
 #ifndef VRGRAPHICSWINDOWFACTORY_H_
 #define VRGRAPHICSWINDOWFACTORY_H_
 
-#include "display/base/factories/VRTypedDisplayFactory.h"
+#include "display/factories/VRTypedDisplayFactory.h"
 #include "main/VRSystem.h"
-#include "VRGraphicsWindowNode.h"
+#include "display/graphics/VRGraphicsWindowNode.h"
 
 namespace MinVR {
 

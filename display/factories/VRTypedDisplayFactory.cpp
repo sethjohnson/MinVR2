@@ -6,7 +6,7 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/base/factories/VRTypedDisplayFactory.h>
+#include <display/factories/VRTypedDisplayFactory.h>
 
 namespace MinVR {
 

@@ -7,22 +7,22 @@ set (${PROJECT_NAME}_source_files
 	base/VRDisplayNode.cpp
 	base/VRBasicRenderer.cpp
 	base/VRFunctionRenderCallback.cpp
-	base/factories/VRCompositeDisplayFactory.cpp
-	base/factories/VRTypedDisplayFactory.cpp
 	console/VRConsoleDisplay.cpp
 	graphics/VRGraphicsWindowChild.cpp
 	graphics/VRGraphicsRenderNode.cpp
 	graphics/VRGraphicsWindowNode.cpp
-	graphics/VRGraphicsWindowFactory.cpp
-	graphics/stereo/VRStereoFactory.cpp
 	graphics/stereo/VRStereoNode.cpp
 	graphics/stereo/VRSideBySideNode.cpp
 	graphics/structure/VRViewportNode.cpp
 	graphics/structure/VRRect.cpp
-	graphics/structure/VRViewportFactory.cpp
 	graphics/structure/VRRectCalculator.cpp
 	graphics/structure/VRTile.cpp
 	graphics/structure/VRTileNode.cpp
+	factories/VRCompositeDisplayFactory.cpp
+	factories/VRTypedDisplayFactory.cpp
+	factories/graphics/VRGraphicsWindowFactory.cpp
+	factories/graphics/stereo/VRStereoFactory.cpp
+	factories/graphics/structure/VRViewportFactory.cpp
 )
 
 add_library (${PROJECT_NAME} ${${PROJECT_NAME}_source_files})

@@ -6,8 +6,8 @@
 #include "net/VRNetClient.h"
 #include "net/VRNetServer.h"
 #include "display/console/VRConsoleDisplay.h"
-#include "display/graphics/stereo/VRStereoFactory.h"
-#include "display/graphics/structure/VRViewportFactory.h"
+#include "display/factories/graphics/stereo/VRStereoFactory.h"
+#include "display/factories/graphics/structure/VRViewportFactory.h"
 
 void emptyEventCallbackMVR(const std::string &eventName, VRDataIndex *dataIndex) {}
 void emptyRenderCallbackMVR(VRDataIndex* index) {}

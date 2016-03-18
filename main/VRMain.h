@@ -6,7 +6,7 @@
 #include "main/VRPluginInterface.h"
 #include "plugin/PluginManager.h"
 #include "display/synchronization/VRSynchronizedDisplay.h"
-#include "display/base/factories/VRCompositeDisplayFactory.h"
+#include "display/factories/VRCompositeDisplayFactory.h"
 
 /** Application programmers should use this singleton class as the
     interface to the MinVR library.

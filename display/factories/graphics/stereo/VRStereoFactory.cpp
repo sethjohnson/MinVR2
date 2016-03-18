@@ -6,8 +6,8 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/graphics/stereo/VRStereoFactory.h>
-#include "VRSideBySideNode.h"
+#include <display/factories/graphics/stereo/VRStereoFactory.h>
+#include "display/graphics/stereo/VRSideBySideNode.h"
 
 namespace MinVR {
 
