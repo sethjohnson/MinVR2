@@ -70,6 +70,12 @@ To use the display, create a MinVR::VRRenderer and use the display to call the u
   }
   ```
   
+Output for the above program should look like the following:
 
+  ```
+  ./example
+  This is called when this display node renders
+  My user defined render function.  myValue: 7
+  ```
 
 
