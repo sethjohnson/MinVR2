@@ -9,7 +9,7 @@
 #ifndef VRRECTCALCULATOR_H_
 #define VRRECTCALCULATOR_H_
 
-#include "display/framework/VRRenderer.h"
+#include "display/interfaces/VRRenderer.h"
 #include "VRRect.h"
 
 namespace MinVR {

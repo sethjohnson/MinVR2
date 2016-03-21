@@ -6,7 +6,7 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/VRCallbackRenderer.h>
+#include <display/renderers/VRCallbackRenderer.h>
 
 namespace MinVR {
 

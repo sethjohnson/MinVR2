@@ -11,7 +11,7 @@
 
 #include "display/VRDisplayNode.h"
 #include "VRGraphicsWindowChild.h"
-#include "display/framework/synchronization/VRSynchronizedDisplay.h"
+#include "display/interfaces/synchronization/VRSynchronizedDisplay.h"
 #include "display/graphics/structure/VRRect.h"
 #include "display/graphics/structure/VRRectCalculator.h"
 #include "display/graphics/structure/VRTile.h"

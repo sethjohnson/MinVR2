@@ -10,7 +10,7 @@
 #define VRSCOPENODE_H_
 
 #include "display/VRDisplayNode.h"
-#include "display/framework/graph/VRHasDisplayChildren.h"
+#include "display/interfaces/graph/VRHasDisplayChildren.h"
 
 namespace MinVR {
 

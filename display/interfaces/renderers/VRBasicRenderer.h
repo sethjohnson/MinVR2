@@ -9,7 +9,7 @@
 #ifndef VRBASICRENDERER_H_
 #define VRBASICRENDERER_H_
 
-#include "display/framework/VRRenderer.h"
+#include "display/interfaces/VRRenderer.h"
 
 namespace MinVR {
 

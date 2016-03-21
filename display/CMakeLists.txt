@@ -4,9 +4,9 @@ project (VRDisplay)
 
 set (${PROJECT_NAME}_source_files 
 	VRDisplayNode.cpp
-	VRCallbackRenderer.cpp
-	framework/VRRenderState.cpp
-	framework/renderers/VRBasicRenderer.cpp
+	renderers/VRCallbackRenderer.cpp
+	interfaces/VRRenderState.cpp
+	interfaces/renderers/VRBasicRenderer.cpp
 	console/VRConsoleDisplay.cpp
 	graphics/VRGraphicsWindowChild.cpp
 	graphics/VRGraphicsWindowNode.cpp

@@ -9,7 +9,7 @@
 #ifndef VRDISPLAYNODE_H_
 #define VRDISPLAYNODE_H_
 
-#include "display/framework/VRDisplay.h"
+#include "display/interfaces/VRDisplay.h"
 #include <vector>
 
 namespace MinVR {
