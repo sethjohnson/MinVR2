@@ -28,20 +28,19 @@ VRDisplay* VRViewportFactory::create(VRDataIndex& config,
 	if (!display)
 	{
 		std::cout << "Created scope" << std::endl;
-		VRScopeNode<VRGraphicsWindowChild, VRGraphicsWindowChild>* scope = new VRScopeNode<VRGraphicsWindowChild, VRGraphicsWindowChild>();
-		createChildren<VRScopeNode<VRGraphicsWindowChild, VRGraphicsWindowChild>, VRGraphicsWindowChild>(scope, m_vrSystem->getDisplayFactory(), config, nameSpace);
+		VRScopeNode<VRGraphicsContextChild, VRGraphicsContextChild>* scope = new VRScopeNode<VRGraphicsContextChild, VRGraphicsContextChild>();
+		createChildren<VRScopeNode<VRGraphicsContextChild, VRGraphicsContextChild>, VRGraphicsContextChild>(scope, m_vrSystem->getDisplayFactory(), config, nameSpace);
 		display = scope;
 		createdScope = true;
 	}
 
-	VRHasDisplayChildren<VRGraphicsWindowChild>* displayWithChildren = dynamic_cast<VRHasDisplayChildren<VRGraphicsWindowChild>*>(display);
+	VRGraphicsContextNode* displayNode = dynamic_cast<VRGraphicsContextNode*>(display);
 
-	if (displayWithChildren)
+	if (displayNode)
 	{
-		VRDisplayNode* displayNode = dynamic_cast<VRDisplayNode*>(display);
 		int startChildren = displayNode->getChildren().size();
-		std::vector<VRDisplay*> children = displayNode->getChildren();
-		displayWithChildren->clearChildren();
+		std::vector<VRDisplayNode*> children = displayNode->getChildren();
+		displayNode->clearChildren();
 
 		VRRect viewport;
 		VRViewportNode* viewportNode = NULL;
@@ -49,8 +48,8 @@ VRDisplay* VRViewportFactory::create(VRDataIndex& config,
 		{
 			std::cout << "Created viewport" << std::endl;
 			viewportNode = new VRViewportNode(viewport);
-			displayWithChildren->addChild(viewportNode);
-			displayWithChildren = viewportNode;
+			displayNode->addChild(viewportNode);
+			displayNode = viewportNode;
 			//displayWithChildren->insertChild(viewportNode, 0);
 		}
 
@@ -60,16 +59,16 @@ VRDisplay* VRViewportFactory::create(VRDataIndex& config,
 		{
 			std::cout << "Created tile" << std::endl;
 			tileNode = new VRTileNode(tile);
-			displayWithChildren->addChild(tileNode);
-			displayWithChildren = tileNode;
+			displayNode->addChild(tileNode);
+			displayNode = tileNode;
 			//displayWithChildren->insertChild(tileNode, 0);
 		}
 
 		for (int f = 0; f < children.size(); f++)
 		{
-			VRGraphicsWindowChild* child = dynamic_cast<VRGraphicsWindowChild*>(children[f]);
+			VRGraphicsContextChild* child = dynamic_cast<VRGraphicsContextChild*>(children[f]);
 			if (child) {
-				displayWithChildren->addChild(child);
+				displayNode->addChild(child);
 			}
 		}
 

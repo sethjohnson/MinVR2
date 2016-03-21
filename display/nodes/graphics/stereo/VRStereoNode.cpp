@@ -20,7 +20,7 @@ void VRStereoNode::render(VRRenderer& renderer) {
 	for (int passNum = 0; passNum < getNumPasses(); passNum++)
 	{
 		preRenderPass(renderer, passNum);
-		VRDisplayNode::render(renderer);
+		VRGraphicsContextNode::render(renderer);
 		postRenderPass(renderer, passNum);
 	}
 }

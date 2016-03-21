@@ -15,23 +15,56 @@
 namespace MinVR {
 
 class VRDisplayNode : public VRDisplay {
-friend class VRHasDisplayChildrenBase;
 public:
-	VRDisplayNode();
 	virtual ~VRDisplayNode();
 
 	virtual void render(VRRenderer& renderer);
 
-	virtual const std::vector<VRDisplay*>& getChildren() const;
+	virtual const std::vector<VRDisplayNode*>& getChildren() const;
 
 protected:
-	void addChildInternal(VRDisplay* child);
-	void insertChildInternal(VRDisplay* child, int index);
+	VRDisplayNode();
+	void addChildInternal(VRDisplayNode* child);
+	void insertChildInternal(VRDisplayNode* child, int index);
 	void clearChildrenInternal(bool destroyChildren = false);
 
 private:
-	std::vector<VRDisplay*> m_children;
+	std::vector<VRDisplayNode*> m_children;
 };
+
+template<typename ChildType>
+class VREditableDisplayNode : public VRDisplayNode {
+public:
+	VREditableDisplayNode() {}
+	virtual ~VREditableDisplayNode() {}
+
+	virtual void addChild(ChildType* child);
+	virtual void insertChild(ChildType* child, int index);
+	virtual void clearChildren(bool destroyChildren = false);
+};
+
+typedef VREditableDisplayNode<VRDisplayNode> VRBasicDisplayNode;
+
+template<typename ChildType>
+void VREditableDisplayNode<ChildType>::addChild(ChildType* child) {
+	VRDisplayNode* node = dynamic_cast<VRDisplayNode*>(child);
+	if (node) {
+		addChildInternal(node);
+	}
+}
+
+template<typename ChildType>
+void VREditableDisplayNode<ChildType>::insertChild(ChildType* child, int index) {
+	VRDisplayNode* node = dynamic_cast<VRDisplayNode*>(child);
+	if (node) {
+		insertChildInternal(node, index);
+	}
+}
+
+template<typename ChildType>
+void VREditableDisplayNode<ChildType>::clearChildren(bool destroyChildren) {
+	clearChildrenInternal(destroyChildren);
+}
 
 } /* namespace MinVR */
 

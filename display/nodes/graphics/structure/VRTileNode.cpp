@@ -20,7 +20,7 @@ void VRTileNode::render(VRRenderer& renderer) {
 //	renderer.pushState();
 	renderer.getState().writeValue("tile", m_tile);
 
-	VRGraphicsWindowChild::render(renderer);
+	VRGraphicsContextChildNode::render(renderer);
 
 //	renderer.popState();
 }

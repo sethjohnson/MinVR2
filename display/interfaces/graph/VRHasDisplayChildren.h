@@ -6,7 +6,7 @@
  * 		Dan Orban (dtorban)
  */
 
-#ifndef VRHASDISPLAYCHILDREN_H_
+/*#ifndef VRHASDISPLAYCHILDREN_H_
 #define VRHASDISPLAYCHILDREN_H_
 
 #include "display/VRDisplayNode.h"
@@ -60,4 +60,4 @@ protected:
 
 } /* namespace MinVR */
 
-#endif /* VRHASCHILDREN_H_ */
+//#endif /* VRHASCHILDREN_H_ */

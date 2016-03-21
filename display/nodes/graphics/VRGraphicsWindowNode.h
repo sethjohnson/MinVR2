@@ -9,15 +9,14 @@
 #ifndef VRGRAPHICSWINDOWNODE_H_
 #define VRGRAPHICSWINDOWNODE_H_
 
-#include "display/VRDisplayNode.h"
-#include "VRGraphicsWindowChild.h"
+#include "VRGraphicsContextNode.h"
 #include "display/interfaces/synchronization/VRSynchronizedDisplay.h"
 #include "math/VRRect.h"
 #include "display/nodes/graphics/structure/VRTile.h"
 
 namespace MinVR {
 
-class VRGraphicsWindowNode : public VRDisplayNode, public VRSynchronizedDisplay, public VRHasDisplayChildren<VRGraphicsWindowChild> {
+class VRGraphicsWindowNode : public VRGraphicsContextNode, public VRSynchronizedDisplay {
 public:
 	virtual ~VRGraphicsWindowNode();
 

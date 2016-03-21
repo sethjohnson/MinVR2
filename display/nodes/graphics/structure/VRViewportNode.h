@@ -9,12 +9,12 @@
 #ifndef VRVIEWPORTNODE_H_
 #define VRVIEWPORTNODE_H_
 
-#include "display/nodes/graphics/VRGraphicsWindowChild.h"
+#include "display/nodes/graphics/VRGraphicsContextNode.h"
 #include "math/VRRect.h"
 
 namespace MinVR {
 
-class VRViewportNode : public VRGraphicsWindowChildNode {
+class VRViewportNode : public VRGraphicsContextChildNode {
 public:
 	VRViewportNode(const VRRect& rect);
 	virtual ~VRViewportNode();

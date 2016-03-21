@@ -10,19 +10,18 @@
 #define VRSCOPENODE_H_
 
 #include "display/VRDisplayNode.h"
-#include "display/interfaces/graph/VRHasDisplayChildren.h"
 
 namespace MinVR {
 
-template<class DisplayNodeType, typename ChildNodeType>
-class VRScopeNode : public DisplayNodeType, public VRHasDisplayChildren<ChildNodeType>  {
+template<typename ChildNodeType, class DisplayNodeInterface>
+class VRScopeNode : public VREditableDisplayNode<ChildNodeType>, public DisplayNodeInterface  {
 public:
-	VRScopeNode() : VRHasDisplayChildren<ChildNodeType>(this) {}
+	VRScopeNode() {}
 	virtual ~VRScopeNode() {}
 
 	void render(VRRenderer& renderer) {
 		renderer.pushState();
-		VRDisplayNode::render(renderer);
+		VREditableDisplayNode<ChildNodeType>::render(renderer);
 		renderer.popState();
 	}
 };

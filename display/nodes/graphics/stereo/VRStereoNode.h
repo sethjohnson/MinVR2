@@ -9,11 +9,11 @@
 #ifndef VRSTEREONODE_H_
 #define VRSTEREONODE_H_
 
-#include "display/nodes/graphics/VRGraphicsWindowChild.h"
+#include "display/nodes/graphics/VRGraphicsContextNode.h"
 
 namespace MinVR {
 
-class VRStereoNode : public VRGraphicsWindowChildNode {
+class VRStereoNode : public VRGraphicsContextChildNode {
 public:
 	VRStereoNode();
 	virtual ~VRStereoNode();

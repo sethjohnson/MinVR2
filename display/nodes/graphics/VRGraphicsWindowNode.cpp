@@ -11,7 +11,7 @@
 
 namespace MinVR {
 
-VRGraphicsWindowNode::VRGraphicsWindowNode(const VRRect& rect) : VRHasDisplayChildren<VRGraphicsWindowChild>(this), m_rect(rect) {
+VRGraphicsWindowNode::VRGraphicsWindowNode(const VRRect& rect) : m_rect(rect) {
 
 }
 
@@ -30,7 +30,7 @@ void VRGraphicsWindowNode::startRender(VRRenderer& renderer) {
 	renderer.getState().setValue("graphicsContextType", getContextType());
 	updateState(renderer.getState());
 	renderer.updateFrame();
-	VRDisplayNode::render(renderer);
+	VRGraphicsContextNode::render(renderer);
 	flush();
 	renderer.popState();
 	clearCurrentContext();
