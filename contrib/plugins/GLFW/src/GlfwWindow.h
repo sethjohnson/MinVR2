@@ -10,7 +10,7 @@
 #define GLFWWINDOW_H_
 
 #include "plugin/PluginFramework.h"
-#include "display/graphics/VRGraphicsWindowNode.h"
+#include "display/nodes/graphics/VRGraphicsWindowNode.h"
 #include <GLFW/glfw3.h>
 
 namespace MinVR {

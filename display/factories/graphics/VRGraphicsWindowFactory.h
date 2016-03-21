@@ -11,7 +11,7 @@
 
 #include "display/factories/VRTypedDisplayFactory.h"
 #include "main/VRSystem.h"
-#include "display/graphics/VRGraphicsWindowNode.h"
+#include "display/nodes/graphics/VRGraphicsWindowNode.h"
 
 namespace MinVR {
 

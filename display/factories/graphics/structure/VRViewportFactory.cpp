@@ -7,8 +7,8 @@
  */
 
 #include <display/factories/graphics/structure/VRViewportFactory.h>
-#include "display/graphics/structure/VRViewportNode.h"
-#include "display/graphics/structure/VRTileNode.h"
+#include "display/nodes/graphics/structure/VRViewportNode.h"
+#include "display/nodes/graphics/structure/VRTileNode.h"
 #include "display/factories/scope/VRScopeNode.h"
 
 namespace MinVR {

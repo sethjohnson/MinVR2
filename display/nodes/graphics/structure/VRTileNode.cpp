@@ -6,7 +6,7 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/graphics/structure/VRTileNode.h>
+#include <display/nodes/graphics/structure/VRTileNode.h>
 
 namespace MinVR {
 

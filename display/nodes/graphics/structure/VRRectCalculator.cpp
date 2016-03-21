@@ -6,7 +6,7 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/graphics/structure/VRRectCalculator.h>
+#include <display/nodes/graphics/structure/VRRectCalculator.h>
 #include "VRTile.h"
 
 namespace MinVR {

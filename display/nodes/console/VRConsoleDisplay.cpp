@@ -6,7 +6,7 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/console/VRConsoleDisplay.h>
+#include <display/nodes/console/VRConsoleDisplay.h>
 
 namespace MinVR {
 

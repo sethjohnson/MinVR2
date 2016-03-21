@@ -6,7 +6,7 @@
 #include <math.h>
 #include "main/VRMain.h"
 #include "display/renderers/VRCallbackRenderer.h"
-#include "display/graphics/structure/VRRect.h"
+#include "display/nodes/graphics/structure/VRRect.h"
 
 #if defined(WIN32)
 #include <Windows.h>

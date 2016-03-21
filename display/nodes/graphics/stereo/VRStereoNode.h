@@ -9,7 +9,7 @@
 #ifndef VRSTEREONODE_H_
 #define VRSTEREONODE_H_
 
-#include "display/graphics/VRGraphicsWindowChild.h"
+#include "display/nodes/graphics/VRGraphicsWindowChild.h"
 
 namespace MinVR {
 

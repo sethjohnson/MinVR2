@@ -5,7 +5,7 @@
 #endif
 #include "net/VRNetClient.h"
 #include "net/VRNetServer.h"
-#include "display/console/VRConsoleDisplay.h"
+#include "display/nodes/console/VRConsoleDisplay.h"
 #include "display/factories/graphics/stereo/VRStereoFactory.h"
 #include "display/factories/graphics/structure/VRViewportFactory.h"
 

@@ -7,16 +7,16 @@ set (${PROJECT_NAME}_source_files
 	renderers/VRCallbackRenderer.cpp
 	interfaces/VRRenderState.cpp
 	interfaces/renderers/VRBasicRenderer.cpp
-	console/VRConsoleDisplay.cpp
-	graphics/VRGraphicsWindowChild.cpp
-	graphics/VRGraphicsWindowNode.cpp
-	graphics/stereo/VRStereoNode.cpp
-	graphics/stereo/VRSideBySideNode.cpp
-	graphics/structure/VRViewportNode.cpp
-	graphics/structure/VRRect.cpp
-	graphics/structure/VRRectCalculator.cpp
-	graphics/structure/VRTile.cpp
-	graphics/structure/VRTileNode.cpp
+	nodes/console/VRConsoleDisplay.cpp
+	nodes/graphics/VRGraphicsWindowChild.cpp
+	nodes/graphics/VRGraphicsWindowNode.cpp
+	nodes/graphics/stereo/VRStereoNode.cpp
+	nodes/graphics/stereo/VRSideBySideNode.cpp
+	nodes/graphics/structure/VRViewportNode.cpp
+	nodes/graphics/structure/VRRect.cpp
+	nodes/graphics/structure/VRRectCalculator.cpp
+	nodes/graphics/structure/VRTile.cpp
+	nodes/graphics/structure/VRTileNode.cpp
 	factories/VRCompositeDisplayFactory.cpp
 	factories/VRTypedDisplayFactory.cpp
 	factories/graphics/VRGraphicsWindowFactory.cpp

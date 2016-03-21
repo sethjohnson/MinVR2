@@ -7,7 +7,7 @@
  */
 
 #include <display/factories/graphics/stereo/VRStereoFactory.h>
-#include "display/graphics/stereo/VRSideBySideNode.h"
+#include "display/nodes/graphics/stereo/VRSideBySideNode.h"
 
 namespace MinVR {
 

@@ -9,8 +9,8 @@
 #ifndef VRSIDEBYSIDENODE_H_
 #define VRSIDEBYSIDENODE_H_
 
-#include "display/graphics/stereo/VRStereoNode.h"
-#include "display/graphics/structure/VRRectCalculator.h"
+#include "display/nodes/graphics/stereo/VRStereoNode.h"
+#include "display/nodes/graphics/structure/VRRectCalculator.h"
 
 namespace MinVR {
 

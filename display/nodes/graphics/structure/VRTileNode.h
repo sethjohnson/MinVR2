@@ -10,7 +10,7 @@
 #define VRTILENODE_H_
 
 #include "VRTile.h"
-#include "display/graphics/VRGraphicsWindowChild.h"
+#include "display/nodes/graphics/VRGraphicsWindowChild.h"
 
 namespace MinVR {
 

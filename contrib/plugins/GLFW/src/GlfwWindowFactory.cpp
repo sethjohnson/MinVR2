@@ -10,9 +10,9 @@
 #include "GlfwWindow.h"
 #include <iostream>
 #include "config/VRDataIndex.h"
-#include "display/graphics/structure/VRViewportNode.h"
-#include "display/graphics/structure/VRTileNode.h"
-#include "display/graphics/stereo/VRSideBySideNode.h"
+#include "display/nodes/graphics/structure/VRViewportNode.h"
+#include "display/nodes/graphics/structure/VRTileNode.h"
+#include "display/nodes/graphics/stereo/VRSideBySideNode.h"
 
 namespace MinVR {
 

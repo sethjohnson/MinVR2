@@ -9,7 +9,7 @@
 #ifndef VRVIEWPORTNODE_H_
 #define VRVIEWPORTNODE_H_
 
-#include "display/graphics/VRGraphicsWindowChild.h"
+#include "display/nodes/graphics/VRGraphicsWindowChild.h"
 #include "VRRect.h"
 #include "VRRectCalculator.h"
 

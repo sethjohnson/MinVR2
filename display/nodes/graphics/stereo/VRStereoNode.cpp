@@ -6,7 +6,7 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/graphics/stereo/VRStereoNode.h>
+#include <display/nodes/graphics/stereo/VRStereoNode.h>
 
 namespace MinVR {
 

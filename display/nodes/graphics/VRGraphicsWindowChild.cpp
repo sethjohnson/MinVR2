@@ -6,7 +6,7 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/graphics/VRGraphicsWindowChild.h>
+#include <display/nodes/graphics/VRGraphicsWindowChild.h>
 
 namespace MinVR {
 
