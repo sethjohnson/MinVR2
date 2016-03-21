@@ -2,17 +2,16 @@
 
 ## VRDisplayNode
 
-VRDisplayNode is the fundamental class that can be inherited to create a different types of displays.  It assumes that the 
-node's childrent are read only.  This gives more control of the children to the subclasses.  For example, a graphics window node can only have sub-nodes which assume a graphics context.
+VRDisplayNode is the fundamental class that can be inherited to create a different types of displays.  It assumes that the subclass has complete control of its children, but a user cannot add or delete the children directly.  This gives more control of types of children that can be added to a node.  For example, a graphics window node may require that its children are only of a type that have graphics contexts.
 
 ## Folder Structure
 
-The display directory is separated into several folders to handle different levels of functionality:
+The display directory is separated into several folders to handle different levels complexity and functionality:
 
-* **factories** - Contains factories that can create VRDisplayNodes.  It is mostly necessary for allowing users to extend MinVR through plugins.  Users can create their own factories that parse a VRDataIndex and add them to VRMain.
+* **factories** - Contains factories that can create VRDisplayNodes.  This folder mostly allows users to extend MinVR through plugins.  Users can create their own factories which parse a VRDataIndex.  These then can be added to the VRMain list of available display factories.
 * **interfaces** - Contains a more genearal framework, which allows more *advanced* users of MinVR to extend MinVR beyond the VRDisplayNode architecture.
-* **nodes** - Base display nodes defined in MinVR, specifically for graphics and command line rendering.
-* **renderers** - Base renderers defined in MinVR, specifically for handling render callbacks.
+* **nodes** - Contains the base display nodes that are defined in MinVR, specifically for graphics and command line rendering.
+* **renderers** - Contains the base renderers defined in MinVR, specifically for handling render callbacks and controlling state.
 
 ***The base display directory contains the VRDisplayNode class which is all you need to start creating your own displays.***
 
