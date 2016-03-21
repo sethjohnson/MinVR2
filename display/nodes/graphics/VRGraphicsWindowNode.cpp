@@ -7,10 +7,11 @@
  */
 
 #include <display/nodes/graphics/VRGraphicsWindowNode.h>
+#include "display/nodes/graphics/structure/VRViewportNode.h"
 
 namespace MinVR {
 
-VRGraphicsWindowNode::VRGraphicsWindowNode(const VRRect& rect) : VRHasDisplayChildren<VRGraphicsWindowChild>(this), m_rect(rect), m_rectCalculator("rect", "viewport", true) {
+VRGraphicsWindowNode::VRGraphicsWindowNode(const VRRect& rect) : VRHasDisplayChildren<VRGraphicsWindowChild>(this), m_rect(rect) {
 
 }
 
@@ -48,7 +49,7 @@ void VRGraphicsWindowNode::synchronize() {
 }
 
 void VRGraphicsWindowNode::updateState(VRRenderState& state) {
-	VRRect r = m_rectCalculator.calculate(state, m_rect);
+	VRRect r = VRViewportNode::calculate("rect", "viewport", state, m_rect, true);
 	r.setXOffset(0);
 	r.setYOffset(0);
 	state.writeValue("viewport", r);

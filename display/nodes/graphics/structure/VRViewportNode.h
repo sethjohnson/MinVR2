@@ -10,8 +10,7 @@
 #define VRVIEWPORTNODE_H_
 
 #include "display/nodes/graphics/VRGraphicsWindowChild.h"
-#include "VRRect.h"
-#include "VRRectCalculator.h"
+#include "math/VRRect.h"
 
 namespace MinVR {
 
@@ -22,8 +21,10 @@ public:
 
 	void render(VRRenderer& renderer);
 
+	static VRRect calculate(std::string inName, std::string outName, VRRenderState& state, const VRRect& rect, bool modifyTile = false);
+	static VRRect calculate(std::string inName, VRRenderState& state, const VRRect& rect, bool modifyTile = false);
+
 private:
-	VRRectCalculator m_rectCalculator;
 	VRRect m_rect;
 };
 

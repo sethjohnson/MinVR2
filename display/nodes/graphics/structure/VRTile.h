@@ -11,7 +11,7 @@
 
 #include "config/VRWritable.h"
 #include "math/VRMath.h"
-#include "VRRect.h"
+#include "math/VRRect.h"
 
 namespace MinVR {
 

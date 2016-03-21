@@ -6,7 +6,7 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/nodes/graphics/structure/VRRect.h>
+#include "VRRect.h"
 
 namespace MinVR {
 

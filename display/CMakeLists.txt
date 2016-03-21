@@ -13,8 +13,6 @@ set (${PROJECT_NAME}_source_files
 	nodes/graphics/stereo/VRStereoNode.cpp
 	nodes/graphics/stereo/VRSideBySideNode.cpp
 	nodes/graphics/structure/VRViewportNode.cpp
-	nodes/graphics/structure/VRRect.cpp
-	nodes/graphics/structure/VRRectCalculator.cpp
 	nodes/graphics/structure/VRTile.cpp
 	nodes/graphics/structure/VRTileNode.cpp
 	factories/VRCompositeDisplayFactory.cpp

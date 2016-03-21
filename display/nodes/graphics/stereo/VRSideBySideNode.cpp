@@ -7,10 +7,11 @@
  */
 
 #include <display/nodes/graphics/stereo/VRSideBySideNode.h>
+#include "display/nodes/graphics/structure/VRViewportNode.h"
 
 namespace MinVR {
 
-VRSideBySideNode::VRSideBySideNode() : m_rectCalculator("viewport") {
+VRSideBySideNode::VRSideBySideNode() {
 	m_viewports[0] = VRRect(0.0, 0.0, 0.5, 1.0, true);
 	m_viewports[1] = VRRect(0.5, 0.0, 0.5, 1.0, true);
 }
@@ -24,7 +25,7 @@ int VRSideBySideNode::getNumPasses() {
 
 void VRSideBySideNode::preRenderPass(VRRenderer& renderer, int passNum) {
 	renderer.pushState();
-	m_rectCalculator.calculate(renderer.getState(), m_viewports[passNum]);
+	VRViewportNode::calculate("viewport", renderer.getState(), m_viewports[passNum]);
 }
 
 void VRSideBySideNode::postRenderPass(VRRenderer& renderer, int passNum) {

@@ -12,8 +12,7 @@
 #include "display/VRDisplayNode.h"
 #include "VRGraphicsWindowChild.h"
 #include "display/interfaces/synchronization/VRSynchronizedDisplay.h"
-#include "display/nodes/graphics/structure/VRRect.h"
-#include "display/nodes/graphics/structure/VRRectCalculator.h"
+#include "math/VRRect.h"
 #include "display/nodes/graphics/structure/VRTile.h"
 
 namespace MinVR {
@@ -47,7 +46,6 @@ protected:
 	virtual void finish() = 0;
 
 private:
-	VRRectCalculator m_rectCalculator;
 	VRRect m_rect;
 };
 

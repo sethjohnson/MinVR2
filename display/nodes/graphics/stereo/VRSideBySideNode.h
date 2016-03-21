@@ -10,7 +10,7 @@
 #define VRSIDEBYSIDENODE_H_
 
 #include "display/nodes/graphics/stereo/VRStereoNode.h"
-#include "display/nodes/graphics/structure/VRRectCalculator.h"
+#include "math/VRRect.h"
 
 namespace MinVR {
 
@@ -25,7 +25,6 @@ protected:
 	void postRenderPass(VRRenderer& renderer, int passNum);
 
 private:
-	VRRectCalculator m_rectCalculator;
 	VRRect m_viewports[2];
 };
 
