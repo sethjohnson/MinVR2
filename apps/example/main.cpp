@@ -5,7 +5,7 @@
 #include <fstream>
 #include <math.h>
 #include "main/VRMain.h"
-#include "display/base/VRBasicRenderer.h"
+#include "display/VRCallbackRenderer.h"
 #include "display/graphics/structure/VRRect.h"
 
 #if defined(WIN32)
@@ -72,8 +72,7 @@ int main(int argc, char **argv) {
 	//VRFunctionRenderCallback callback(render);
 	//MinVR::VRBasicRenderer renderer(callback);
 
-	VRFunctionRenderCallback callback(noRender, initGL);
-	VRBasicRenderer renderer(callback);
+	VRCallbackRenderer renderer(noRender, initGL);
 	MVR->renderEverywhere(renderer);
 
 	while (perFrame()) {}
@@ -89,8 +88,7 @@ bool perFrame()
 	MVR->synchronizeAndProcessEvents();
 
 	// Render the scene on all displays (passing render function into display)
-	VRFunctionRenderCallback callback(render);
-	MinVR::VRBasicRenderer renderer(callback);
+	VRCallbackRenderer renderer(render);
 	MVR->renderEverywhere(renderer);
 
 	return isRunning;

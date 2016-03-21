@@ -6,12 +6,12 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/base/VRBasicRenderer.h>
+#include <display/framework/renderers/VRBasicRenderer.h>
 #include <sstream>
 
 namespace MinVR {
 
-VRBasicRenderer::VRBasicRenderer(VRRenderCallback& renderCallback) : m_nodeNum(0), m_renderCallback(&renderCallback) {
+VRBasicRenderer::VRBasicRenderer() {
 	resetState();
 }
 
@@ -19,11 +19,11 @@ VRBasicRenderer::~VRBasicRenderer() {
 }
 
 void VRBasicRenderer::updateFrame() {
-	m_renderCallback->updateFrame(m_state);
+	updateFrame(m_state);
 }
 
 void VRBasicRenderer::render() {
-	m_renderCallback->render(m_state);
+	render(m_state);
 }
 
 VRRenderState& VRBasicRenderer::getState() {

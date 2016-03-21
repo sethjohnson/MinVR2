@@ -6,19 +6,19 @@
  * 		Dan Orban (dtorban)
  */
 
-#ifndef VRFUNCTIONRENDERCALLBACK_H_
-#define VRFUNCTIONRENDERCALLBACK_H_
+#ifndef VRCALLBACKRENDERER_H_
+#define VRCALLBACKRENDERER_H_
 
-#include "display/base/VRRenderCallback.h"
+#include "display/framework/renderers/VRBasicRenderer.h"
 
 namespace MinVR {
 
-class VRFunctionRenderCallback : public VRRenderCallback {
+class VRCallbackRenderer : public VRBasicRenderer {
 public:
 	typedef void (*MethodType)(VRRenderState&);
 
-	VRFunctionRenderCallback(MethodType render, MethodType update = NULL);
-	virtual ~VRFunctionRenderCallback();
+	VRCallbackRenderer(MethodType render, MethodType update = NULL);
+	virtual ~VRCallbackRenderer();
 
 	void updateFrame(VRRenderState& state);
 	void render(VRRenderState& state);

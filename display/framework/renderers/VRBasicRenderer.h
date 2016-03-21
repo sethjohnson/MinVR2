@@ -6,21 +6,35 @@
  * 		Dan Orban (dtorban)
  */
 
-#ifndef VRRENDERCALLBACK_H_
-#define VRRENDERCALLBACK_H_
+#ifndef VRBASICRENDERER_H_
+#define VRBASICRENDERER_H_
 
-#include "display/framework/VRRenderState.h"
+#include "display/framework/VRRenderer.h"
 
 namespace MinVR {
 
-class VRRenderCallback {
+class VRBasicRenderer : public VRRenderer {
 public:
-	virtual ~VRRenderCallback() {}
+	VRBasicRenderer();
+	virtual ~VRBasicRenderer();
+
+	void updateFrame();
+	void render();
 
 	virtual void updateFrame(VRRenderState& state) = 0;
 	virtual void render(VRRenderState& state) = 0;
+
+	VRRenderState& getState();
+	void pushState();
+	void popState();
+	void resetState();
+
+private:
+	VRRenderState m_state;
+	int m_nodeNum;
+	std::vector<std::string> m_nameSpaces;
 };
 
 } /* namespace MinVR */
 
-#endif /* VRRENDERCALLBACK_H_ */
+#endif /* VRBASICRENDERER_H_ */

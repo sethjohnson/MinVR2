@@ -6,26 +6,26 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/base/VRFunctionRenderCallback.h>
+#include <display/VRCallbackRenderer.h>
 
 namespace MinVR {
 
-VRFunctionRenderCallback::VRFunctionRenderCallback(MethodType render, MethodType update) {
+VRCallbackRenderer::VRCallbackRenderer(MethodType render, MethodType update) {
 	m_renderMethod = render;
 	m_updateMethod = update;
 }
 
-VRFunctionRenderCallback::~VRFunctionRenderCallback() {
+VRCallbackRenderer::~VRCallbackRenderer() {
 }
 
-void VRFunctionRenderCallback::updateFrame(VRRenderState& state) {
+void VRCallbackRenderer::updateFrame(VRRenderState& state) {
 	if (m_updateMethod != NULL)
 	{
 		(*m_updateMethod)(state);
 	}
 }
 
-void VRFunctionRenderCallback::render(VRRenderState& state) {
+void VRCallbackRenderer::render(VRRenderState& state) {
 	(*m_renderMethod)(state);
 }
 
