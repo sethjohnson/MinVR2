@@ -24,7 +24,7 @@ VRDisplay* VRGraphicsWindowFactory::create(VRDataIndex& config,
 	if (config.exists(nameSpace + "/windowType", ""))
 	{
 		VRGraphicsWindowNode* display = createWindow(config, nameSpace, config.getValue(nameSpace + "/windowType", ""));
-		VRDisplayNode::createChildren<VRGraphicsWindowNode, VRGraphicsWindowChild>(display, m_vrSystem->getDisplayFactory(), config, nameSpace);
+		createChildren<VRGraphicsWindowNode, VRGraphicsWindowChild>(display, m_vrSystem->getDisplayFactory(), config, nameSpace);
 
 		return display;
 	}

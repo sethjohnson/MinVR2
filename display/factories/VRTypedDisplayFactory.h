@@ -9,7 +9,7 @@
 #ifndef VRTYPEDDISPLAYFACTORY_H_
 #define VRTYPEDDISPLAYFACTORY_H_
 
-#include "display/VRDisplayFactory.h"
+#include "display/factories/VRDisplayFactory.h"
 
 namespace MinVR {
 

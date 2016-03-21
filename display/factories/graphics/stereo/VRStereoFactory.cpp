@@ -29,7 +29,7 @@ VRDisplay* VRStereoFactory::create(VRDataIndex& config,
 	{
 		std::cout << "True " << nameSpace << std::endl;
 		VRSideBySideNode* sideBySideNode = new VRSideBySideNode();
-		VRDisplayNode::createChildren<VRSideBySideNode, VRGraphicsWindowChild>(sideBySideNode, m_vrSystem->getDisplayFactory(), config, nameSpace);
+		createChildren<VRSideBySideNode, VRGraphicsWindowChild>(sideBySideNode, m_vrSystem->getDisplayFactory(), config, nameSpace);
 		return sideBySideNode;
 	}
 

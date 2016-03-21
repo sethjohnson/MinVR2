@@ -29,7 +29,7 @@ VRDisplay* VRViewportFactory::create(VRDataIndex& config,
 	{
 		std::cout << "Created scope" << std::endl;
 		VRScopeNode<VRGraphicsWindowChild, VRGraphicsWindowChild>* scope = new VRScopeNode<VRGraphicsWindowChild, VRGraphicsWindowChild>();
-		VRDisplayNode::createChildren<VRScopeNode<VRGraphicsWindowChild, VRGraphicsWindowChild>, VRGraphicsWindowChild>(scope, m_vrSystem->getDisplayFactory(), config, nameSpace);
+		createChildren<VRScopeNode<VRGraphicsWindowChild, VRGraphicsWindowChild>, VRGraphicsWindowChild>(scope, m_vrSystem->getDisplayFactory(), config, nameSpace);
 		display = scope;
 		createdScope = true;
 	}

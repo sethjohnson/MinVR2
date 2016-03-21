@@ -9,7 +9,7 @@
 #ifndef VRVIEWPORTFACTORY_H_
 #define VRVIEWPORTFACTORY_H_
 
-#include "display/VRDisplayFactory.h"
+#include "display/factories/VRDisplayFactory.h"
 #include "main/VRSystem.h"
 
 namespace MinVR {
