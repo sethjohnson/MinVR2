@@ -25,13 +25,8 @@ public:
 	virtual void waitForRenderComplete();
 	virtual void synchronize();
 
-	const VRRect& getRect() const {
-		return m_rect;
-	}
-
-	void setRect(const VRRect& rect) {
-		m_rect = rect;
-	}
+	const VRRect& getRect() const;
+	void setRect(const VRRect& rect);
 
 protected:
 	VRGraphicsWindowNode(const VRRect& rect);

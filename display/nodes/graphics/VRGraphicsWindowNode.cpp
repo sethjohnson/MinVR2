@@ -55,4 +55,12 @@ void VRGraphicsWindowNode::updateState(VRRenderState& state) {
 	state.writeValue("viewport", r);
 }
 
+const VRRect& VRGraphicsWindowNode::getRect() const {
+	return m_rect;
+}
+
+void VRGraphicsWindowNode::setRect(const VRRect& rect) {
+	m_rect = rect;
+}
+
 } /* namespace MinVR */

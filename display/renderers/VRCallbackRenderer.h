@@ -13,6 +13,11 @@
 
 namespace MinVR {
 
+/*
+ * VRCallbackRenderer is a simple renderer which takes two function callback pointers as input.
+ * These functions are registered as callback functions for the VRRenderer.  The state is controlled
+ * in the VRBasicRenderer subclass.
+ */
 class VRCallbackRenderer : public VRBasicRenderer {
 public:
 	typedef void (*MethodType)(VRRenderState&);
