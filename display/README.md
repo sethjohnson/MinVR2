@@ -1,19 +1,29 @@
 # Display Node Architecture
 
-VRDisplayNode is the fundamental class that can be inherited to create a different types of displays. It assumes that the 
-node is read only so that subclasses have more control over which types can be  added to the display node.  For example, 
-a graphics window node can only have sub-nodes which assume a context.  If you want to create a node that is also 
-writable, inherit from VRBasicDisplayNode instead.
+## VRDisplayNode
+
+VRDisplayNode is the fundamental class that can be inherited to create a different types of displays.  It assumes that the 
+node's childrent are read only.  This gives more control of the children to the subclasses.  For example, a graphics window node can only have sub-nodes which assume a graphics context.
+
+## Folder Structure
+
+The display directory is separated into several folders to handle different levels of functionality:
+
+* **factories** - Contains factories that can create VRDisplayNodes.  It is mostly necessary for allowing users to extend MinVR through plugins.  Users can create their own factories that parse a VRDataIndex and add them to VRMain.
+* **interfaces** - Contains a more genearal framework, which allows more *advanced* users of MinVR to extend MinVR beyond the VRDisplayNode architecture.
+* **nodes** - Base display nodes defined in MinVR, specifically for graphics and command line rendering.
+* **renderers** - Base renderers defined in MinVR, specifically for handling render callbacks.
+
+***The base display directory contains the VRDisplayNode class which is all you need to start creating your own displays.***
 
 ## Quick Start Guide
 
-#### Createing a new display
+#### Createing a New Display
 
-Here is simple example application of creating a new command line display node that overrides the render function:
+To create a new display, simply inherit from MinVR::VRDisplayNode and override the render function:
 
-  ```
+  ```c++
   #include "display/VRDisplayNode.h"
-  #include "display/renderers/VRCallbackRenderer.h"
   #include <iostream>
   
   /* MyDisplayNode sets myValue and uses the command line to display. */
@@ -35,6 +45,13 @@ Here is simple example application of creating a new command line display node t
       renderer->popState();
     }
   }
+  ```
+  
+To use the display, create a MinVR::VRRenderer and use the display to call the user defined function:
+    
+  ```c++
+  #include "MyDisplayNode.h"
+  #include "display/renderers/VRCallbackRenderer.h"
   
   /* User defined function which the display node calls */
   void userRender(VRRenderState& state) {
@@ -46,11 +63,14 @@ Here is simple example application of creating a new command line display node t
     // Create display
     MyDisplayNode myDisplayNode;
     
-    // Create user renderer
+    // Create VRCallbackRenderer which encapsulates a simple function pointer
     VRCallbackRenderer renderer(userRender);
     
     // Call render function
     myDisplayNode.render(renderer);
   }
   ```
+  
+
+
 
