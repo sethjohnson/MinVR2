@@ -9,7 +9,7 @@
 #ifndef VRBASICRENDERER_H_
 #define VRBASICRENDERER_H_
 
-#include "display/VRRenderer.h"
+#include "display/framework/VRRenderer.h"
 #include "VRRenderCallback.h"
 #include "VRFunctionRenderCallback.h"
 

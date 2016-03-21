@@ -5,7 +5,7 @@
 #include "config/VRDataIndex.h"
 #include "main/VRPluginInterface.h"
 #include "plugin/PluginManager.h"
-#include "display/synchronization/VRSynchronizedDisplay.h"
+#include "display/framework/synchronization/VRSynchronizedDisplay.h"
 #include "display/factories/VRCompositeDisplayFactory.h"
 
 /** Application programmers should use this singleton class as the

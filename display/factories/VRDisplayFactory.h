@@ -9,7 +9,7 @@
 #ifndef VRDISPLAYFACTORY_H_
 #define VRDISPLAYFACTORY_H_
 
-#include "display/VRDisplay.h"
+#include "display/framework/VRDisplay.h"
 #include "config/VRDataIndex.h"
 
 namespace MinVR {

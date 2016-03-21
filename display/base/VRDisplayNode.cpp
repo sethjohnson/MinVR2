@@ -21,9 +21,16 @@ VRDisplayNode::~VRDisplayNode() {
 }
 
 void VRDisplayNode::render(VRRenderer& renderer) {
-	for (vector<VRDisplay*>::iterator it = m_children.begin(); it != m_children.end(); it++)
+	if (m_children.size() > 0)
 	{
-		(*it)->render(renderer);
+		for (vector<VRDisplay*>::iterator it = m_children.begin(); it != m_children.end(); it++)
+		{
+			(*it)->render(renderer);
+		}
+	}
+	else
+	{
+		renderer.render();
 	}
 }
 
@@ -37,17 +44,6 @@ void VRDisplayNode::addChildInternal(VRDisplay* child) {
 
 void VRDisplayNode::insertChildInternal(VRDisplay* child, int index) {
 	m_children.insert(m_children.begin() + index, child);
-}
-
-void VRDisplayNode::renderAtLeaf(VRRenderer& renderer) {
-	if (m_children.size() > 0)
-	{
-		VRDisplayNode::render(renderer);
-	}
-	else
-	{
-		renderer.render();
-	}
 }
 
 void VRDisplayNode::clearChildrenInternal(bool destroyChildren) {

@@ -9,7 +9,7 @@
 #ifndef VRDISPLAYNODE_H_
 #define VRDISPLAYNODE_H_
 
-#include "display/VRDisplay.h"
+#include "display/framework/VRDisplay.h"
 #include <vector>
 
 namespace MinVR {
@@ -17,7 +17,6 @@ namespace MinVR {
 class VRDisplayNode : public VRDisplay {
 friend class VRHasDisplayChildrenBase;
 public:
-
 	VRDisplayNode();
 	virtual ~VRDisplayNode();
 
@@ -25,12 +24,10 @@ public:
 
 	virtual const std::vector<VRDisplay*>& getChildren() const;
 
-
 protected:
 	void addChildInternal(VRDisplay* child);
 	void insertChildInternal(VRDisplay* child, int index);
 	void clearChildrenInternal(bool destroyChildren = false);
-	void renderAtLeaf(VRRenderer& renderer);
 
 private:
 	std::vector<VRDisplay*> m_children;

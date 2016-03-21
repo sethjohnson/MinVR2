@@ -9,7 +9,7 @@
 #ifndef VRRENDERCALLBACK_H_
 #define VRRENDERCALLBACK_H_
 
-#include "display/VRRenderState.h"
+#include "display/framework/VRRenderState.h"
 
 namespace MinVR {
 

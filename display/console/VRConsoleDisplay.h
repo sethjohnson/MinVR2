@@ -9,8 +9,8 @@
 #ifndef FRCONSOLEDISPLAY_H_
 #define VRCONSOLEDISPLAY_H_
 
-#include "display/VRDisplay.h"
-#include "display/synchronization/VRSynchronizedDisplay.h"
+#include "display/framework/VRDisplay.h"
+#include "display/framework/synchronization/VRSynchronizedDisplay.h"
 #include <iostream>
 
 namespace MinVR {
