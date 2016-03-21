@@ -6,7 +6,7 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/interfaces/renderers/VRBasicRenderer.h>
+#include <display/renderers/VRBasicRenderer.h>
 #include <sstream>
 
 namespace MinVR {

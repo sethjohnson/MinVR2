@@ -9,7 +9,7 @@
 #ifndef VRCALLBACKRENDERER_H_
 #define VRCALLBACKRENDERER_H_
 
-#include "display/interfaces/renderers/VRBasicRenderer.h"
+#include "display/renderers/VRBasicRenderer.h"
 
 namespace MinVR {
 
