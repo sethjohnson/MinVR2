@@ -9,7 +9,7 @@
 #ifndef VRGRAPHICSWINDOWNODE_H_
 #define VRGRAPHICSWINDOWNODE_H_
 
-#include "display/base/VRDisplayNode.h"
+#include "display/VRDisplayNode.h"
 #include "VRGraphicsWindowChild.h"
 #include "display/framework/synchronization/VRSynchronizedDisplay.h"
 #include "display/graphics/structure/VRRect.h"

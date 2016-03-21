@@ -9,7 +9,7 @@
 #ifndef VRHASDISPLAYCHILDREN_H_
 #define VRHASDISPLAYCHILDREN_H_
 
-#include "VRDisplayNode.h"
+#include "display/VRDisplayNode.h"
 
 namespace MinVR {
 

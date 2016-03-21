@@ -9,8 +9,8 @@
 #ifndef VRSCOPENODE_H_
 #define VRSCOPENODE_H_
 
-#include "display/base/VRDisplayNode.h"
-#include "display/base/VRHasDisplayChildren.h"
+#include "display/VRDisplayNode.h"
+#include "display/framework/graph/VRHasDisplayChildren.h"
 
 namespace MinVR {
 
@@ -21,7 +21,6 @@ public:
 	virtual ~VRScopeNode() {}
 
 	void render(VRRenderer& renderer) {
-		std::cout << "scope" << std::endl;
 		renderer.pushState();
 		VRDisplayNode::render(renderer);
 		renderer.popState();

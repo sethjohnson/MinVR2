@@ -9,8 +9,8 @@
 #ifndef VRGRAPHICSWINDOWCHILD_H_
 #define VRGRAPHICSWINDOWCHILD_H_
 
-#include "display/base/VRDisplayNode.h"
-#include "display/base/VRHasDisplayChildren.h"
+#include "display/VRDisplayNode.h"
+#include "display/framework/graph/VRHasDisplayChildren.h"
 
 namespace MinVR {
 

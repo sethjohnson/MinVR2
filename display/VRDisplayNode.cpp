@@ -6,7 +6,7 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/base/VRDisplayNode.h>
+#include <display/VRDisplayNode.h>
 
 using namespace std;
 
