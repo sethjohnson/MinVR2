@@ -54,7 +54,7 @@ To use the display, create a MinVR::VRRenderer and use the display to call the u
   
   /* User defined function which the display node calls */
   void userRender(VRRenderState& state) {
-    int myValue = renderer.getState().getValue("myValue");
+    int myValue = state.getValue("myValue");
     std::cout << "My user defined render function.  myValue: " << myValue << std::endl;
   }
   
