@@ -17,7 +17,7 @@ The display directory is separated into several folders to handle different leve
 
 ## Quick Start Guide
 
-#### Createing a New Display
+#### Creating a New Display
 
 To create a new display, simply inherit from MinVR::VRDisplayNode and override the render function:
 
