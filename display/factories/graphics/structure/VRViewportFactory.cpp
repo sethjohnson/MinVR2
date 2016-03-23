@@ -9,7 +9,7 @@
 #include <display/factories/graphics/structure/VRViewportFactory.h>
 #include "display/nodes/graphics/structure/VRViewportNode.h"
 #include "display/nodes/graphics/structure/VRTileNode.h"
-#include "display/factories/scope/VRScopeNode.h"
+#include "display/nodes/scope/VRStateScopeNode.h"
 
 namespace MinVR {
 
@@ -28,7 +28,7 @@ VRDisplayNode* VRViewportFactory::create(VRDataIndex& config,
 	if (!display)
 	{
 		std::cout << "Created scope" << std::endl;
-		VRScopeNode* scope = new VRScopeNode();
+		VRStateScopeNode* scope = new VRStateScopeNode();
 		createChildren(scope, m_vrSystem->getDisplayFactory(), config, nameSpace);
 		display = scope;
 		createdScope = true;
@@ -50,7 +50,6 @@ VRDisplayNode* VRViewportFactory::create(VRDataIndex& config,
 			viewportNode = new VRViewportNode(viewport);
 			displayNode->addChild(viewportNode);
 			displayNode = viewportNode;
-			//displayWithChildren->insertChild(viewportNode, 0);
 		}
 
 		VRTile tile;
@@ -61,7 +60,6 @@ VRDisplayNode* VRViewportFactory::create(VRDataIndex& config,
 			tileNode = new VRTileNode(tile);
 			displayNode->addChild(tileNode);
 			displayNode = tileNode;
-			//displayWithChildren->insertChild(tileNode, 0);
 		}
 
 		for (int f = 0; f < children.size(); f++)

@@ -14,6 +14,7 @@ set (${PROJECT_NAME}_source_files
 	nodes/graphics/structure/VRViewportNode.cpp
 	nodes/graphics/structure/VRTile.cpp
 	nodes/graphics/structure/VRTileNode.cpp
+	nodes/scope/VRStateScopeNode.cpp
 	factories/VRCompositeDisplayFactory.cpp
 	factories/VRTypedDisplayFactory.cpp
 	factories/graphics/VRGraphicsWindowFactory.cpp

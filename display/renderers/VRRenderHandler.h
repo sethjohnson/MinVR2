@@ -25,18 +25,26 @@ public:
 	VRRenderHandler();
 	virtual ~VRRenderHandler();
 
-	// The render functions use a template method pattern to call updateFrame(state)
+	// The render functions use a template method pattern to call renderContextCallback(state) and renderSceneCallback(state)
 	void renderContextCallback();
 	void renderSceneCallback();
 
-	// Render functions that need to be defined by the user
+	// ------------ User defined render functions: -------------
+	// allows a user to specify a function which handles per frame functionality.
+	// for example, a user may want to use this function to update VBO objects per frame if needed.
 	virtual void renderContextCallback(VRRenderState& state) = 0;
+	// render() allows a user to specify a render function which displays application specific graphics.
 	virtual void renderSceneCallback(VRRenderState& state) = 0;
 
-	// State controlling functions which are implemented using VRDataIndex namespaces
+	// ------------ State control functions: -------------
+	// Returns the current state
 	VRRenderState& getState();
+	// Pushes a state, which usually implies that previous state information is available and changes to the state
+	// will not affect the previous states
 	void pushState();
+	// Pops the state, so the state will return to a previous state and undo changes from the popped state.
 	void popState();
+	// Resets the state
 	void resetState();
 
 private:

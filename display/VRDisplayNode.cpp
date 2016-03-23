@@ -56,10 +56,6 @@ void VRDisplayNode::addChild(VRDisplayNode* child) {
 	m_children.push_back(child);
 }
 
-//void VRDisplayNode::insertChildInternal(VRDisplayNode* child, int index) {
-//	m_children.insert(m_children.begin() + index, child);
-//}
-
 void VRDisplayNode::clearChildren(bool destroyChildren) {
 	if (destroyChildren) {
 		for (vector<VRDisplayNode*>::iterator it = m_children.begin(); it != m_children.end(); it++)

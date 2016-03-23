@@ -2,14 +2,13 @@
 
 ## VRDisplayNode
 
-VRDisplayNode is the fundamental class that can be inherited to create a different types of displays.  It assumes that the subclass has complete control of its children, but a user cannot add or delete the children directly.  This gives more control of types of children that can be added to a node.  For example, a graphics window node may require that its children are only of a type that have graphics contexts.
+VRDisplayNode is the fundamental class that can be inherited to create a different types of displays.
 
 ## Folder Structure
 
 The display directory is separated into several folders to handle different levels complexity and functionality:
 
 * **factories** - Contains factories that can create VRDisplayNodes.  This folder mostly allows users to extend MinVR through plugins.  Users can create their own factories which parse a VRDataIndex.  These then can be added to the VRMain list of available display factories.
-* **interfaces** - Contains a more genearal framework, which allows more *advanced* users of MinVR to extend MinVR beyond the VRDisplayNode architecture.
 * **nodes** - Contains the base display nodes that are defined in MinVR, specifically for graphics and command line rendering.
 * **renderers** - Contains the base renderers defined in MinVR, specifically for handling render callbacks and controlling state.
 
@@ -28,14 +27,14 @@ To create a new display, simply inherit from MinVR::VRDisplayNode and override t
   /* MyDisplayNode sets myValue and uses the command line to display. */
   class MyDisplayNode : public MinVR::VRDisplayNode {
   
-    void render(MinVR::VRRenderer renderer) {
+    void render(MinVR::VRRenderHandler& renderer) {
       std::cout << "This is called when this display node renders." << std::endl;
     
       // Pushes the current render state for node state changes
       renderer->pushState();
       
       // Add a value to state to be used by the user defined render function
-      renderer.getState().setValue("myValue", 7);
+      renderer.setState().setValue("myValue", 7);
       
       // Calls the user defined render function
       renderer.render();
@@ -50,7 +49,7 @@ To use the display, create a MinVR::VRRenderer and use the display to call the u
     
   ```c++
   #include "MyDisplayNode.h"
-  #include "display/renderers/VRCallbackRenderer.h"
+  #include "display/renderers/concrete/VRCallbackRenderer.h"
   
   /* User defined function which the display node calls */
   void userRender(VRRenderState& state) {

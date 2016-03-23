@@ -13,16 +13,16 @@
 
 namespace MinVR {
 
-class VRScopeNode : public VRDisplayNode  {
+/*
+ * Super simple node that pushes the render state before rendering its
+ * children and pops the render state after rendering.
+ */
+class VRStateScopeNode : public VRDisplayNode  {
 public:
-	VRScopeNode() {}
-	virtual ~VRScopeNode() {}
+	VRStateScopeNode();
+	virtual ~VRStateScopeNode();
 
-	void render(VRRenderHandler& renderer) {
-		renderer.pushState();
-		VRDisplayNode::render(renderer);
-		renderer.popState();
-	}
+	void render(VRRenderHandler& renderer);
 };
 
 } /* namespace MinVR */
