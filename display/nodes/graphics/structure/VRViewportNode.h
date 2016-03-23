@@ -9,17 +9,17 @@
 #ifndef VRVIEWPORTNODE_H_
 #define VRVIEWPORTNODE_H_
 
-#include "display/nodes/graphics/VRGraphicsContextNode.h"
+#include "display/VRDisplayNode.h"
 #include "math/VRRect.h"
 
 namespace MinVR {
 
-class VRViewportNode : public VRGraphicsContextChildNode {
+class VRViewportNode : public VRDisplayNode {
 public:
 	VRViewportNode(const VRRect& rect);
 	virtual ~VRViewportNode();
 
-	void render(VRRenderer& renderer);
+	void render(VRRenderHandler& renderer);
 
 	static VRRect calculate(std::string inName, std::string outName, VRRenderState& state, const VRRect& rect, bool modifyTile = false);
 	static VRRect calculate(std::string inName, VRRenderState& state, const VRRect& rect, bool modifyTile = false);

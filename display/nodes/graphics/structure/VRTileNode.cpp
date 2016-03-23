@@ -16,11 +16,11 @@ VRTileNode::VRTileNode(const VRTile& tile) : m_tile(tile) {
 VRTileNode::~VRTileNode() {
 }
 
-void VRTileNode::render(VRRenderer& renderer) {
+void VRTileNode::render(VRRenderHandler& renderer) {
 //	renderer.pushState();
 	renderer.getState().writeValue("tile", m_tile);
 
-	VRGraphicsContextChildNode::render(renderer);
+	VRDisplayNode::render(renderer);
 
 //	renderer.popState();
 }

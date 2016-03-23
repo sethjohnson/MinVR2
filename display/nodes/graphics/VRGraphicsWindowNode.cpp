@@ -18,31 +18,31 @@ VRGraphicsWindowNode::VRGraphicsWindowNode(const VRRect& rect) : m_rect(rect) {
 VRGraphicsWindowNode::~VRGraphicsWindowNode() {
 }
 
-void VRGraphicsWindowNode::render(VRRenderer& renderer) {
-	startRender(renderer);
-	waitForRenderComplete();
-	synchronize();
-}
+//void VRGraphicsWindowNode::render(VRRenderer& renderer) {
+//	startRender(renderer);
+//	waitForRenderComplete();
+//	synchronize();
+//}
 
-void VRGraphicsWindowNode::startRender(VRRenderer& renderer) {
+void VRGraphicsWindowNode::render(VRRenderHandler& renderer) {
 	renderer.pushState();
 	setCurrentContext();
 	renderer.getState().setValue("graphicsContextType", getContextType());
 	updateState(renderer.getState());
-	renderer.updateFrame();
-	VRGraphicsContextNode::render(renderer);
+	renderer.renderContextCallback();
+	VRDisplayNode::render(renderer);
 	flush();
 	renderer.popState();
 	clearCurrentContext();
 }
 
-void VRGraphicsWindowNode::waitForRenderComplete() {
+void VRGraphicsWindowNode::waitForRenderToComplete() {
 	setCurrentContext();
 	finish();
 	clearCurrentContext();
 }
 
-void VRGraphicsWindowNode::synchronize() {
+void VRGraphicsWindowNode::displayTheFinishedRendering() {
 	setCurrentContext();
 	swapBuffers();
 	clearCurrentContext();

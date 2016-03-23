@@ -9,29 +9,29 @@
 #ifndef VRBASICRENDERER_H_
 #define VRBASICRENDERER_H_
 
-#include "display/interfaces/VRRenderer.h"
+#include "VRRenderState.h"
 
 namespace MinVR {
 
 /*
- * VRBasicRenderer has a simple implementation of controlling state.  When a state is pushed,
+ * VRRenderHandler has a simple implementation of controlling state.  When a state is pushed,
  * a new namespace in the VRDataIndex is created as a sub namespace to the current namespace.
  * This enables the use of the VRDataIndex for walking up a namespace tree.  The user defined
  * functions updateFrame(VRRenderState& state) and render(VRRenderState& state) still need to be
  * defined by the user.
  */
-class VRBasicRenderer : public VRRenderer {
+class VRRenderHandler{
 public:
-	VRBasicRenderer();
-	virtual ~VRBasicRenderer();
+	VRRenderHandler();
+	virtual ~VRRenderHandler();
 
 	// The render functions use a template method pattern to call updateFrame(state)
-	void updateFrame();
-	void render();
+	void renderContextCallback();
+	void renderSceneCallback();
 
 	// Render functions that need to be defined by the user
-	virtual void updateFrame(VRRenderState& state) = 0;
-	virtual void render(VRRenderState& state) = 0;
+	virtual void renderContextCallback(VRRenderState& state) = 0;
+	virtual void renderSceneCallback(VRRenderState& state) = 0;
 
 	// State controlling functions which are implemented using VRDataIndex namespaces
 	VRRenderState& getState();

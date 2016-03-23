@@ -6,31 +6,31 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/renderers/VRBasicRenderer.h>
+#include <display/renderers/VRRenderHandler.h>
 #include <sstream>
 
 namespace MinVR {
 
-VRBasicRenderer::VRBasicRenderer() {
+VRRenderHandler::VRRenderHandler() {
 	resetState();
 }
 
-VRBasicRenderer::~VRBasicRenderer() {
+VRRenderHandler::~VRRenderHandler() {
 }
 
-void VRBasicRenderer::updateFrame() {
-	updateFrame(m_state);
+void VRRenderHandler::renderContextCallback() {
+	renderContextCallback(m_state);
 }
 
-void VRBasicRenderer::render() {
-	render(m_state);
+void VRRenderHandler::renderSceneCallback() {
+	renderSceneCallback(m_state);
 }
 
-VRRenderState& VRBasicRenderer::getState() {
+VRRenderState& VRRenderHandler::getState() {
 	return m_state;
 }
 
-void VRBasicRenderer::pushState() {
+void VRRenderHandler::pushState() {
 	m_nodeNum++;
 	std::stringstream ss;
 	ss << m_nameSpaces[m_nameSpaces.size() - 1] << "/" << "node" << m_nodeNum;
@@ -38,12 +38,12 @@ void VRBasicRenderer::pushState() {
 	m_state.setNameSpace(m_nameSpaces[m_nameSpaces.size() - 1]);
 }
 
-void VRBasicRenderer::popState() {
+void VRRenderHandler::popState() {
 	m_nameSpaces.pop_back();
 	m_state.setNameSpace(m_nameSpaces[m_nameSpaces.size() - 1]);
 }
 
-void VRBasicRenderer::resetState() {
+void VRRenderHandler::resetState() {
 	m_state = VRRenderState();
 	m_nameSpaces.push_back("/display");
 	m_state.setNameSpace("/display");

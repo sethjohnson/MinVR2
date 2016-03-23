@@ -10,16 +10,16 @@
 #define VRTILENODE_H_
 
 #include "VRTile.h"
-#include "display/nodes/graphics/VRGraphicsContextNode.h"
+#include "display/VRDisplayNode.h"
 
 namespace MinVR {
 
-class VRTileNode : public VRGraphicsContextChildNode {
+class VRTileNode : public VRDisplayNode {
 public:
 	VRTileNode(const VRTile& tile);
 	virtual ~VRTileNode();
 
-	void render(VRRenderer& renderer);
+	void render(VRRenderHandler& renderer);
 
 private:
 	VRTile m_tile;

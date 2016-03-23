@@ -6,7 +6,7 @@
  * 		Dan Orban (dtorban)
  */
 
-#include <display/interfaces/VRRenderState.h>
+#include <display/renderers/VRRenderState.h>
 
 namespace MinVR {
 

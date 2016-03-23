@@ -17,10 +17,10 @@ VRDisplayNode::VRDisplayNode() {
 }
 
 VRDisplayNode::~VRDisplayNode() {
-	clearChildrenInternal(true);
+	clearChildren(true);
 }
 
-void VRDisplayNode::render(VRRenderer& renderer) {
+void VRDisplayNode::render(VRRenderHandler& renderer) {
 	if (m_children.size() > 0)
 	{
 		for (vector<VRDisplayNode*>::iterator it = m_children.begin(); it != m_children.end(); it++)
@@ -30,7 +30,21 @@ void VRDisplayNode::render(VRRenderer& renderer) {
 	}
 	else
 	{
-		renderer.render();
+		renderer.renderSceneCallback();
+	}
+}
+
+void VRDisplayNode::waitForRenderToComplete() {
+	for (vector<VRDisplayNode*>::iterator it = m_children.begin(); it != m_children.end(); it++)
+	{
+		(*it)->waitForRenderToComplete();
+	}
+}
+
+void VRDisplayNode::displayTheFinishedRendering() {
+	for (vector<VRDisplayNode*>::iterator it = m_children.begin(); it != m_children.end(); it++)
+	{
+		(*it)->displayTheFinishedRendering();
 	}
 }
 
@@ -38,15 +52,15 @@ const std::vector<VRDisplayNode*>& VRDisplayNode::getChildren() const {
 	return m_children;
 }
 
-void VRDisplayNode::addChildInternal(VRDisplayNode* child) {
+void VRDisplayNode::addChild(VRDisplayNode* child) {
 	m_children.push_back(child);
 }
 
-void VRDisplayNode::insertChildInternal(VRDisplayNode* child, int index) {
-	m_children.insert(m_children.begin() + index, child);
-}
+//void VRDisplayNode::insertChildInternal(VRDisplayNode* child, int index) {
+//	m_children.insert(m_children.begin() + index, child);
+//}
 
-void VRDisplayNode::clearChildrenInternal(bool destroyChildren) {
+void VRDisplayNode::clearChildren(bool destroyChildren) {
 	if (destroyChildren) {
 		for (vector<VRDisplayNode*>::iterator it = m_children.begin(); it != m_children.end(); it++)
 		{
@@ -56,6 +70,5 @@ void VRDisplayNode::clearChildrenInternal(bool destroyChildren) {
 
 	m_children.clear();
 }
-
 
 } /* namespace MinVR */

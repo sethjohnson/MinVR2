@@ -19,22 +19,19 @@ VRConsoleDisplay::~VRConsoleDisplay() {
 	// TODO Auto-generated destructor stub
 }
 
-void VRConsoleDisplay::render(VRRenderer& renderer) {
 
-}
-
-void VRConsoleDisplay::startRender(VRRenderer& renderer) {
+void VRConsoleDisplay::render(VRRenderHandler& renderer) {
 	renderer.pushState();
 	renderer.getState().setValue("isConsole", 1);
-	renderer.render();
+	renderer.renderSceneCallback();
 	renderer.popState();
 }
 
-void VRConsoleDisplay::waitForRenderComplete() {
+void VRConsoleDisplay::waitForRenderToComplete() {
 	*m_stream << "render complete." << std::endl;
 }
 
-void VRConsoleDisplay::synchronize() {
+void VRConsoleDisplay::displayTheFinishedRendering() {
 	std::flush(*m_stream);
 	*m_stream << "flush." << std::endl;
 }

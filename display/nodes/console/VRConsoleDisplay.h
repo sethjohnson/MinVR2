@@ -9,21 +9,19 @@
 #ifndef FRCONSOLEDISPLAY_H_
 #define VRCONSOLEDISPLAY_H_
 
-#include "display/interfaces/VRDisplay.h"
-#include "display/interfaces/synchronization/VRSynchronizedDisplay.h"
+#include "display/VRDisplayNode.h"
 #include <iostream>
 
 namespace MinVR {
 
-class VRConsoleDisplay : public VRDisplay, public VRSynchronizedDisplay {
+class VRConsoleDisplay : public VRDisplayNode {
 public:
 	VRConsoleDisplay(std::ostream *stream = &std::cout);
 	virtual ~VRConsoleDisplay();
 
-	void render(VRRenderer& renderer);
-	void startRender(VRRenderer& renderer);
-	void waitForRenderComplete();
-	void synchronize();
+	void render(VRRenderHandler& renderer);
+	void waitForRenderToComplete();
+	void displayTheFinishedRendering();
 
 private:
 	std::ostream* m_stream;

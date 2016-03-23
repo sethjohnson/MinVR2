@@ -17,10 +17,10 @@ VRViewportNode::VRViewportNode(const VRRect& rect) : m_rect(rect) {
 VRViewportNode::~VRViewportNode() {
 }
 
-void VRViewportNode::render(VRRenderer& renderer) {
+void VRViewportNode::render(VRRenderHandler& renderer) {
 	calculate("viewport", renderer.getState(), m_rect, true);
 
-	VRGraphicsContextNode::render(renderer);
+	VRDisplayNode::render(renderer);
 }
 
 VRRect VRViewportNode::calculate(std::string inName, std::string outName,

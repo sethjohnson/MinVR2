@@ -9,21 +9,21 @@
 #ifndef VRSTEREONODE_H_
 #define VRSTEREONODE_H_
 
-#include "display/nodes/graphics/VRGraphicsContextNode.h"
+#include "display/VRDisplayNode.h"
 
 namespace MinVR {
 
-class VRStereoNode : public VRGraphicsContextChildNode {
+class VRStereoNode : public VRDisplayNode {
 public:
 	VRStereoNode();
 	virtual ~VRStereoNode();
 
-	virtual void render(VRRenderer& renderer);
+	virtual void render(VRRenderHandler& renderer);
 
 protected:
 	virtual int getNumPasses() = 0;
-	virtual void preRenderPass(VRRenderer& renderer, int passNum) = 0;
-	virtual void postRenderPass(VRRenderer& renderer, int passNum) = 0;
+	virtual void preRenderPass(VRRenderHandler& renderer, int passNum) = 0;
+	virtual void postRenderPass(VRRenderHandler& renderer, int passNum) = 0;
 };
 
 } /* namespace MinVR */
