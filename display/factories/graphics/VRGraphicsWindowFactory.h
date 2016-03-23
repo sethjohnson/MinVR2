@@ -21,7 +21,7 @@ public:
 
 protected:
 	VRGraphicsWindowFactory(VRSystem* vrSystem);
-	VRDisplay* create(VRDataIndex& config, const std::string nameSpace, std::string type);
+	VRDisplayNode* create(VRDataIndex& config, const std::string nameSpace, std::string type);
 	virtual VRGraphicsWindowNode* createWindow(VRDataIndex& config, const std::string nameSpace, std::string type) = 0;
 
 private:

@@ -20,21 +20,21 @@ VRViewportFactory::~VRViewportFactory() {
 	delete m_innerFactory;
 }
 
-VRDisplay* VRViewportFactory::create(VRDataIndex& config,
+VRDisplayNode* VRViewportFactory::create(VRDataIndex& config,
 		const std::string nameSpace) {
 
-	VRDisplay* display = m_innerFactory->create(config, nameSpace);
+	VRDisplayNode* display = m_innerFactory->create(config, nameSpace);
 	bool createdScope = false;
 	if (!display)
 	{
 		std::cout << "Created scope" << std::endl;
-		VRScopeNode<VRGraphicsContextChild, VRGraphicsContextChild>* scope = new VRScopeNode<VRGraphicsContextChild, VRGraphicsContextChild>();
-		createChildren<VRScopeNode<VRGraphicsContextChild, VRGraphicsContextChild>, VRGraphicsContextChild>(scope, m_vrSystem->getDisplayFactory(), config, nameSpace);
+		VRScopeNode* scope = new VRScopeNode();
+		createChildren(scope, m_vrSystem->getDisplayFactory(), config, nameSpace);
 		display = scope;
 		createdScope = true;
 	}
 
-	VRGraphicsContextNode* displayNode = dynamic_cast<VRGraphicsContextNode*>(display);
+	VRDisplayNode* displayNode = display;
 
 	if (displayNode)
 	{
@@ -66,10 +66,7 @@ VRDisplay* VRViewportFactory::create(VRDataIndex& config,
 
 		for (int f = 0; f < children.size(); f++)
 		{
-			VRGraphicsContextChild* child = dynamic_cast<VRGraphicsContextChild*>(children[f]);
-			if (child) {
-				displayNode->addChild(child);
-			}
+			displayNode->addChild(children[f]);
 		}
 
 		if (displayNode->getChildren().size() == 0 && createdScope) {

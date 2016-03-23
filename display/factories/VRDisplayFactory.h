@@ -9,7 +9,7 @@
 #ifndef VRDISPLAYFACTORY_H_
 #define VRDISPLAYFACTORY_H_
 
-#include "display/interfaces/VRDisplay.h"
+#include "display/VRDisplayNode.h"
 #include "config/VRDataIndex.h"
 
 namespace MinVR {
@@ -18,14 +18,12 @@ class VRDisplayFactory {
 public:
 	virtual ~VRDisplayFactory() {}
 
-	virtual VRDisplay* create(VRDataIndex& config, const std::string nameSpace) = 0;
+	virtual VRDisplayNode* create(VRDataIndex& config, const std::string nameSpace) = 0;
 
-	template<typename DisplayNodeType, typename ChildNodeType>
-	static void createChildren(DisplayNodeType* display, VRDisplayFactory& factory, VRDataIndex& config, const std::string nameSpace);
+	static void createChildren(VRDisplayNode* display, VRDisplayFactory& factory, VRDataIndex& config, const std::string nameSpace);
 };
 
-template<typename DisplayNodeType, typename ChildNodeType>
-void VRDisplayFactory::createChildren(DisplayNodeType* display, VRDisplayFactory& factory, VRDataIndex& config, const std::string nameSpace)
+void VRDisplayFactory::createChildren(VRDisplayNode* display, VRDisplayFactory& factory, VRDataIndex& config, const std::string nameSpace)
 {
 	if (display)
 	{
@@ -37,15 +35,10 @@ void VRDisplayFactory::createChildren(DisplayNodeType* display, VRDisplayFactory
 			if (config.getType(*f) == VRCORETYPE_CONTAINER)
 			{
 				std::cout << *f << std::endl;
-				VRDisplay* subDisplay = factory.create(config, *f);
-				ChildNodeType* child = dynamic_cast<ChildNodeType*>(subDisplay);
-				if (child)
+				VRDisplayNode* subDisplay = factory.create(config, *f);
+				if (subDisplay)
 				{
-					display->addChild(child);
-				}
-				else if (subDisplay)
-				{
-					delete subDisplay;
+					display->addChild(subDisplay);
 				}
 			}
 		}

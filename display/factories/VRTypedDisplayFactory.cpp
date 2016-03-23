@@ -19,7 +19,7 @@ VRTypedDisplayFactory::~VRTypedDisplayFactory() {
 	// TODO Auto-generated destructor stub
 }
 
-VRDisplay* VRTypedDisplayFactory::create(VRDataIndex& config,
+VRDisplayNode* VRTypedDisplayFactory::create(VRDataIndex& config,
 		const std::string nameSpace) {
 	if (config.exists(nameSpace + "/displayType", ""))
 	{

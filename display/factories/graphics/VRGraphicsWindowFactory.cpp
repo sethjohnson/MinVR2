@@ -19,12 +19,12 @@ VRGraphicsWindowFactory::~VRGraphicsWindowFactory() {
 	// TODO Auto-generated destructor stub
 }
 
-VRDisplay* VRGraphicsWindowFactory::create(VRDataIndex& config,
+VRDisplayNode* VRGraphicsWindowFactory::create(VRDataIndex& config,
 		const std::string nameSpace, std::string type) {
 	if (config.exists(nameSpace + "/windowType", ""))
 	{
 		VRGraphicsWindowNode* display = createWindow(config, nameSpace, config.getValue(nameSpace + "/windowType", ""));
-		createChildren<VRGraphicsWindowNode, VRGraphicsContextChild>(display, m_vrSystem->getDisplayFactory(), config, nameSpace);
+		createChildren(display, m_vrSystem->getDisplayFactory(), config, nameSpace);
 
 		return display;
 	}

@@ -18,10 +18,10 @@ public:
 	VRTypedDisplayFactory();
 	virtual ~VRTypedDisplayFactory();
 
-	VRDisplay* create(VRDataIndex& config, const std::string nameSpace);
+	VRDisplayNode* create(VRDataIndex& config, const std::string nameSpace);
 
 protected:
-	virtual VRDisplay* create(VRDataIndex& config, const std::string nameSpace, std::string type) = 0;
+	virtual VRDisplayNode* create(VRDataIndex& config, const std::string nameSpace, std::string type) = 0;
 };
 
 } /* namespace MinVR */

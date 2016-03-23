@@ -13,15 +13,14 @@
 
 namespace MinVR {
 
-template<typename ChildNodeType, class DisplayNodeInterface>
-class VRScopeNode : public VREditableDisplayNode<ChildNodeType>, public DisplayNodeInterface  {
+class VRScopeNode : public VRDisplayNode  {
 public:
 	VRScopeNode() {}
 	virtual ~VRScopeNode() {}
 
-	void render(VRRenderer& renderer) {
+	void render(VRRenderHandler& renderer) {
 		renderer.pushState();
-		VREditableDisplayNode<ChildNodeType>::render(renderer);
+		VRDisplayNode::render(renderer);
 		renderer.popState();
 	}
 };

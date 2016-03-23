@@ -19,7 +19,7 @@ public:
 	VRViewportFactory(VRSystem* vrSystem, VRDisplayFactory* innerFactory);
 	virtual ~VRViewportFactory();
 
-	VRDisplay* create(VRDataIndex& config, const std::string nameSpace);
+	VRDisplayNode* create(VRDataIndex& config, const std::string nameSpace);
 
 private:
 	VRSystem* m_vrSystem;

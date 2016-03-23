@@ -20,7 +20,7 @@ VRStereoFactory::~VRStereoFactory() {
 	// TODO Auto-generated destructor stub
 }
 
-VRDisplay* VRStereoFactory::create(VRDataIndex& config,
+VRDisplayNode* VRStereoFactory::create(VRDataIndex& config,
 		const std::string nameSpace) {
 
 	std::string ending = "SideBySideStereo";
@@ -29,7 +29,7 @@ VRDisplay* VRStereoFactory::create(VRDataIndex& config,
 	{
 		std::cout << "True " << nameSpace << std::endl;
 		VRSideBySideNode* sideBySideNode = new VRSideBySideNode();
-		createChildren<VRSideBySideNode, VRGraphicsContextChild>(sideBySideNode, m_vrSystem->getDisplayFactory(), config, nameSpace);
+		createChildren(sideBySideNode, m_vrSystem->getDisplayFactory(), config, nameSpace);
 		return sideBySideNode;
 	}
 
