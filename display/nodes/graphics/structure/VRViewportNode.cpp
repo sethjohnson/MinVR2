@@ -8,6 +8,9 @@
 
 #include <display/nodes/graphics/structure/VRViewportNode.h>
 #include "VRTile.h"
+#include <display/factories/graphics/structure/VRViewportFactory.h>
+#include "display/nodes/graphics/structure/VRTileNode.h"
+#include "display/nodes/scope/VRStateScopeNode.h"
 
 namespace MinVR {
 
@@ -53,6 +56,63 @@ VRRect VRViewportNode::calculate(std::string inName, std::string outName,
 VRRect VRViewportNode::calculate(std::string inName, VRRenderState& state,
 		const VRRect& rect, bool modifyTile) {
 	calculate(inName, inName, state, rect, modifyTile);
+}
+
+VRDisplayNode* VRViewportFactory::create(VRDataIndex& config,
+		const std::string nameSpace) {
+
+	VRDisplayNode* display = m_innerFactory->create(config, nameSpace);
+	bool createdScope = false;
+	if (!display)
+	{
+		std::cout << "Created scope" << std::endl;
+		VRStateScopeNode* scope = new VRStateScopeNode();
+		createChildren(scope, m_vrSystem->getDisplayFactory(), config, nameSpace);
+		display = scope;
+		createdScope = true;
+	}
+
+	VRDisplayNode* displayNode = display;
+
+	if (displayNode)
+	{
+		int startChildren = displayNode->getChildren().size();
+		std::vector<VRDisplayNode*> children = displayNode->getChildren();
+		displayNode->clearChildren();
+
+		VRRect viewport;
+		VRViewportNode* viewportNode = NULL;
+		if (viewport.read(config, nameSpace + "/viewport", ""))
+		{
+			std::cout << "Created viewport" << std::endl;
+			viewportNode = new VRViewportNode(viewport);
+			displayNode->addChild(viewportNode);
+			displayNode = viewportNode;
+		}
+
+		VRTile tile;
+		VRTileNode* tileNode = NULL;
+		if (tile.read(config, nameSpace + "/tile", ""))
+		{
+			std::cout << "Created tile" << std::endl;
+			tileNode = new VRTileNode(tile);
+			displayNode->addChild(tileNode);
+			displayNode = tileNode;
+		}
+
+		for (int f = 0; f < children.size(); f++)
+		{
+			displayNode->addChild(children[f]);
+		}
+
+		if (displayNode->getChildren().size() == 0 && createdScope) {
+			std::cout << "destroyed scope" << std::endl;
+			delete display;
+			return NULL;
+		}
+	}
+
+	return display;
 }
 
 } /* namespace MinVR */

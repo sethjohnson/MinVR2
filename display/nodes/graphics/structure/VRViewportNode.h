@@ -11,6 +11,8 @@
 
 #include "display/VRDisplayNode.h"
 #include "math/VRRect.h"
+#include "display/factories/VRDisplayFactory.h"
+#include "main/VRSystem.h"
 
 namespace MinVR {
 
@@ -26,6 +28,18 @@ public:
 
 private:
 	VRRect m_rect;
+};
+
+class VRViewportFactory : public VRDisplayFactory {
+public:
+	VRViewportFactory(VRSystem* vrSystem, VRDisplayFactory* innerFactory) : m_vrSystem(vrSystem), m_innerFactory(innerFactory) {}
+	virtual ~VRViewportFactory() {}
+
+	VRDisplayNode* create(VRDataIndex& config, const std::string nameSpace);
+
+private:
+	VRSystem* m_vrSystem;
+	VRDisplayFactory* m_innerFactory;
 };
 
 } /* namespace MinVR */

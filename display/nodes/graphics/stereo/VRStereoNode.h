@@ -10,6 +10,8 @@
 #define VRSTEREONODE_H_
 
 #include "display/VRDisplayNode.h"
+#include "display/factories/VRDisplayFactory.h"
+#include "main/VRSystem.h"
 
 namespace MinVR {
 
@@ -24,6 +26,17 @@ protected:
 	virtual int getNumPasses() = 0;
 	virtual void preRenderPass(VRRenderHandler& renderer, int passNum) = 0;
 	virtual void postRenderPass(VRRenderHandler& renderer, int passNum) = 0;
+};
+
+class VRStereoFactory : public VRDisplayFactory {
+public:
+	VRStereoFactory(VRSystem* vrSystem) : m_vrSystem(vrSystem) {}
+	virtual ~VRStereoFactory() {}
+
+	VRDisplayNode* create(VRDataIndex& config, const std::string nameSpace);
+
+private:
+	VRSystem* m_vrSystem;
 };
 
 } /* namespace MinVR */

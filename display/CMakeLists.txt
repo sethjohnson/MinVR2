@@ -17,9 +17,6 @@ set (${PROJECT_NAME}_source_files
 	nodes/scope/VRStateScopeNode.cpp
 	factories/VRCompositeDisplayFactory.cpp
 	factories/VRTypedDisplayFactory.cpp
-	factories/graphics/VRGraphicsWindowFactory.cpp
-	factories/graphics/stereo/VRStereoFactory.cpp
-	factories/graphics/structure/VRViewportFactory.cpp
 )
 
 add_library (${PROJECT_NAME} ${${PROJECT_NAME}_source_files})

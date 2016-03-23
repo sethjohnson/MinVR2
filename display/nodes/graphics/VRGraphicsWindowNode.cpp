@@ -8,6 +8,8 @@
 
 #include <display/nodes/graphics/VRGraphicsWindowNode.h>
 #include "display/nodes/graphics/structure/VRViewportNode.h"
+#include "display/factories/VRTypedDisplayFactory.h"
+#include "main/VRSystem.h"
 
 namespace MinVR {
 
@@ -17,12 +19,6 @@ VRGraphicsWindowNode::VRGraphicsWindowNode(const VRRect& rect) : m_rect(rect) {
 
 VRGraphicsWindowNode::~VRGraphicsWindowNode() {
 }
-
-//void VRGraphicsWindowNode::render(VRRenderer& renderer) {
-//	startRender(renderer);
-//	waitForRenderComplete();
-//	synchronize();
-//}
 
 void VRGraphicsWindowNode::render(VRRenderHandler& renderer) {
 	renderer.pushState();
@@ -61,6 +57,19 @@ const VRRect& VRGraphicsWindowNode::getRect() const {
 
 void VRGraphicsWindowNode::setRect(const VRRect& rect) {
 	m_rect = rect;
+}
+
+VRDisplayNode* VRGraphicsWindowFactory::create(VRDataIndex& config,
+		const std::string nameSpace, std::string type) {
+	if (config.exists(nameSpace + "/windowType", ""))
+	{
+		VRGraphicsWindowNode* display = createWindow(config, nameSpace, config.getValue(nameSpace + "/windowType", ""));
+		createChildren(display, m_vrSystem->getDisplayFactory(), config, nameSpace);
+
+		return display;
+	}
+
+	return NULL;
 }
 
 } /* namespace MinVR */
