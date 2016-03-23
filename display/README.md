@@ -8,7 +8,7 @@ VRDisplayNode is the fundamental class that can be inherited to create a differe
 
 The display directory is separated into several folders to handle different levels complexity and functionality:
 
-* **factories** - Contains factories that can create VRDisplayNodes.  This folder mostly allows users to extend MinVR through plugins.  Users can create their own factories which parse a VRDataIndex.  These then can be added to the VRMain list of available display factories.
+* **factories** - Contains base factories interfaces for creating VRDisplayNodes.  This folder mostly allows users to extend MinVR through plugins.  Users can create their own factories which parse a VRDataIndex.  These then can be added to the VRMain list of available display factories.
 * **nodes** - Contains the base display nodes that are defined in MinVR, specifically for graphics and command line rendering.
 * **renderers** - Contains the base renderers defined in MinVR, specifically for handling render callbacks and controlling state.
 
