@@ -161,8 +161,7 @@ void VRMain::initialize()
   }
 
   // Create display
-  MinVR::VRDisplay* display = _displayFactory->create(*_index, "/MVR/VRDisplayDevices/Desktop");
-  _display = dynamic_cast<MinVR::VRSynchronizedDisplay*>(display);
+  _display = _displayFactory->create(*_index, "/MVR/VRDisplayDevices/Desktop");
 
  // exit(0);
 
@@ -293,15 +292,15 @@ VRMain::renderEverywhere() {
 }
 
 void
-VRMain::renderEverywhere(MinVR::VRRenderer& renderer) {
+VRMain::renderEverywhere(MinVR::VRRenderHandler& renderer) {
 
   if (!initialized) {
     std::cerr << "VRMain not initialized." << std::endl;
     return;
   }
 
-  _display->startRender(renderer);
-  _display->waitForRenderComplete();
+  _display->render(renderer);
+  _display->waitForRenderToComplete();
 
   // SYNCHRONIZATION POINT #2: When this function returns we know that
   // all nodes have finished rendering on all their attached display
@@ -311,7 +310,7 @@ VRMain::renderEverywhere(MinVR::VRRenderer& renderer) {
     _vrNet->syncSwapBuffersAcrossAllNodes();
   }
 
-  _display->synchronize();
+  _display->displayTheFinishedRendering();
 }
 
 // Adds the display factories for all plugins who use this interface

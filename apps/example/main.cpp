@@ -5,7 +5,7 @@
 #include <fstream>
 #include <math.h>
 #include "main/VRMain.h"
-#include "display/renderers/VRCallbackRenderer.h"
+#include "display/renderers/concrete/VRCallbackRenderer.h"
 #include "math/VRRect.h"
 
 #if defined(WIN32)

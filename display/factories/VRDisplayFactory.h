@@ -23,7 +23,7 @@ public:
 	static void createChildren(VRDisplayNode* display, VRDisplayFactory& factory, VRDataIndex& config, const std::string nameSpace);
 };
 
-void VRDisplayFactory::createChildren(VRDisplayNode* display, VRDisplayFactory& factory, VRDataIndex& config, const std::string nameSpace)
+inline void VRDisplayFactory::createChildren(VRDisplayNode* display, VRDisplayFactory& factory, VRDataIndex& config, const std::string nameSpace)
 {
 	if (display)
 	{

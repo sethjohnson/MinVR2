@@ -74,7 +74,7 @@ public:
   // OpenGL or whatever graphics engine you are using.
   virtual void renderEverywhere();
 
-  virtual void renderEverywhere(MinVR::VRRenderer& renderer);
+  virtual void renderEverywhere(MinVR::VRRenderHandler& renderer);
 
   // END LOOP
 
@@ -95,7 +95,7 @@ public:
   	// Used for timing (i.e. for animation, etc...)
   void addVRTimer(MinVR::VRTimer* timer);
 
-  MinVR::VRSynchronizedDisplay* getDisplay() const {
+  MinVR::VRDisplayNode* getDisplay() const {
 		return _display;
 	}
 
@@ -131,7 +131,7 @@ private:
   void (*_renderCB)(VRDataIndex *);
   void (*_swapCB)();
 
-  MinVR::VRSynchronizedDisplay* _display;
+  MinVR::VRDisplayNode* _display;
 
   // Plugin items
   MinVR::PluginManager _pluginManager;
