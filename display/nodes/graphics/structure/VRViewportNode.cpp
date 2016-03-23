@@ -8,7 +8,6 @@
 
 #include <display/nodes/graphics/structure/VRViewportNode.h>
 #include "VRTile.h"
-#include <display/factories/graphics/structure/VRViewportFactory.h>
 #include "display/nodes/graphics/structure/VRTileNode.h"
 #include "display/nodes/scope/VRStateScopeNode.h"
 
