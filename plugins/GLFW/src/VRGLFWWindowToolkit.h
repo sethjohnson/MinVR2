@@ -55,6 +55,8 @@ private:
 	std::vector<GLFWwindow*> _windows;
 	VRGLFWInputDevice *_inputDev;
 	std::map<int, GLFWwindow*> _sharedContextGroups;
+	int x;
+	int y;
 };
 
 

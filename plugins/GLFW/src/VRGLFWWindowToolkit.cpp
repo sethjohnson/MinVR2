@@ -45,6 +45,11 @@ VRGLFWWindowToolkit::~VRGLFWWindowToolkit() {
 }
 
 
+void error_callback2(int error, const char* description)
+{
+	fprintf(stderr, "Error: %s\n", description);
+}
+
 int
 VRGLFWWindowToolkit::createWindow(VRWindowSettings settings) {
     glfwDefaultWindowHints();
@@ -68,6 +73,34 @@ VRGLFWWindowToolkit::createWindow(VRWindowSettings settings) {
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	}
 
+
+
+
+	int count;
+	GLFWmonitor** monitors = glfwGetMonitors(&count);
+	int closestInd = 0;
+	int closestXPos = 0;
+	int closestYPos = 0;
+	float closestDist = 100000;
+	int xPos, yPos;
+	for (int i = 0; i < count; i++) {
+		glfwGetMonitorPos(monitors[i], &xPos, &yPos);
+		float curDist = pow((float)(closestXPos - xPos), 2.0f) + pow((float)(closestYPos - yPos), 2.0f);
+		if (curDist <= closestDist) {
+			closestInd = i;
+			closestXPos = xPos;
+			closestYPos = yPos;
+			closestDist = curDist;
+		}
+	}
+
+
+
+
+
+
+
+
     if (settings.quadBuffered) {
   		glfwWindowHint(GLFW_STEREO, true);
     }
@@ -83,9 +116,13 @@ VRGLFWWindowToolkit::createWindow(VRWindowSettings settings) {
     }
 
 	GLFWwindow* window = glfwCreateWindow(settings.width, settings.height, settings.caption.c_str(), NULL, sharedContext);
+	std::cout << "CLOSEST INDEX: " << closestInd << std::endl;
+	//GLFWwindow* window = glfwCreateWindow(settings.width, settings.height, settings.caption.c_str(), monitors[closestInd], NULL);
+
 	if (!window) {
 		std::cout << "Error creating window." << std::endl;
 	}
+	glfwSetErrorCallback(error_callback2);
 
 	if (settings.sharedContextGroupID >= 0 || !foundSharedContextGroup) {
 		_sharedContextGroups[settings.sharedContextGroupID] = window;
@@ -140,6 +177,11 @@ VRGLFWWindowToolkit::createWindow(VRWindowSettings settings) {
 	}
 #endif
 
+	std::cout << settings.xpos << ", " << settings.ypos << std::endl;
+	x = settings.xpos;
+	y = settings.ypos;
+	glfwSetWindowPos(window, settings.xpos, settings.ypos);
+	glfwShowWindow(window);
     glfwSetWindowPos(window, settings.xpos, settings.ypos);
 
 	glfwMakeContextCurrent(window);
@@ -177,6 +219,7 @@ VRGLFWWindowToolkit::makeWindowCurrent(int windowID) {
 
 void 
 VRGLFWWindowToolkit::swapBuffers(int windowID) {
+	glfwSetWindowPos(_windows[windowID], x, y);
     glfwMakeContextCurrent(_windows[windowID]);
   	glfwSwapBuffers(_windows[windowID]);
 }
